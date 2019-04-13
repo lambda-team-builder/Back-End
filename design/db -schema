@@ -32,3 +32,56 @@ id int PK
 role_id int FK >- Roles.id
 project_id int FK >- Projects.id
 user_id int FK >- Users.id
+
+----------------V2----------------------------
+Users as u
+---
+id int PK
+name string
+email string
+password string 
+user_type_id int
+
+
+User_types as ut
+---
+id int PK FK >- Users.user_type_id
+name string
+
+
+Roles as r
+---
+id int PK
+name string
+
+Projects as p
+---
+id int PK
+name string
+desc string
+classroom_id int
+
+
+Project_members as pm
+---
+id int PK
+role_id int FK >- Roles.id
+project_id int FK >- Projects.id
+user_id int FK >- Users.id
+
+Classrooms as cr
+---
+id int PK
+name string
+
+Classroom_projects
+---
+id int PK
+project_id int FK >- Projects.classroom_id
+classroom_id int FK >- Classrooms.id
+
+Classroom_admins as crs
+---
+id int PK
+user_id int FK >- Users.id
+classroom_id int FK >- Classrooms.id

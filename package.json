@@ -8,7 +8,9 @@
     "server": "nodemon index.js",
     "test": "cross-env DB_ENV=testing jest --watch",
     "coverage": "jest --coverage",
-    "docs": "npx apidoc -e node_modules/"
+    "docs": "npx apidoc -e node_modules/",
+    "migrate": "knex migrate:latest",
+    "rollback": "knex migrate:rollback"
   },
   "repository": {
     "type": "git",
@@ -22,10 +24,12 @@
   },
   "homepage": "https://github.com/lambda-team-builder/Back-End#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "helmet": "^3.16.0",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.16.5",
     "pg": "^7.9.0",
     "sqlite3": "^4.0.6"
