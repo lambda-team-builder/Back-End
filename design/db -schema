@@ -1,0 +1,34 @@
+Users as u
+---
+id int PK
+name string
+email string
+username string unique
+password string 
+user_type_id int
+
+
+User_types as ut
+---
+id int PK FK >- Users.user_type_id
+name string
+
+
+Roles as r
+---
+id int PK
+name string
+
+Projects as p
+---
+id int PK
+name string
+desc string 
+
+
+Project_member as pm
+---
+id int PK
+role_id int FK >- Roles.id
+project_id int FK >- Projects.id
+user_id int FK >- Users.id
