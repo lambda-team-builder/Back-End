@@ -5,14 +5,14 @@ exports.up = function(knex, Promise) {
       .integer("user_id")
       .notNullable()
       .references("id")
-      .inTable("user_types")
+      .inTable("users")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
     table
       .integer("classroom_id")
       .notNullable()
       .references("id")
-      .inTable("user_types")
+      .inTable("classrooms")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
   });
