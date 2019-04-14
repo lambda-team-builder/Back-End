@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for Back-End/data/models/classroomsModel.js</title>
+    <title>Code coverage report for Back-End/data/models/projectsModel.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="..\..\..\prettify.css" />
     <link rel="stylesheet" href="..\..\..\base.css" />
@@ -16,13 +16,13 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="..\..\..\index.html">All files</a> / <a href="index.html">Back-End/data/models</a> classroomsModel.js
+      <a href="..\..\..\index.html">All files</a> / <a href="index.html">Back-End/data/models</a> projectsModel.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">88.89% </span>
+        <span class="strong">83.33% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>8/9</span>
+        <span class='fraction'>5/6</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>2/3</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">88.89% </span>
+        <span class="strong">83.33% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>8/9</span>
+        <span class='fraction'>5/6</span>
       </div>
     </div>
     <p class="quiet">
@@ -62,25 +62,12 @@
 <a name='L14'></a><a href='#L14'>14</a>
 <a name='L15'></a><a href='#L15'>15</a>
 <a name='L16'></a><a href='#L16'>16</a>
-<a name='L17'></a><a href='#L17'>17</a>
-<a name='L18'></a><a href='#L18'>18</a>
-<a name='L19'></a><a href='#L19'>19</a>
-<a name='L20'></a><a href='#L20'>20</a>
-<a name='L21'></a><a href='#L21'>21</a>
-<a name='L22'></a><a href='#L22'>22</a>
-<a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<a name='L17'></a><a href='#L17'>17</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -89,34 +76,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const db = require("../dbConfig");
 &nbsp;
-module.exports = { create, getById, reset };
+module.exports = { create, get, reset };
 &nbsp;
-async function create(name, user_id) {
-  const idsClassrooms = await db("classrooms").insert({ name });
-  const classroom_id = idsClassrooms[0];
-  const classroom_admin_user_ids = await db("classroom_admins").insert({
-    classroom_id,
-    user_id
-  });
-  return { id: classroom_id, name, classroom_admin_user_ids };
+async function create(name, description) {
+  const [id] = await db("projects").insert({ name, description });
+  return id;
 }
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >getById(</span>id) {
-<span class="cstat-no" title="statement not covered" >  return await db("classrooms")</span>
-    .where({ id })
-    .first();
+async function <span class="fstat-no" title="function not covered" >get(</span>) {
+<span class="cstat-no" title="statement not covered" >  return await db("projects");</span>
 }
 &nbsp;
 async function reset() {
-  await db("classroom_admins").truncate();
-  await db("classrooms").truncate();
+  await db("projects").truncate();
 }
 &nbsp;</pre></td></tr>
 </table></pre>

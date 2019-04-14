@@ -75,4 +75,28 @@ describe("project-router.js", () => {
         });
     });
   });
+  describe("GET /api/projects/", () => {
+    it("success returns status 200", () => {
+      return request(server)
+        .get("/api/projects/")
+        .set("Authorization", token)
+        .expect(200);
+    });
+    it("returns empty array when no projects", () => {
+      return request(server)
+        .get("/api/projects/")
+        .set("Authorization", token)
+        .expect([]);
+    });
+    it("returns array of projects", async () => {
+      await request(server)
+        .post("/api/projects/")
+        .set("Authorization", token)
+        .send({ name: "project test", description: "test" });
+      return request(server)
+        .get("/api/projects/")
+        .set("Authorization", token)
+        .expect([{ id: 1, name: "project test", description: "test" }]);
+    });
+  });
 });

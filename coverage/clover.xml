@@ -1,108 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1555265904909" clover="3.2.0">
-  <project timestamp="1555265904910" name="All files">
-    <metrics statements="102" coveredstatements="92" conditionals="30" coveredconditionals="26" methods="21" coveredmethods="13" elements="153" coveredelements="131" complexity="0" loc="102" ncloc="102" packages="6" files="7" classes="7"/>
+<coverage generated="1555270854735" clover="3.2.0">
+  <project timestamp="1555270854736" name="All files">
+    <metrics statements="126" coveredstatements="111" conditionals="36" coveredconditionals="31" methods="30" coveredmethods="18" elements="192" coveredelements="160" complexity="0" loc="126" ncloc="126" packages="6" files="9" classes="9"/>
     <package name="Back-End">
       <metrics statements="6" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="1"/>
       <file name="knexfile.js" path="C:\Users\conco\Desktop\LambdaSchool\week15-build\Back-End\knexfile.js">
         <metrics statements="6" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="1"/>
-        <line num="2" count="3" type="stmt"/>
-        <line num="8" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="10" count="3" type="stmt"/>
-        <line num="25" count="2" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="8" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="25" count="3" type="stmt"/>
         <line num="44" count="0" type="stmt"/>
         <line num="59" count="0" type="stmt"/>
       </file>
     </package>
     <package name="Back-End.api">
-      <metrics statements="17" coveredstatements="16" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+      <metrics statements="19" coveredstatements="18" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
       <file name="server.js" path="C:\Users\conco\Desktop\LambdaSchool\week15-build\Back-End\api\server.js">
-        <metrics statements="17" coveredstatements="16" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="2" count="3" type="stmt"/>
-        <line num="3" count="3" type="stmt"/>
-        <line num="6" count="3" type="stmt"/>
-        <line num="9" count="3" type="stmt"/>
-        <line num="10" count="3" type="stmt"/>
-        <line num="12" count="3" type="stmt"/>
-        <line num="14" count="3" type="stmt"/>
-        <line num="15" count="3" type="stmt"/>
-        <line num="16" count="3" type="stmt"/>
-        <line num="18" count="3" type="stmt"/>
-        <line num="19" count="3" type="stmt"/>
-        <line num="23" count="3" type="stmt"/>
-        <line num="24" count="3" type="stmt"/>
-        <line num="26" count="3" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="30" count="3" type="stmt"/>
+        <metrics statements="19" coveredstatements="18" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="16" count="4" type="stmt"/>
+        <line num="17" count="4" type="stmt"/>
+        <line num="19" count="4" type="stmt"/>
+        <line num="20" count="3" type="stmt"/>
+        <line num="24" count="4" type="stmt"/>
+        <line num="25" count="4" type="stmt"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="28" count="4" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="32" count="4" type="stmt"/>
       </file>
     </package>
     <package name="Back-End.api.authorization">
       <metrics statements="18" coveredstatements="15" conditionals="6" coveredconditionals="4" methods="5" coveredmethods="4"/>
       <file name="authenticate.js" path="C:\Users\conco\Desktop\LambdaSchool\week15-build\Back-End\api\authorization\authenticate.js">
         <metrics statements="18" coveredstatements="15" conditionals="6" coveredconditionals="4" methods="5" coveredmethods="4"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="2" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="4" count="3" type="stmt"/>
-        <line num="6" count="3" type="stmt"/>
-        <line num="9" count="5" type="stmt"/>
-        <line num="10" count="5" type="cond" truecount="1" falsecount="1"/>
-        <line num="11" count="5" type="stmt"/>
-        <line num="12" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="9" count="10" type="stmt"/>
+        <line num="10" count="10" type="cond" truecount="1" falsecount="1"/>
+        <line num="11" count="10" type="stmt"/>
+        <line num="12" count="10" type="cond" truecount="1" falsecount="1"/>
         <line num="13" count="0" type="stmt"/>
-        <line num="15" count="5" type="stmt"/>
-        <line num="16" count="5" type="stmt"/>
-        <line num="20" count="5" type="stmt"/>
-        <line num="21" count="5" type="stmt"/>
+        <line num="15" count="10" type="stmt"/>
+        <line num="16" count="10" type="stmt"/>
+        <line num="20" count="10" type="stmt"/>
+        <line num="21" count="10" type="stmt"/>
         <line num="24" count="0" type="stmt"/>
         <line num="31" count="0" type="stmt"/>
-        <line num="36" count="16" type="stmt"/>
-        <line num="40" count="16" type="stmt"/>
-        <line num="43" count="16" type="stmt"/>
+        <line num="36" count="18" type="stmt"/>
+        <line num="40" count="18" type="stmt"/>
+        <line num="43" count="18" type="stmt"/>
       </file>
     </package>
     <package name="Back-End.api.routers">
-      <metrics statements="48" coveredstatements="45" conditionals="20" coveredconditionals="18" methods="8" coveredmethods="5"/>
+      <metrics statements="64" coveredstatements="57" conditionals="26" coveredconditionals="23" methods="14" coveredmethods="8"/>
       <file name="auth-router.js" path="C:\Users\conco\Desktop\LambdaSchool\week15-build\Back-End\api\routers\auth-router.js">
         <metrics statements="32" coveredstatements="30" conditionals="16" coveredconditionals="15" methods="2" coveredmethods="2"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="2" count="3" type="stmt"/>
-        <line num="4" count="3" type="stmt"/>
-        <line num="6" count="3" type="stmt"/>
-        <line num="54" count="3" type="stmt"/>
-        <line num="55" count="21" type="stmt"/>
-        <line num="57" count="21" type="stmt"/>
-        <line num="58" count="21" type="cond" truecount="6" falsecount="0"/>
-        <line num="59" count="14" type="stmt"/>
-        <line num="60" count="14" type="stmt"/>
-        <line num="62" count="14" type="stmt"/>
-        <line num="68" count="12" type="stmt"/>
-        <line num="71" count="12" type="stmt"/>
-        <line num="72" count="12" type="stmt"/>
-        <line num="76" count="12" type="stmt"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="54" count="4" type="stmt"/>
+        <line num="55" count="22" type="stmt"/>
+        <line num="57" count="22" type="stmt"/>
+        <line num="58" count="22" type="cond" truecount="6" falsecount="0"/>
+        <line num="59" count="15" type="stmt"/>
+        <line num="60" count="15" type="stmt"/>
+        <line num="62" count="15" type="stmt"/>
+        <line num="68" count="13" type="stmt"/>
+        <line num="71" count="13" type="stmt"/>
+        <line num="72" count="13" type="stmt"/>
+        <line num="76" count="13" type="stmt"/>
         <line num="84" count="7" type="stmt"/>
         <line num="89" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="90" count="2" type="stmt"/>
         <line num="94" count="0" type="stmt"/>
-        <line num="139" count="3" type="stmt"/>
-        <line num="140" count="13" type="stmt"/>
-        <line num="142" count="13" type="stmt"/>
-        <line num="143" count="13" type="cond" truecount="4" falsecount="0"/>
-        <line num="144" count="7" type="stmt"/>
-        <line num="148" count="7" type="cond" truecount="4" falsecount="0"/>
-        <line num="149" count="4" type="stmt"/>
-        <line num="150" count="4" type="stmt"/>
-        <line num="153" count="4" type="stmt"/>
+        <line num="139" count="4" type="stmt"/>
+        <line num="140" count="14" type="stmt"/>
+        <line num="142" count="14" type="stmt"/>
+        <line num="143" count="14" type="cond" truecount="4" falsecount="0"/>
+        <line num="144" count="8" type="stmt"/>
+        <line num="148" count="8" type="cond" truecount="4" falsecount="0"/>
+        <line num="149" count="5" type="stmt"/>
+        <line num="150" count="5" type="stmt"/>
+        <line num="153" count="5" type="stmt"/>
         <line num="161" count="3" type="stmt"/>
         <line num="166" count="6" type="stmt"/>
         <line num="171" count="0" type="stmt"/>
-        <line num="175" count="3" type="stmt"/>
+        <line num="175" count="4" type="stmt"/>
       </file>
       <file name="classroom-router.js" path="C:\Users\conco\Desktop\LambdaSchool\week15-build\Back-End\api\routers\classroom-router.js">
         <metrics statements="16" coveredstatements="15" conditionals="4" coveredconditionals="3" methods="6" coveredmethods="3"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="3" count="3" type="stmt"/>
-        <line num="41" count="3" type="stmt"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="41" count="4" type="stmt"/>
         <line num="42" count="5" type="stmt"/>
         <line num="43" count="5" type="stmt"/>
         <line num="44" count="5" type="cond" truecount="2" falsecount="0"/>
@@ -112,28 +114,47 @@
         <line num="51" count="1" type="stmt"/>
         <line num="53" count="0" type="stmt"/>
         <line num="57" count="1" type="stmt"/>
-        <line num="63" count="3" type="stmt"/>
-        <line num="65" count="3" type="stmt"/>
-        <line num="67" count="3" type="stmt"/>
-        <line num="69" count="3" type="stmt"/>
+        <line num="63" count="4" type="stmt"/>
+        <line num="65" count="4" type="stmt"/>
+        <line num="67" count="4" type="stmt"/>
+        <line num="69" count="4" type="stmt"/>
+      </file>
+      <file name="project-router.js" path="C:\Users\conco\Desktop\LambdaSchool\week15-build\Back-End\api\routers\project-router.js">
+        <metrics statements="16" coveredstatements="12" conditionals="6" coveredconditionals="5" methods="6" coveredmethods="3"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="43" count="4" type="stmt"/>
+        <line num="44" count="5" type="stmt"/>
+        <line num="45" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="46" count="4" type="stmt"/>
+        <line num="48" count="3" type="stmt"/>
+        <line num="51" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="94" count="4" type="stmt"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="97" count="0" type="stmt"/>
+        <line num="100" count="0" type="stmt"/>
+        <line num="104" count="4" type="stmt"/>
       </file>
     </package>
     <package name="Back-End.data">
       <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="0" coveredmethods="0"/>
       <file name="dbConfig.js" path="C:\Users\conco\Desktop\LambdaSchool\week15-build\Back-End\data\dbConfig.js">
         <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="0" coveredmethods="0"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="2" count="3" type="stmt"/>
-        <line num="4" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="6" count="3" type="stmt"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="4" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="6" count="4" type="stmt"/>
       </file>
     </package>
     <package name="Back-End.data.models">
-      <metrics statements="9" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
+      <metrics statements="15" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="4"/>
       <file name="classroomsModel.js" path="C:\Users\conco\Desktop\LambdaSchool\week15-build\Back-End\data\models\classroomsModel.js">
         <metrics statements="9" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="3" count="3" type="stmt"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
         <line num="6" count="4" type="stmt"/>
         <line num="7" count="3" type="stmt"/>
         <line num="8" count="3" type="stmt"/>
@@ -141,6 +162,15 @@
         <line num="16" count="0" type="stmt"/>
         <line num="22" count="5" type="stmt"/>
         <line num="23" count="5" type="stmt"/>
+      </file>
+      <file name="projectsModel.js" path="C:\Users\conco\Desktop\LambdaSchool\week15-build\Back-End\data\models\projectsModel.js">
+        <metrics statements="6" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="7" count="3" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="15" count="5" type="stmt"/>
       </file>
     </package>
   </project>
