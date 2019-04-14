@@ -41,8 +41,6 @@
     "knex-cleaner": "^1.1.4",
     "nodemon": "^1.18.11",
     "supertest": "^4.0.2"
-  },
-  "jest": {
-    "testEnvironment": "node"
   }
+
 }
