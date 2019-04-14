@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const jwtSecret =
   process.env.JWT_SECRET || 'mellon';
 
+const db = require("../data/dbConfig.js");
 // const Users = require("../users/users-model.js"); 
 
 router.post("/register", (req, res) => {
