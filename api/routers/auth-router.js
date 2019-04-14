@@ -9,6 +9,7 @@ const db = require("../../data/dbConfig.js");
 
 /**
  *  @api {post} /auth/register Register a user
+ *  @apiVersion 0.1.0
  *  @apiName registerUser
  *  @apiGroup User
  *
@@ -96,6 +97,7 @@ router.post("/register", async (req, res) => {
 
 /**
  *  @api {post} /auth/login Login a user
+ *  @apiVersion 0.1.0
  *  @apiName loginUser
  *  @apiGroup User
  *
