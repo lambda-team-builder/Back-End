@@ -10,7 +10,7 @@ const admin = {
   user_type_id: 1
 };
 
-describe("classroom-router.js", () => {
+describe("project-router.js", () => {
   let token;
   beforeAll(async () => {
     // register
@@ -35,5 +35,44 @@ describe("classroom-router.js", () => {
     // resets classrooms and classroom admins
     await Projects.reset();
     await db("users").truncate();
+  });
+
+  describe("POST /api/projects/", () => {
+    it("returns 201 on success", () => {
+      return request(server)
+        .post("/api/projects/")
+        .set("Authorization", token)
+        .send({ name: "project test", description: "test" })
+        .expect(201);
+    });
+    it("returns 401 if name missing", () => {
+      return request(server)
+        .post("/api/projects/")
+        .set("Authorization", token)
+        .send({ description: "test" })
+        .expect(401);
+    });
+    it("returns 403 if name taken", async () => {
+      await request(server)
+        .post("/api/projects/")
+        .set("Authorization", token)
+        .send({ name: "project test", description: "test" });
+      return request(server)
+        .post("/api/projects/")
+        .set("Authorization", token)
+        .send({ name: "project test", description: "test" })
+        .expect(403);
+    });
+    it("returns created project on success", () => {
+      return request(server)
+        .post("/api/projects/")
+        .set("Authorization", token)
+        .send({ name: "project test", description: "test" })
+        .expect({
+          id: 1,
+          name: "project test",
+          description: "test"
+        });
+    });
   });
 });

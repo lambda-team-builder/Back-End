@@ -37,43 +37,41 @@ describe("classroom-router.js", () => {
     await db("users").truncate();
   });
 
-  describe("classroom routes", () => {
-    describe("POST /api/classrooms/", () => {
-      it("returns 201 on success", () => {
-        return request(server)
-          .post("/api/classrooms/")
-          .set("Authorization", token)
-          .send({ name: "group" })
-          .expect(201);
-      });
-      it("No name in req return status 401", () => {
-        return request(server)
-          .post("/api/classrooms/")
-          .set("Authorization", token)
-          .expect(401);
-      });
-      it("if name taken return status 403", async () => {
-        await request(server)
-          .post("/api/classrooms/")
-          .set("Authorization", token)
-          .send({ name: "group" });
-        return request(server)
-          .post("/api/classrooms/")
-          .set("Authorization", token)
-          .send({ name: "group" })
-          .expect(403);
-      });
-      it("has right res body", () => {
-        return request(server)
-          .post("/api/classrooms/")
-          .set("Authorization", token)
-          .send({ name: "group" })
-          .expect({
-            id: 1,
-            name: "group",
-            classroom_admin_user_ids: [1]
-          });
-      });
+  describe("POST /api/classrooms/", () => {
+    it("returns 201 on success", () => {
+      return request(server)
+        .post("/api/classrooms/")
+        .set("Authorization", token)
+        .send({ name: "group" })
+        .expect(201);
+    });
+    it("No name in req return status 401", () => {
+      return request(server)
+        .post("/api/classrooms/")
+        .set("Authorization", token)
+        .expect(401);
+    });
+    it("if name taken return status 403", async () => {
+      await request(server)
+        .post("/api/classrooms/")
+        .set("Authorization", token)
+        .send({ name: "group" });
+      return request(server)
+        .post("/api/classrooms/")
+        .set("Authorization", token)
+        .send({ name: "group" })
+        .expect(403);
+    });
+    it("has right res body", () => {
+      return request(server)
+        .post("/api/classrooms/")
+        .set("Authorization", token)
+        .send({ name: "group" })
+        .expect({
+          id: 1,
+          name: "group",
+          classroom_admin_user_ids: [1]
+        });
     });
   });
 });
