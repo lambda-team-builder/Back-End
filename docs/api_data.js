@@ -22,14 +22,203 @@ define({ "api": [
     "type": "",
     "url": "",
     "version": "0.0.0",
-    "filename": "./doc/main.js",
-    "group": "C__Users_conco_Desktop_LambdaSchool_week15_build_Back_End_doc_main_js",
-    "groupTitle": "C__Users_conco_Desktop_LambdaSchool_week15_build_Back_End_doc_main_js",
+    "filename": "./docs/main.js",
+    "group": "C__Users_conco_Desktop_LambdaSchool_week15_build_Back_End_docs_main_js",
+    "groupTitle": "C__Users_conco_Desktop_LambdaSchool_week15_build_Back_End_docs_main_js",
     "name": ""
   },
   {
     "type": "post",
-    "url": "/auth/login",
+    "url": "api/classrooms/",
+    "title": "Create a classroom",
+    "version": "0.1.0",
+    "name": "postClassroom",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of classroom</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"name\":\"first class room\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the classroom</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the classroom</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "classroom_admin_user_ids",
+            "description": "<p>List of groups admins by id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": \"1\",\n  \"name\": \"first class room\",\n  \"classroom_admin_user_ids\": [2]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Not all fields",
+          "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"All fields required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: Name in use",
+          "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"classroom name is already in use\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "post",
+    "url": "api/projects/",
+    "title": "Create a project",
+    "version": "0.1.0",
+    "name": "postProjects",
+    "group": "Projects",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of project</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The description of the project</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"name\":\"this project\",\n \"description\": \"This is a long and boring project.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the project</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the project</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The description of the project</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": \"1\",\n  \"name\":\"this project\",\n  \"description\": \"This is a long and boring project.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Not all fields",
+          "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"All fields required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: Name in use",
+          "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"Project already exists\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./api/routers/project-router.js",
+    "groupTitle": "Projects"
+  },
+  {
+    "type": "post",
+    "url": "api/auth/login",
     "title": "Login a user",
     "version": "0.1.0",
     "name": "loginUser",
@@ -64,6 +253,13 @@ define({ "api": [
     "success": {
       "fields": {
         "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the user</p>"
+          },
           {
             "group": "Success 200",
             "type": "String",
@@ -121,7 +317,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/auth/register",
+    "url": "api/auth/register",
     "title": "Register a user",
     "version": "0.1.0",
     "name": "registerUser",
@@ -170,6 +366,13 @@ define({ "api": [
     "success": {
       "fields": {
         "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the user</p>"
+          },
           {
             "group": "Success 200",
             "type": "String",

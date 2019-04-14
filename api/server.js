@@ -8,6 +8,7 @@ const restrict = require("./authorization/authenticate.js").restrict;
 // Routers
 const authRouter = require("./routers/auth-router.js");
 const classroomRouter = require("./routers/classroom-router.js");
+const projectRouter = require("./routers/project-router.js");
 
 const server = express();
 
@@ -22,6 +23,7 @@ server.get("/", async (req, res) => {
 // Route Handlers:
 server.use("/api/auth", authRouter);
 server.use("/api/classrooms", restrict, classroomRouter);
+server.use("/api/projects", restrict, projectRouter);
 
 server.use(function(req, res) {
   res.status(404).send("This route does not exist");

@@ -2,8 +2,7 @@ const request = require("supertest");
 const server = require("../server");
 
 const Classrooms = require("../../data/models/classroomsModel");
-const ClassroomAdmins = require("../../data/models/classroomAdminsModel");
-
+const db = require("../../data/dbConfig");
 const admin = {
   name: "Ryan Tim",
   email: "ryan2.hamblin@lambdaschool.com",
@@ -40,6 +39,7 @@ describe("classroom-router.js", () => {
   afterAll(async () => {
     // resets classrooms and classroom admins
     await Classrooms.reset();
+    await db("users").truncate();
   });
 
   describe("classroom routes", () => {
@@ -51,11 +51,11 @@ describe("classroom-router.js", () => {
           .send({ name: "group" })
           .expect(201);
       });
-      it("No name in req return status 400", () => {
+      it("No name in req return status 401", () => {
         return request(server)
           .post("/api/classrooms/")
           .set("Authorization", token)
-          .expect(400);
+          .expect(401);
       });
       it("if name taken return status 403", async () => {
         await request(server)
