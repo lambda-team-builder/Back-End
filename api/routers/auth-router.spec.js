@@ -1,7 +1,7 @@
 const request = require("supertest");
-const server = require("../api/server.js");
+const server = require("../server.js");
 
-const db = require("../data/dbConfig.js");
+const db = require("../../data/dbConfig");
 
 describe("auth-router.js", () => {
   beforeEach(async () => {
@@ -28,25 +28,16 @@ describe("auth-router.js", () => {
         .expect(201);
     });
 
-    it("should return JSON format response on success", () => {
-      return request(server)
+    it("should return tailored new user on success", async () => {
+      const res = await request(server)
         .post("/api/auth/register")
-        .send(admin)
-        .expect("Content-Type", /json/);
-    });
-
-    it("should return tailored new user on success", () => {
-      return request(server)
-        .post("/api/auth/register")
-        .send(admin)
-        .then(response => {
-          expect(response.body.user).toEqual({
-            id: 1,
-            name: admin.name,
-            email: admin.email,
-            user_type: adminType
-          });
-        });
+        .send(admin);
+      const user = JSON.parse(res.text);
+      expect(user.id).toBe(1);
+      expect(user.name).toBe(admin.name);
+      expect(user.email).toBe(admin.email);
+      expect(user.user_type).toEqual(adminType);
+      expect(user.token).toBeTruthy();
     });
 
     it("should return 400 status code if name is missing", () => {
@@ -251,7 +242,7 @@ describe("auth-router.js", () => {
         .send({ email: admin.email, password: "321" })
         .then(response => {
           expect(response.body).toEqual({
-            message: "Incorrect password"
+            message: "Bad credentials"
           });
         });
     });

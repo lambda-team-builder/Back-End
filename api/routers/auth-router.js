@@ -25,6 +25,7 @@ const db = require("../../data/dbConfig.js");
  *  "user_type_id": 2
  * }
  *
+ *  @apiSuccess {Number} id The id of the user
  *  @apiSuccess {String} name Name of the user
  *  @apiSuccess {String} email Email of the user
  *  @apiSuccess {String} user_type The type of user
@@ -73,6 +74,7 @@ router.post("/register", async (req, res) => {
         .first();
 
       res.status(201).json({
+        id: user.id,
         name,
         email,
         user_type,
@@ -108,7 +110,7 @@ router.post("/register", async (req, res) => {
  *  "email":"connor@gmail.com",
  *  "password":"1234"
  * }
- *
+ *  @apiSuccess {Number} id The id of the user
  *  @apiSuccess {String} name Name of the user
  *  @apiSuccess {String} email Email of the user
  *  @apiSuccess {String} user_type The type of user
@@ -149,6 +151,7 @@ router.put("/login", async (req, res) => {
           .where({ id: user.user_type_id })
           .first();
         res.status(200).json({
+          id: user.id,
           name: user.name,
           email: user.email,
           user_type,
