@@ -168,5 +168,30 @@ describe("auth-router.js", () => {
           expect(response.body.token).toBeTruthy();
         });
     });
+
+    it("should return 400 status code if email is missing", () => {
+      return request(server)
+      .put("/api/auth/login")
+      .send({ email: "", password: admin.password })
+      .expect(400);
+    });
+
+    it("should return JSON format response if email is missing", () => {
+      return request(server)
+      .put("/api/auth/login")
+      .send({ email: "", password: admin.password })
+      .expect("Content-Type", /json/);
+    });
+
+    it("should return an error message if email is missing", () => {
+      return request(server)
+      .put("/api/auth/login")
+      .send({ email: "", password: admin.password })
+        .then(response => {
+          expect(response.body).toEqual({
+            message: "Email and password are required"
+          });
+        });
+    });
   });
 });
