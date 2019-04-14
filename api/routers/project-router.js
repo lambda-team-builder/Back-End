@@ -61,4 +61,14 @@ router.post("/", (req, res) => {
   }
 });
 
+router.get("/", (req, res) => {
+  Projects.get()
+    .then(projects => {
+      res.status(200).json(projects);
+    })
+    .catch(error => {
+      res.status(500).json({ message: "Server error", error });
+    });
+});
+
 module.exports = router;
