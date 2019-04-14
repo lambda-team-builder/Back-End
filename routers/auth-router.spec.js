@@ -35,7 +35,7 @@ describe("auth-router.js", () => {
         .expect("Content-Type", /json/);
     });
 
-    it("should return the new user on success", () => {
+    it("should return tailored new user on success", () => {
       return request(server)
         .post("/api/auth/register")
         .send(admin)
@@ -47,6 +47,42 @@ describe("auth-router.js", () => {
             user_type: adminType
           });
         });
+    });
+
+    it("should return 400 status code if name missing", () => {
+      return request(server)
+        .post("/api/auth/register")
+        .send({...admin, name: ""})
+        .expect(400);
+    });
+
+    it("should return 400 status code if email missing", () => {
+      return request(server)
+        .post("/api/auth/register")
+        .send({...admin, email: ""})
+        .expect(400);
+    });
+
+    it("should return 400 status code if password missing", () => {
+      return request(server)
+        .post("/api/auth/register")
+        .send({...admin, password: ""})
+        .expect(400);
+    });
+
+    it("should return 400 status code if user_type_id missing", () => {
+      return request(server)
+        .post("/api/auth/register")
+        .send({...admin, user_type_id: ""})
+        .expect(400);
+    });
+
+    
+    it("should return JSON format response if any field is missing", () => {
+      return request(server)
+        .post("/api/auth/register")
+        .send({...admin, name: ""})
+        .expect("Content-Type", /json/);
     });
   });
 });
