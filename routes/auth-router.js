@@ -43,8 +43,35 @@ router.post("/register", (req, res) => {
   }
 });
 
-router.put("/login", async (req, res) => {
+router.put("/login", (req, res) => {
+  let { email, password } = req.body;
 
+  if (email && password) {
+    db("users")
+      .where({ email })
+      .first()
+      .then(user => {
+        if (user && bcrypt.compareSync(password, user.password)) {
+          const token = generateToken(user);
+          
+          res.status(200).json({
+            message: `Welcome ${user.name}, you are now logged in`,
+            token
+          });
+        } else {
+          res.status(401).json({
+            message: "Incorrect password"
+          });
+        }
+      })
+      .catch(error => {
+        res.status(500).json(error);
+      });
+  } else {
+    res.status(400).json({
+      message: "Email and password are required"
+    });
+  }
 });
 
 function generateToken(user) {
