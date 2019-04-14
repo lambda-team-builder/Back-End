@@ -1,14 +1,13 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 
-const jwt = require("jsonwebtoken");
-const jwtSecret = process.env.JWT_SECRET || "mellon";
+const generateToken = require("../authorization/authenticate.js").generateToken;
 
 const db = require("../../data/dbConfig.js");
 // const Users = require("../users/users-model.js");
 
 /**
- *  @api {post} /auth/register Register a user
+ *  @api {post} api/auth/register Register a user
  *  @apiVersion 0.1.0
  *  @apiName registerUser
  *  @apiGroup User
@@ -96,7 +95,7 @@ router.post("/register", async (req, res) => {
 });
 
 /**
- *  @api {post} /auth/login Login a user
+ *  @api {post} api/auth/login Login a user
  *  @apiVersion 0.1.0
  *  @apiName loginUser
  *  @apiGroup User
@@ -169,17 +168,5 @@ router.put("/login", async (req, res) => {
     res.status(500).json(error);
   }
 });
-
-function generateToken(user) {
-  const payload = {
-    subject: user.id,
-    username: user.email
-  };
-  const options = {
-    expiresIn: "1d"
-  };
-
-  return jwt.sign(payload, jwtSecret, options);
-}
 
 module.exports = router;

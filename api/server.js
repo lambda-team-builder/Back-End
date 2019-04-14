@@ -2,8 +2,12 @@ const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
 
+//mw
+const restrict = require("./authorization/authenticate.js").restrict;
+
 // Routers
-const authRouter = require("../routers/auth-router.js");
+const authRouter = require("./routers/auth-router.js");
+const classroomRouter = require("./routers/classroom-router.js");
 
 const server = express();
 
@@ -12,13 +16,13 @@ server.use(cors());
 server.use(express.json());
 
 server.get("/", async (req, res) => {
-  res
-    .status(200)
-    .json({ message: "Welcome to our Team Builder API" });
+  res.status(200).json({ message: "Welcome to our Team Builder API" });
 });
 
 // Route Handlers:
 server.use("/api/auth", authRouter);
+server.use("/api/classrooms", restrict, classroomRouter);
+
 server.use(function(req, res) {
   res.status(404).send("This route does not exist");
 });
