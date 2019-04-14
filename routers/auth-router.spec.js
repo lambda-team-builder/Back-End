@@ -132,4 +132,41 @@ describe("auth-router.js", () => {
         });
     });
   });
+
+  describe("PUT /api/auth/login", () => {
+    it("should return 200 status code on success", async () => {
+      await request(server)
+        .post("/api/auth/register")
+        .send(admin)
+
+      return request(server)
+        .put("/api/auth/login")
+        .send({ email: admin.email, password: admin.password })
+        .expect(200);
+    });
+
+    it("should return JSON format response on success", async () => {
+      await request(server)
+        .post("/api/auth/register")
+        .send(admin)
+
+      return request(server)
+        .put("/api/auth/login")
+        .send({ email: admin.email, password: admin.password })
+        .expect("Content-Type", /json/);
+    });
+
+    it("should return a token on success", async () => {
+      await request(server)
+        .post("/api/auth/register")
+        .send(admin)
+
+      return request(server)
+        .put("/api/auth/login")
+        .send({ email: admin.email, password: admin.password })
+        .then(response => {
+          expect(response.body.token).toBeTruthy();
+        });
+    });
+  });
 });
