@@ -25,7 +25,7 @@ const Projects = require("../../data/models/projectsModel.js");
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 201 CREATED
  *    {
- *      "id": "1",
+ *      "id": 1,
  *      "name":"this project",
  *      "description": "This is a long and boring project."
  *    }

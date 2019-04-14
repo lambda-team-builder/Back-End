@@ -89,7 +89,7 @@
             "type": "Array",
             "optional": false,
             "field": "classroom_admin_user_ids",
-            "description": "<p>List of groups admins by id</p>"
+            "description": "<p>List of group's admins by id</p>"
           }
         ]
       },
@@ -111,6 +111,78 @@
         {
           "title": "Error-Response: Name in use",
           "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"classroom name is already in use\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "post",
+    "url": "api/classrooms/:id/projects",
+    "title": "Add a project to a classroom",
+    "version": "0.1.0",
+    "name": "postClassroomProject",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "project_id",
+            "description": "<p>The project_id of the project to get added to classroom</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"project_id\": 2\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the classroom project</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 2\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Not all fields",
+          "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"All fields required\"\n}",
           "type": "json"
         }
       ]
@@ -246,7 +318,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": \"1\",\n  \"name\":\"this project\",\n  \"description\": \"This is a long and boring project.\"\n}",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1,\n  \"name\":\"this project\",\n  \"description\": \"This is a long and boring project.\"\n}",
           "type": "json"
         }
       ]
@@ -269,7 +341,7 @@
     "groupTitle": "Projects"
   },
   {
-    "type": "post",
+    "type": "put",
     "url": "api/auth/login",
     "title": "Login a user",
     "version": "0.1.0",

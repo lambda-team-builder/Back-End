@@ -97,7 +97,7 @@ router.post("/register", async (req, res) => {
 });
 
 /**
- *  @api {post} api/auth/login Login a user
+ *  @api {put} api/auth/login Login a user
  *  @apiVersion 0.1.0
  *  @apiName loginUser
  *  @apiGroup User
@@ -110,6 +110,7 @@ router.post("/register", async (req, res) => {
  *  "email":"connor@gmail.com",
  *  "password":"1234"
  * }
+ *
  *  @apiSuccess {Number} id The id of the user
  *  @apiSuccess {String} name Name of the user
  *  @apiSuccess {String} email Email of the user
