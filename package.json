@@ -8,7 +8,7 @@
     "server": "nodemon index.js",
     "test": "cross-env DB_ENV=testing jest --watch --verbose",
     "coverage": "jest --coverage",
-    "docs": "npx apidoc -e node_modules/",
+    "docs": "npx apidoc -o docs/ -e node_modules/",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback"
   },
@@ -42,5 +42,4 @@
     "nodemon": "^1.18.11",
     "supertest": "^4.0.2"
   }
-
 }
