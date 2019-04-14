@@ -8,9 +8,9 @@ const db = require("../data/dbConfig.js");
 // const Users = require("../users/users-model.js");
 
 router.post("/register", (req, res) => {
-  let { name, email, password, user_type } = req.body;
+  let { name, email, password, user_type_id } = req.body;
 
-  if (name && email && password && user_type) {
+  if (name && email && password && user_type_id) {
     const hash = bcrypt.hashSync(password, 14);
     password = hash;
 
