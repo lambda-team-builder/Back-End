@@ -10,7 +10,7 @@ function restrict(req, res, next) {
   if (token) {
     jwt.verify(token, jwtSecret, (error, decocedToken) => {
       if (error) {
-        res.status(400).json({ message: "Not valid credentials provided" });
+        res.status(403).json({ message: "No valid credentials provided" });
       } else {
         const id = decocedToken.subject;
         db("users")
@@ -22,13 +22,13 @@ function restrict(req, res, next) {
           })
           .catch(error => {
             res
-              .status(400)
-              .json({ message: "Not valid credentials provided", error });
+              .status(403)
+              .json({ message: "No valid credentials provided", error });
           });
       }
     });
   } else {
-    res.status(400).json({ message: "No credentials provided" });
+    res.status(403).json({ message: "No valid credentials provided" });
   }
 }
 

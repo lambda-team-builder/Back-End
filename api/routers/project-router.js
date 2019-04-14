@@ -60,7 +60,37 @@ router.post("/", (req, res) => {
     });
   }
 });
-
+/**
+ *  @api {get} api/projects/ Get all projects
+ *  @apiVersion 0.1.0
+ *  @apiName getProjects
+ *  @apiGroup Projects
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *
+ *  @apiSuccess {Array} projects A array of projects
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 200 OK
+ *    [
+ *      {
+ *        "id": "1",
+ *        "name":"first project",
+ *        "description": "This is a long and boring project."
+ *      },
+ *       {
+ *        "id": "2",
+ *        "name":"second project",
+ *        "description": "This is a sort and fun project."
+ *      }
+ *    ]
+ *  @apiErrorExample Error-Response: Unauthorized
+ *    HTTP/1.1 403 FORBIDDEN
+ *    {
+ *      "message": "No valid credentials provided"
+ *    }
+ */
 router.get("/", (req, res) => {
   Projects.get()
     .then(projects => {

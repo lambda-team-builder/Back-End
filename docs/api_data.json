@@ -119,6 +119,58 @@
     "groupTitle": "Classrooms"
   },
   {
+    "type": "get",
+    "url": "api/projects/",
+    "title": "Get all projects",
+    "version": "0.1.0",
+    "name": "getProjects",
+    "group": "Projects",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "projects",
+            "description": "<p>A array of projects</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[\n  {\n    \"id\": \"1\",\n    \"name\":\"first project\",\n    \"description\": \"This is a long and boring project.\"\n  },\n   {\n    \"id\": \"2\",\n    \"name\":\"second project\",\n    \"description\": \"This is a sort and fun project.\"\n  }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Unauthorized",
+          "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"No valid credentials provided\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./api/routers/project-router.js",
+    "groupTitle": "Projects"
+  },
+  {
     "type": "post",
     "url": "api/projects/",
     "title": "Create a project",

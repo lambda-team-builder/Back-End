@@ -10,11 +10,6 @@ const admin = {
   user_type_id: 1
 };
 
-const adminType = {
-  id: 1,
-  name: "admin"
-};
-
 describe("classroom-router.js", () => {
   let token;
   beforeAll(async () => {
