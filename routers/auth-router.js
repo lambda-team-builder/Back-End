@@ -7,41 +7,72 @@ const jwtSecret = process.env.JWT_SECRET || "mellon";
 const db = require("../data/dbConfig.js");
 // const Users = require("../users/users-model.js");
 
-router.post("/register", (req, res) => {
-  let { name, email, password, user_type_id } = req.body;
+router.post("/register", async (req, res) => {
+  try {
+    let { name, email, password, user_type_id } = req.body;
 
-  if (name && email && password && user_type_id) {
-    const hash = bcrypt.hashSync(password, 14);
-    password = hash;
+    if (name && email && password && user_type_id) {
+      const hash = bcrypt.hashSync(password, 14);
+      password = hash;
 
-    db("users")
-      .insert(req.body)
-      .then(id => {
-        db("users")
-          .where({ id })
-          .first()
-          .then(user => {
-            res.status(201).json({
-              message: `Registration successful!`,
-              user
-            });
-          });
-      })
-      .catch(error => {
-        if (error.errno === 19) {
-          res.status(403).json({
-            message: "Username already exists"
-          });
-        } else {
-          res.status(500).json(error);
-        }
+      const [id] = await db("users").insert({ ...req.body, password });
+      const user = await db("users").where({ id }).first();
+      const user_type = await db("user_types").where({ id: user.user_type_id }).first();
+
+      res.status(201).json({
+        message: `Registration successful!`,
+        user: { id, name, email, user_type }
       });
-  } else {
-    res.status(400).json({
-      message: "All fields are required"
-    });
+    } else {
+      res.status(400).json({
+        message: "All fields are required"
+      });
+    }
+  } catch (error) {
+    if (error.errno === 19) {
+      res.status(403).json({
+        message: "Username already exists"
+      });
+    } else {
+      res.status(500).json(error);
+    }
   }
 });
+
+// router.post("/register", (req, res) => {
+//   let { name, email, password, user_type_id } = req.body;
+
+//   if (name && email && password && user_type_id) {
+//     const hash = bcrypt.hashSync(password, 14);
+//     password = hash;
+
+//     db("users")
+//       .insert({ ...req.body, password })
+//       .then(id => {
+//         db("users")
+//           .where({ id })
+//           .then(user => {
+//             res.status(201).json({
+//               message: `Registration successful!`,
+//               user
+//             });
+//           });
+//       })
+//       .catch(error => {
+//         if (error.errno === 19) {
+//           res.status(403).json({
+//             message: "Username already exists"
+//           });
+//         } else {
+//           res.status(500).json(error);
+//         }
+//       });
+//   } else {
+//     res.status(400).json({
+//       message: "All fields are required"
+//     });
+//   }
+// });
 
 router.put("/login", (req, res) => {
   let { email, password } = req.body;
