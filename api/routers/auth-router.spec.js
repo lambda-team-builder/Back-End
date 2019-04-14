@@ -8,6 +8,9 @@ describe("auth-router.js", () => {
     await db("users").truncate();
   });
 
+  afterAll(async () => {
+    await db("users").truncate();
+  });
   const admin = {
     name: "Ryan Hamblin",
     email: "ryan.hamblin@lambdaschool.com",
