@@ -98,8 +98,8 @@ describe("auth-router.js", () => {
     it("should return 403 status code if email is already in use", async () => {
       await request(server)
         .post("/api/auth/register")
-        .send(admin)
-      
+        .send(admin);
+
       return request(server)
         .post("/api/auth/register")
         .send(admin)
@@ -107,9 +107,9 @@ describe("auth-router.js", () => {
     });
 
     it("should return JSON format response if email is already in use", async () => {
-        await request(server)
+      await request(server)
         .post("/api/auth/register")
-        .send(admin)
+        .send(admin);
 
       return request(server)
         .post("/api/auth/register")
@@ -120,8 +120,8 @@ describe("auth-router.js", () => {
     it("should return an error message if email is already in use", async () => {
       await request(server)
         .post("/api/auth/register")
-        .send(admin)
-      
+        .send(admin);
+
       return request(server)
         .post("/api/auth/register")
         .send(admin)
@@ -137,7 +137,7 @@ describe("auth-router.js", () => {
     it("should return 200 status code on success", async () => {
       await request(server)
         .post("/api/auth/register")
-        .send(admin)
+        .send(admin);
 
       return request(server)
         .put("/api/auth/login")
@@ -148,7 +148,7 @@ describe("auth-router.js", () => {
     it("should return JSON format response on success", async () => {
       await request(server)
         .post("/api/auth/register")
-        .send(admin)
+        .send(admin);
 
       return request(server)
         .put("/api/auth/login")
@@ -159,7 +159,7 @@ describe("auth-router.js", () => {
     it("should return a token on success", async () => {
       await request(server)
         .post("/api/auth/register")
-        .send(admin)
+        .send(admin);
 
       return request(server)
         .put("/api/auth/login")
@@ -171,25 +171,87 @@ describe("auth-router.js", () => {
 
     it("should return 400 status code if email is missing", () => {
       return request(server)
-      .put("/api/auth/login")
-      .send({ email: "", password: admin.password })
-      .expect(400);
+        .put("/api/auth/login")
+        .send({ email: "", password: admin.password })
+        .expect(400);
     });
 
     it("should return JSON format response if email is missing", () => {
       return request(server)
-      .put("/api/auth/login")
-      .send({ email: "", password: admin.password })
-      .expect("Content-Type", /json/);
+        .put("/api/auth/login")
+        .send({ email: "", password: admin.password })
+        .expect("Content-Type", /json/);
     });
 
     it("should return an error message if email is missing", () => {
       return request(server)
-      .put("/api/auth/login")
-      .send({ email: "", password: admin.password })
+        .put("/api/auth/login")
+        .send({ email: "", password: admin.password })
         .then(response => {
           expect(response.body).toEqual({
             message: "Email and password are required"
+          });
+        });
+    });
+
+    it("should return 400 status code if password is missing", () => {
+      return request(server)
+        .put("/api/auth/login")
+        .send({ email: admin.email, password: "" })
+        .expect(400);
+    });
+
+    it("should return JSON format response if password is missing", () => {
+      return request(server)
+        .put("/api/auth/login")
+        .send({ email: admin.email, password: "" })
+        .expect("Content-Type", /json/);
+    });
+
+    it("should return an error message if password is missing", () => {
+      return request(server)
+        .put("/api/auth/login")
+        .send({ email: admin.email, password: "" })
+        .then(response => {
+          expect(response.body).toEqual({
+            message: "Email and password are required"
+          });
+        });
+    });
+
+    it("should return 401 status code if password is incorrect", async () => {
+      await request(server)
+        .post("/api/auth/register")
+        .send(admin);
+
+      return request(server)
+        .put("/api/auth/login")
+        .send({ email: admin.email, password: "321" })
+        .expect(401);
+    });
+
+    it("should return JSON format response if password is incorrect", async () => {
+      await request(server)
+        .post("/api/auth/register")
+        .send(admin);
+
+      return request(server)
+        .put("/api/auth/login")
+        .send({ email: admin.email, password: "321" })
+        .expect("Content-Type", /json/);
+    });
+
+    it("should return an error message if password is incorrect", async () => {
+      await request(server)
+        .post("/api/auth/register")
+        .send(admin);
+
+      return request(server)
+        .put("/api/auth/login")
+        .send({ email: admin.email, password: "321" })
+        .then(response => {
+          expect(response.body).toEqual({
+            message: "Incorrect password"
           });
         });
     });
