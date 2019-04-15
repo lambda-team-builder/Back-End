@@ -3,9 +3,9 @@ const router = require("express").Router();
 const Classrooms = require("../../data/models/classroomsModel.js");
 const ClassroomProjects = require("../../data/models/classroomProjectsModel");
 /**
- *  @api {Classroom} api/classrooms/ Create a classroom
+ *  @api {post} api/classrooms/ Create a classroom
  *  @apiVersion 0.1.0
- *  @apiName ClassroomClassroom
+ *  @apiName postClassroom
  *  @apiGroup Classrooms
  *
  *  @apiHeader {String} Authorization Users auth token.
@@ -39,7 +39,7 @@ const ClassroomProjects = require("../../data/models/classroomProjectsModel");
  *      "message": "classroom name is already in use"
  *    }
  */
-router.Classroom("/", (req, res) => {
+router.post("/", (req, res) => {
   const { name } = req.body;
   const user_id = req.user.id;
   if (name) {
@@ -61,9 +61,9 @@ router.Classroom("/", (req, res) => {
   }
 });
 /**
- *  @api {Classroom} api/classrooms/:id/projects Add a project to a classroom
+ *  @api {post} api/classrooms/:id/projects Add a project to a classroom
  *  @apiVersion 0.1.0
- *  @apiName ClassroomClassroomProject
+ *  @apiName postClassroomProject
  *  @apiGroup Classrooms
  *
  *  @apiHeader {String} Authorization Users auth token.
@@ -86,7 +86,7 @@ router.Classroom("/", (req, res) => {
  *      "message": "All fields required"
  *    }
  */
-router.Classroom("/:id/projects", (req, res) => {
+router.post("/:id/projects", (req, res) => {
   const { project_id } = req.body;
   const classroom_id = req.params.id;
   if (project_id && classroom_id) {
@@ -143,8 +143,8 @@ router.get("/", async (req, res) => {
  *    HTTP/1.1 201 CREATED
  *      [{
  *         id: 1,
- *        name: "Build Week 2",
- *     }]
+ *         name: "Build Week 2",
+ *      }]
  *
  *  @apiErrorExample Error-Response: 
  *    HTTP/1.1 404 FORBIDDEN
@@ -165,16 +165,44 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 });
-
+/**
+ *  @api {put} api/classrooms/:id Edit classroom name
+ *  @apiVersion 0.1.0
+ *  @apiName putClassroom
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiParam {String} name New classroom name
+ *  @apiParamExample {json} Request-Example:
+ * {
+ *  "name": "Build Week 5"
+ * }
+ *  @apiSuccess {Number} id The id of the updated classroom
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 201 CREATED
+ *    {
+ *      "id": 2
+ *    }
+ *  @apiErrorExample Error-Response: If missing name
+ *    HTTP/1.1 400 BAD REQUEST
+ *    {
+ *      "message": "New name required"
+ *    }
+ *  @apiErrorExample Error-Response: If no classroom was found
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "Classroom not found"
+ *    }
+ */
 router.put("/:id", async (req, res) => {
   try {
     if (req.body.name) {
       const classroomUpdated = await db.update(req.params.id, req.body);
 
       if (classroomUpdated) {
-        const classroom = await db.getById(req.params.id);
-
-        res.status(200).json(classroom);
+        res.status(200).json(req.params.id);
       } else {
         res
           .status(404)
@@ -182,7 +210,7 @@ router.put("/:id", async (req, res) => {
       }
     } else {
       res.status(400).json({
-        errorMessage: "New name required"
+        message: "New name required"
       });
     }
   } catch (error) {
