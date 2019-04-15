@@ -37,7 +37,7 @@ describe("role-router.js", () => {
     await db("users").truncate();
   });
 
-  describe("POST /api/classrooms/", () => {
+  describe("POST /api/roles/", () => {
     it("returns 201 on success", () => {
       return request(server)
         .post("/api/roles/")
@@ -71,6 +71,20 @@ describe("role-router.js", () => {
           id: 1,
           name: "frontend"
         });
+    });
+  });
+  describe("GET /api/roles/", () => {
+    it("returns status 200", () => {
+      return request(server)
+        .get("/api/roles/")
+        .set("Authorization", token)
+        .expect(200);
+    });
+    it("returns [] if no roles", () => {
+      return request(server)
+        .get("/api/roles/")
+        .set("Authorization", token)
+        .expect([]);
     });
   });
 });
