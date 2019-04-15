@@ -103,10 +103,125 @@ router.post("/:id/projects", (req, res) => {
     res.status(401).json("All fields required");
   }
 });
+/**
+ *  @api {get} api/classrooms/ Get list of all classrooms
+ *  @apiVersion 0.1.0
+ *  @apiName getClassrooms
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiSuccess {Array} A list of all classrooms
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 200 OK
+ *       [{
+ *          id: 1,
+ *         name: "Build Week 2"
+ *       },
+ *       {
+ *          id: 1,
+ *         name: "Build Week 2"
+ *       }]
+ */
+router.get("/", async (req, res) => {
+  try {
+    const classroomList = await Classrooms.getAll();
 
-router.get("/:id", (req, res) => {});
+    res.status(200).json(classroomList);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+/**
+ *  @api {get} api/classrooms/:id Find classroom by ID
+ *  @apiVersion 0.1.0
+ *  @apiName getClassroom
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiSuccess {Object} The requested classroom
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 200 OK
+ *      [{
+ *         id: 1,
+ *         name: "Build Week 2",
+ *      }]
+ *
+ *  @apiErrorExample Error-Response:
+ *    HTTP/1.1 404 FORBIDDEN
+ *    {
+ *      "message": "Classroom not found"
+ *    }
+ */
+router.get("/:id", async (req, res) => {
+  try {
+    const classroom = await Classrooms.getById(req.params.id);
 
-router.put("/:id", (req, res) => {});
+    if (classroom) {
+      res.status(200).json(classroom);
+    } else {
+      res.status(404).json({ message: "Classroom not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+/**
+ *  @api {put} api/classrooms/:id Edit classroom name
+ *  @apiVersion 0.1.0
+ *  @apiName putClassroom
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiParam {String} name New classroom name
+ *  @apiParamExample {json} Request-Example:
+ * {
+ *  "name": "Build Week 5"
+ * }
+ *  @apiSuccess {Object} The neww classroom
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 200 CREATED
+ *    {
+ *      "id": 2,
+ *      "name": "Build Week 5"
+ *    }
+ *  @apiErrorExample Error-Response: If missing name
+ *    HTTP/1.1 400 BAD REQUEST
+ *    {
+ *      "message": "Classroom name required"
+ *    }
+ *  @apiErrorExample Error-Response: If no classroom was found
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "Classroom not found"
+ *    }
+ */
+router.put("/:id", async (req, res) => {
+  try {
+    if (req.body.name) {
+      const classroomUpdated = await Classrooms.update(req.params.id, req.body);
+
+      if (classroomUpdated) {
+        const classroom = await Classrooms.getById(req.params.id);
+
+        res.status(200).json(classroom);
+      } else {
+        res.status(404).json({ message: "Classroom not found" });
+      }
+    } else {
+      res.status(400).json({
+        message: "Classroom name required"
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+});
 
 router.delete("/:id", (req, res) => {});
 
