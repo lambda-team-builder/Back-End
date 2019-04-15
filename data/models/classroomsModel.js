@@ -1,6 +1,6 @@
 const db = require("../dbConfig");
 
-module.exports = { create, getById, reset };
+module.exports = { create, getAll, getById, reset };
 
 async function create(name, user_id) {
   const idsClassrooms = await db("classrooms").insert({ name });

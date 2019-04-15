@@ -104,7 +104,15 @@ router.post("/:id/projects", (req, res) => {
   }
 });
 
-router.get("/", (req, res) => {});
+router.get("/", async (req, res) => {
+  try {
+    const classroomList = Classrooms.getAll();
+
+    res.status(200).json(classroomList);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+});
 
 router.get("/:id", (req, res) => {});
 
