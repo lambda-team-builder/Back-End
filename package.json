@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "knex migrate:latest && knex seed:run && node index.js",
+    "start": "node index.js",
     "server": "nodemon index.js",
     "test": "cross-env DB_ENV=testing jest --watch --verbose --runInBand",
     "coverage": "jest --coverage --runInBand",
