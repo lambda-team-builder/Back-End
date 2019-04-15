@@ -456,6 +456,112 @@ define({ "api": [
     "groupTitle": "Classrooms"
   },
   {
+    "type": "put",
+    "url": "api/project_members/:id",
+    "title": "Add user to a member slot for group admin",
+    "version": "0.1.0",
+    "name": "putProjectMembers__id",
+    "group": "ProjectMembers",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Admin of groups auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The user_id or null to remove a user</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example: Add user to slot",
+          "content": "{\n \"user_id\": 2\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Example: remove user from slot",
+          "content": "{\n \"user_id\": null\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the classroom</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the classroom</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "classroom_admin_user_ids",
+            "description": "<p>List of group's admins by id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: add user",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1,\n  \"role_id\": 1,\n  \"user_id\": 1,\n  \"classroom_project_id\": 1\n}",
+          "type": "json"
+        },
+        {
+          "title": "Success-Response: remove user",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1,\n  \"role_id\": 1,\n  \"user_id\": null,\n  \"classroom_project_id\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Not all fields",
+          "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"All fields required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: Not group admin",
+          "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"This user is not a group admin for this group\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: not valid member",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"That project member slot does not exist\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./api/routers/project_members-router.js",
+    "groupTitle": "ProjectMembers"
+  },
+  {
     "type": "get",
     "url": "api/projects/",
     "title": "Get all projects",

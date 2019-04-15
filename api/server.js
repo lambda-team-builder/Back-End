@@ -10,6 +10,7 @@ const authRouter = require("./routers/auth-router.js");
 const classroomRouter = require("./routers/classroom-router.js");
 const projectRouter = require("./routers/project-router.js");
 const roleRouter = require("./routers/roles-router.js");
+const projectMemberRouter = require("./routers/project_members-router.js");
 
 const server = express();
 
@@ -26,6 +27,7 @@ server.use("/api/auth", authRouter);
 server.use("/api/classrooms", restrict, classroomRouter);
 server.use("/api/projects", restrict, projectRouter);
 server.use("/api/roles", restrict, roleRouter);
+server.use("/api/project_members", restrict, projectMemberRouter);
 server.use(function(req, res) {
   res.status(404).send("This route does not exist");
 });

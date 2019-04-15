@@ -173,6 +173,7 @@ router.post(
     }
   }
 );
+
 /**
  *  @api {get} api/classrooms/ Get list of all classrooms
  *  @apiVersion 0.1.0
