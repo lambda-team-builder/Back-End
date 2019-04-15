@@ -2,3 +2,4 @@ node_modules
 doc
 .env
 data/dev.sqlite3
+data/test.sqlite3
