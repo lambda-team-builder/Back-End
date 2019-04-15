@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
-    "test": "cross-env DB_ENV=testing jest --watch --verbose",
-    "coverage": "jest --coverage",
+    "test": "cross-env DB_ENV=testing jest --watch --verbose --runInBand",
+    "coverage": "jest --coverage --runInBand",
     "docs": "npx apidoc -o docs/ -e node_modules/",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback"

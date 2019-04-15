@@ -1,14 +1,13 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 
-const jwt = require("jsonwebtoken");
-const jwtSecret = process.env.JWT_SECRET || "mellon";
+const generateToken = require("../authorization/authenticate.js").generateToken;
 
 const db = require("../../data/dbConfig.js");
 // const Users = require("../users/users-model.js");
 
 /**
- *  @api {post} /auth/register Register a user
+ *  @api {post} api/auth/register Register a user
  *  @apiVersion 0.1.0
  *  @apiName registerUser
  *  @apiGroup User
@@ -26,6 +25,7 @@ const db = require("../../data/dbConfig.js");
  *  "user_type_id": 2
  * }
  *
+ *  @apiSuccess {Number} id The id of the user
  *  @apiSuccess {String} name Name of the user
  *  @apiSuccess {String} email Email of the user
  *  @apiSuccess {String} user_type The type of user
@@ -74,6 +74,7 @@ router.post("/register", async (req, res) => {
         .first();
 
       res.status(201).json({
+        id: user.id,
         name,
         email,
         user_type,
@@ -96,7 +97,7 @@ router.post("/register", async (req, res) => {
 });
 
 /**
- *  @api {post} /auth/login Login a user
+ *  @api {put} api/auth/login Login a user
  *  @apiVersion 0.1.0
  *  @apiName loginUser
  *  @apiGroup User
@@ -110,6 +111,7 @@ router.post("/register", async (req, res) => {
  *  "password":"1234"
  * }
  *
+ *  @apiSuccess {Number} id The id of the user
  *  @apiSuccess {String} name Name of the user
  *  @apiSuccess {String} email Email of the user
  *  @apiSuccess {String} user_type The type of user
@@ -150,6 +152,7 @@ router.put("/login", async (req, res) => {
           .where({ id: user.user_type_id })
           .first();
         res.status(200).json({
+          id: user.id,
           name: user.name,
           email: user.email,
           user_type,
@@ -169,17 +172,5 @@ router.put("/login", async (req, res) => {
     res.status(500).json(error);
   }
 });
-
-function generateToken(user) {
-  const payload = {
-    subject: user.id,
-    username: user.email
-  };
-  const options = {
-    expiresIn: "1d"
-  };
-
-  return jwt.sign(payload, jwtSecret, options);
-}
 
 module.exports = router;
