@@ -55,7 +55,27 @@ router.post("/", (req, res) => {
     });
   }
 });
-
+/**
+ *  @api {get} api/classrooms/ Get list of all roles
+ *  @apiVersion 0.1.0
+ *  @apiName getRoles
+ *  @apiGroup Roles
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiSuccess {Array} A list of all roles
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 200 OK
+ *       [{
+ *          id: 1,
+ *          name: "frontend"
+ *       },
+ *       {
+ *          id: 1,
+ *         name: "backend"
+ *       }]
+ */
 router.get("/", (req, res) => {
   Roles.get()
     .then(roles => {
