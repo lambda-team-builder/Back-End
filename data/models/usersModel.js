@@ -3,7 +3,7 @@ const db = require("../dbConfig");
 module.exports = { create, getUserTypeById };
 
 async function create(name, email, user_type_id, password) {
-  const id = await db("users")
+  const [id] = await db("users")
     .insert({
       name,
       email,
