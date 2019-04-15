@@ -1,6 +1,6 @@
 const db = require("../dbConfig");
 
-module.exports = { create, getAll, getById, reset };
+module.exports = { create, getAll, getById, update, reset };
 
 async function create(name, user_id) {
   const idsClassrooms = await db("classrooms").insert({ name });
@@ -20,6 +20,12 @@ async function getById(id) {
   return await db("classrooms")
     .where({ id })
     .first();
+}
+
+function update(id, changes) {
+  return db("classrooms")
+    .where({ id })
+    .update(changes);
 }
 
 async function reset() {
