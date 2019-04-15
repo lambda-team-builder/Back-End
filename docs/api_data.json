@@ -23,9 +23,104 @@
     "url": "",
     "version": "0.0.0",
     "filename": "./docs/main.js",
-    "group": "C__Users_conco_Desktop_LambdaSchool_week15_build_Back_End_docs_main_js",
-    "groupTitle": "C__Users_conco_Desktop_LambdaSchool_week15_build_Back_End_docs_main_js",
+    "group": "C__Users_conco_Desktop_LambdaSchool_week15_build_back_end_this_one_docs_main_js",
+    "groupTitle": "C__Users_conco_Desktop_LambdaSchool_week15_build_back_end_this_one_docs_main_js",
     "name": ""
+  },
+  {
+    "type": "get",
+    "url": "api/classrooms/:id",
+    "title": "Find classroom by ID",
+    "version": "0.1.0",
+    "name": "getClassroom",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "The",
+            "description": "<p>requested classroom</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n  [{\n     id: 1,\n     name: \"Build Week 2\",\n  }]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 FORBIDDEN\n{\n  \"message\": \"Classroom not found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "get",
+    "url": "api/classrooms/",
+    "title": "Get list of all classrooms",
+    "version": "0.1.0",
+    "name": "getClassrooms",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "A",
+            "description": "<p>list of all classrooms</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n   [{\n      id: 1,\n     name: \"Build Week 2\"\n   },\n   {\n      id: 1,\n     name: \"Build Week 2\"\n   }]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
   },
   {
     "type": "post",
@@ -183,6 +278,83 @@
         {
           "title": "Error-Response: Not all fields",
           "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"All fields required\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "put",
+    "url": "api/classrooms/:id",
+    "title": "Edit classroom name",
+    "version": "0.1.0",
+    "name": "putClassroom",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>New classroom name</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"name\": \"Build Week 5\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "The",
+            "description": "<p>neww classroom</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 CREATED\n{\n  \"id\": 2,\n  \"name\": \"Build Week 5\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: If missing name",
+          "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"message\": \"Classroom name required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: If no classroom was found",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom not found\"\n}",
           "type": "json"
         }
       ]

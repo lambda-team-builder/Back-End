@@ -111,7 +111,7 @@ router.post("/:id/projects", (req, res) => {
  *
  *  @apiHeader {String} Authorization Users auth token.
  *
- *  @apiSuccess {Array} [] A list of all classrooms
+ *  @apiSuccess {Array} A list of all classrooms
  *
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 200 OK
@@ -141,7 +141,7 @@ router.get("/", async (req, res) => {
  *
  *  @apiHeader {String} Authorization Users auth token.
  *
- *  @apiSuccess {Object} {} The requested classroom
+ *  @apiSuccess {Object} The requested classroom
  *
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 200 OK
@@ -182,7 +182,7 @@ router.get("/:id", async (req, res) => {
  * {
  *  "name": "Build Week 5"
  * }
- *  @apiSuccess {Object} {} The neww classroom
+ *  @apiSuccess {Object} The neww classroom
  *
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 200 CREATED
