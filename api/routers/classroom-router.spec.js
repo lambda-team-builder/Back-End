@@ -74,4 +74,33 @@ describe("classroom-router.js", () => {
         });
     });
   });
+
+  describe("GET /api/classrooms/", () => {
+    it("should return 200 on success", () => {
+      await request(server)
+        .post("/api/classrooms/")
+        .set("Authorization", token)
+        .send({ name: "Build Week 20" });
+
+      return request(server)
+        .get("/api/classrooms")
+        .set("Authorization", token)
+        .expect(200);
+    });
+    it("should return classroom list on success", () => {
+      await request(server)
+        .post("/api/classrooms/")
+        .set("Authorization", token)
+        .send({ name: "Build Week 20" });
+
+      return request(server)
+        .get("/api/classrooms")
+        .set("Authorization", token)
+        .expect({
+          id: 1,
+          name: "Build Week 20",
+          classroom_admin_user_ids: [1]
+        });
+    });
+  });
 });
