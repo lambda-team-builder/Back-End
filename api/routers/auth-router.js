@@ -17,28 +17,29 @@ const Users = require("../../data/models/usersModel.js");
  *  @apiParam {String} name Name of user
  *  @apiParam {String} email Email of user
  *  @apiParam {String} password Password of user
- *  @apiParam {Number} user_type_id Id of the user type
  *
  *  @apiParamExample {json} Request-Example:
  * {
  *  "name":"connor",
  *  "email":"connor@gmail.com",
  *  "password": "1234",
- *  "user_type_id": 2
  * }
  *
  *  @apiSuccess {Number} id The id of the user
  *  @apiSuccess {String} name Name of the user
  *  @apiSuccess {String} email Email of the user
- *  @apiSuccess {String} user_type The type of user
  *  @apiSuccess {String} token Auth Token
+ *  @apiSuccess {Object} user_type the type of user
  *
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 201 CREATED
  *    {
  *      "name": "connor",
  *      "email": "connor@hotmail.com",
- *      "user_type": "student",
+ *      "user_type": "{
+ *        "id": 2,
+ *         "name": "student"
+ *       },",
  *      "token" : "hdf78623rhfkjsdhkf"
  *    }
  *  @apiErrorExample Error-Response: Not all fields
@@ -54,7 +55,7 @@ const Users = require("../../data/models/usersModel.js");
  */
 
 router.post("/register", async (req, res) => {
-  let { name, email, password, user_type_id } = req.body;
+  let { name, email, password } = req.body;
   user_type_id = 2; //every user is a regular user
 
   if (name && email && password && user_type_id) {

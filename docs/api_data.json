@@ -641,20 +641,13 @@
             "optional": false,
             "field": "password",
             "description": "<p>Password of user</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "user_type_id",
-            "description": "<p>Id of the user type</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n \"name\":\"connor\",\n \"email\":\"connor@gmail.com\",\n \"password\": \"1234\",\n \"user_type_id\": 2\n}",
+          "content": "{\n \"name\":\"connor\",\n \"email\":\"connor@gmail.com\",\n \"password\": \"1234\",\n}",
           "type": "json"
         }
       ]
@@ -687,22 +680,22 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "user_type",
-            "description": "<p>The type of user</p>"
+            "field": "token",
+            "description": "<p>Auth Token</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Object",
             "optional": false,
-            "field": "token",
-            "description": "<p>Auth Token</p>"
+            "field": "user_type",
+            "description": "<p>the type of user</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 CREATED\n{\n  \"name\": \"connor\",\n  \"email\": \"connor@hotmail.com\",\n  \"user_type\": \"student\",\n  \"token\" : \"hdf78623rhfkjsdhkf\"\n}",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"name\": \"connor\",\n  \"email\": \"connor@hotmail.com\",\n  \"user_type\": \"{\n    \"id\": 2,\n     \"name\": \"student\"\n   },\",\n  \"token\" : \"hdf78623rhfkjsdhkf\"\n}",
           "type": "json"
         }
       ]
