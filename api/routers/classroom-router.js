@@ -121,7 +121,7 @@ router.get("/:id", async (req, res) => {
     if (classroom) {
       res.status(200).json(classroom);
     } else {
-      res.status(404).json({ message: "Could not find a classroom with given ID" })
+      res.status(404).json({ message: "Classroom not found" })
     }
   } catch (error) {
     res.status(500).json({ message: "Server error", error });

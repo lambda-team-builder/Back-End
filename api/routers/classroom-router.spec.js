@@ -76,7 +76,7 @@ describe("classroom-router.js", () => {
   });
 
   describe("GET /api/classrooms/", () => {
-    it("should return 200 on success", () => {
+    it("should return 200 on success", async () => {
       await request(server)
         .post("/api/classrooms/")
         .set("Authorization", token)
@@ -87,7 +87,8 @@ describe("classroom-router.js", () => {
         .set("Authorization", token)
         .expect(200);
     });
-    it("should return classroom list on success", () => {
+
+    it("should return classroom list if classrooms exist", async () => {
       await request(server)
         .post("/api/classrooms/")
         .set("Authorization", token)
@@ -96,10 +97,61 @@ describe("classroom-router.js", () => {
       return request(server)
         .get("/api/classrooms")
         .set("Authorization", token)
+        .expect([{
+          id: 1,
+          name: "Build Week 20",
+        }]);
+    });
+
+    it("should return an empty classroom list if no classrooms exist", () => {
+      return request(server)
+        .get("/api/classrooms")
+        .set("Authorization", token)
+        .expect([]);
+    });
+  });
+
+  describe("GET /api/classrooms/:id", () => {
+    it("should return 200 on success", async () => {
+      await request(server)
+        .post("/api/classrooms/")
+        .set("Authorization", token)
+        .send({ name: "Build Week 20" });
+
+      return request(server)
+        .get("/api/classrooms/1")
+        .set("Authorization", token)
+        .expect(200);
+    });
+
+    it("should return the classroom on success", async () => {
+      await request(server)
+        .post("/api/classrooms/")
+        .set("Authorization", token)
+        .send({ name: "Build Week 20" });
+
+      return request(server)
+        .get("/api/classrooms/1")
+        .set("Authorization", token)
         .expect({
           id: 1,
           name: "Build Week 20",
-          classroom_admin_user_ids: [1]
+        });
+    });
+
+    it("should return 404 if no classroom with given ID exists", () => {
+      return request(server)
+        .get("/api/classrooms/1")
+        .set("Authorization", token)
+        .expect(404);
+    });
+
+    it('should return an error message if no classroom with given ID exists', () => {
+      return request(server)
+        .get("/api/classrooms/1")
+        .set("Authorization", token)
+        .expect({
+          message: "Classroom not found"
         });
     });
   });
