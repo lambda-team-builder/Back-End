@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const generateToken = require("../authorization/authenticate.js").generateToken;
 
 const db = require("../../data/dbConfig.js");
+const Users = require("../../data/models/usersModel.js");
+
 // const Users = require("../users/users-model.js");
 
 /**
@@ -40,7 +42,7 @@ const db = require("../../data/dbConfig.js");
  *      "token" : "hdf78623rhfkjsdhkf"
  *    }
  *  @apiErrorExample Error-Response: Not all fields
- *    HTTP/1.1 401 BAD REQUEST
+ *    HTTP/1.1 400 BAD REQUEST
  *    {
  *      "message": "All fields required"
  *    }
@@ -54,45 +56,32 @@ const db = require("../../data/dbConfig.js");
 router.post("/register", async (req, res) => {
   let { name, email, password, user_type_id } = req.body;
   user_type_id = 2; //every user is a regular user
-  try {
-    if (name && email && password && user_type_id) {
-      const hash = bcrypt.hashSync(password, 14);
-      password = hash;
 
-      const [id] = await db("users").insert({
-        name,
-        email,
-        user_type_id,
-        password
-      });
-      const user = await db("users")
-        .where({ id })
-        .first();
-      const token = generateToken(user);
-      const user_type = await db("user_types")
-        .where({ id: user.user_type_id })
-        .first();
+  if (name && email && password && user_type_id) {
+    const hash = bcrypt.hashSync(password, 14);
+    password = hash;
+    const userPromise = Users.create(name, email, user_type_id, password);
+    const user_typePromise = Users.getUserTypeById(user_type_id);
 
-      res.status(201).json({
-        id: user.id,
-        name,
-        email,
-        user_type,
-        token
+    Promise.all([userPromise, user_typePromise])
+      .then(([user, user_type]) => {
+        const token = generateToken(user);
+        res.status(201).json({
+          ...user,
+          user_type,
+          token
+        });
+      })
+      .catch(error => {
+        res.status(403).json({
+          message: "Email is already in use",
+          error
+        });
       });
-    } else {
-      res.status(400).json({
-        message: "All fields are required"
-      });
-    }
-  } catch (error) {
-    if (error.errno === 19) {
-      res.status(403).json({
-        message: "Email is already in use"
-      });
-    } else {
-      res.status(500).json(error);
-    }
+  } else {
+    res.status(400).json({
+      message: "All fields are required"
+    });
   }
 });
 

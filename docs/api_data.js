@@ -711,7 +711,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response: Not all fields",
-          "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"All fields required\"\n}",
+          "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"message\": \"All fields required\"\n}",
           "type": "json"
         },
         {
