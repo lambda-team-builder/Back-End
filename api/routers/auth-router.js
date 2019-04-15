@@ -53,7 +53,7 @@ const db = require("../../data/dbConfig.js");
 
 router.post("/register", async (req, res) => {
   let { name, email, password, user_type_id } = req.body;
-
+  user_type_id = 2; //every user is a regular user
   try {
     if (name && email && password && user_type_id) {
       const hash = bcrypt.hashSync(password, 14);
