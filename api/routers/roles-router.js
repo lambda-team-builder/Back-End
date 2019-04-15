@@ -1,6 +1,40 @@
 const router = require("express").Router();
 const Roles = require("../../data/models/rolesModel.js");
-
+/**
+ *  @api {post} api/roles/ Create a role
+ *  @apiVersion 0.1.0
+ *  @apiName postRole
+ *  @apiGroup Roles
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiParam {String} name Name of role
+ *
+ *  @apiParamExample {json} Request-Example:
+ * {
+ *  "name":"frontend",
+ * }
+ *
+ *  @apiSuccess {Number} id The id of the frontend
+ *  @apiSuccess {String} name Name of the role
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 201 CREATED
+ *    {
+ *      "id": "1",
+ *      "name": "frontend",
+ *    }
+ *  @apiErrorExample Error-Response: Not all fields
+ *    HTTP/1.1 401 BAD REQUEST
+ *    {
+ *      "message": "All fields required"
+ *    }
+ *  @apiErrorExample Error-Response: Name in use
+ *    HTTP/1.1 403 FORBIDDEN
+ *    {
+ *      "message": "Role already exists"
+ *    }
+ */
 router.post("/", (req, res) => {
   const name = req.body.name;
   if (name) {
