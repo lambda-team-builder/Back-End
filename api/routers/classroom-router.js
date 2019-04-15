@@ -119,11 +119,17 @@ router.post("/:id/projects", (req, res) => {
  *  "role_id": 2
  * }
  *  @apiSuccess {Number} id The id of the new classroom project member slot
+ *  @apiSuccess {Number} role_id The role_id for the role of the member slot
+ *  @apiSuccess {Number} classroom_project_id The classroom_project_id for the classroom project that this member slot belongs to.
+ *  @apiSuccess {Number} user_id Will be null, When a user takes this slot it contains that users_id
  *
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 201 CREATED
  *    {
- *      "id": 2
+ *        "id": 1,
+ *        "role_id": 1,
+ *        "user_id": null,
+ *        "classroom_project_id": 1
  *    }
  *  @apiErrorExample Error-Response: Not all fields
  *    HTTP/1.1 401 BAD REQUEST

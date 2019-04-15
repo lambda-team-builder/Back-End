@@ -286,6 +286,99 @@
     "groupTitle": "Classrooms"
   },
   {
+    "type": "post",
+    "url": "api/classrooms/:id/classroom_projects/:classroom_project_id/project_member",
+    "title": "Create a member slot for a classroom project.",
+    "version": "0.1.0",
+    "name": "postClassroomProjectMember",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "role_id",
+            "description": "<p>The role_id of the new slot for the classroom project.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"role_id\": 2\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the new classroom project member slot</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "role_id",
+            "description": "<p>The role_id for the role of the member slot</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "classroom_project_id",
+            "description": "<p>The classroom_project_id for the classroom project that this member slot belongs to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>Will be null, When a user takes this slot it contains that users_id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 CREATED\n{\n    \"id\": 1,\n    \"role_id\": 1,\n    \"user_id\": null,\n    \"classroom_project_id\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Not all fields",
+          "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"All fields required\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
     "type": "put",
     "url": "api/classrooms/:id",
     "title": "Edit classroom name",
