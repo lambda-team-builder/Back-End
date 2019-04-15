@@ -114,10 +114,14 @@ router.post("/:id/projects", (req, res) => {
  *  @apiSuccess {Array} [] A list of all classrooms
  *
  *  @apiSuccessExample Success-Response:
- *    HTTP/1.1 201 CREATED
+ *    HTTP/1.1 200 OK
  *       [{
  *          id: 1,
- *         name: "Build Week 2",
+ *         name: "Build Week 2"
+ *       },
+ *       {
+ *          id: 1,
+ *         name: "Build Week 2"
  *       }]
  */
 router.get("/", async (req, res) => {
@@ -130,7 +134,7 @@ router.get("/", async (req, res) => {
   }
 });
 /**
- *  @api {get} api/classrooms/:1d Find classroom by ID
+ *  @api {get} api/classrooms/:id Find classroom by ID
  *  @apiVersion 0.1.0
  *  @apiName getClassroom
  *  @apiGroup Classrooms
@@ -140,17 +144,17 @@ router.get("/", async (req, res) => {
  *  @apiSuccess {Object} {} The requested classroom
  *
  *  @apiSuccessExample Success-Response:
- *    HTTP/1.1 201 CREATED
+ *    HTTP/1.1 200 OK
  *      [{
  *         id: 1,
  *         name: "Build Week 2",
  *      }]
  *
- *  @apiErrorExample Error-Response: 
+ *  @apiErrorExample Error-Response:
  *    HTTP/1.1 404 FORBIDDEN
  *    {
  *      "message": "Classroom not found"
- *    }   
+ *    }
  */
 router.get("/:id", async (req, res) => {
   try {
@@ -159,7 +163,7 @@ router.get("/:id", async (req, res) => {
     if (classroom) {
       res.status(200).json(classroom);
     } else {
-      res.status(404).json({ message: "Classroom not found" })
+      res.status(404).json({ message: "Classroom not found" });
     }
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
@@ -181,10 +185,10 @@ router.get("/:id", async (req, res) => {
  *  @apiSuccess {Object} {} The neww classroom
  *
  *  @apiSuccessExample Success-Response:
- *    HTTP/1.1 201 CREATED
+ *    HTTP/1.1 200 CREATED
  *    {
  *      "id": 2,
- *      "name": "Build week 1"
+ *      "name": "Build Week 5"
  *    }
  *  @apiErrorExample Error-Response: If missing name
  *    HTTP/1.1 400 BAD REQUEST
@@ -207,9 +211,7 @@ router.put("/:id", async (req, res) => {
 
         res.status(200).json(classroom);
       } else {
-        res
-          .status(404)
-          .json({ message: "Classroom not found" });
+        res.status(404).json({ message: "Classroom not found" });
       }
     } else {
       res.status(400).json({
