@@ -178,17 +178,18 @@ router.get("/:id", async (req, res) => {
  * {
  *  "name": "Build Week 5"
  * }
- *  @apiSuccess {Number} id The id of the updated classroom
+ *  @apiSuccess {Object} {} The neww classroom
  *
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 201 CREATED
  *    {
- *      "id": 2
+ *      "id": 2,
+ *      "name": "Build week 1"
  *    }
  *  @apiErrorExample Error-Response: If missing name
  *    HTTP/1.1 400 BAD REQUEST
  *    {
- *      "message": "New name required"
+ *      "message": "Classroom name required"
  *    }
  *  @apiErrorExample Error-Response: If no classroom was found
  *    HTTP/1.1 404 NOT FOUND
@@ -199,10 +200,12 @@ router.get("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     if (req.body.name) {
-      const classroomUpdated = await db.update(req.params.id, req.body);
+      const classroomUpdated = await Classrooms.update(req.params.id, req.body);
 
       if (classroomUpdated) {
-        res.status(200).json(req.params.id);
+        const classroom = await Classrooms.getById(req.params.id);
+
+        res.status(200).json(classroom);
       } else {
         res
           .status(404)
@@ -210,7 +213,7 @@ router.put("/:id", async (req, res) => {
       }
     } else {
       res.status(400).json({
-        message: "New name required"
+        message: "Classroom name required"
       });
     }
   } catch (error) {

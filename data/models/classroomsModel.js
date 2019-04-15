@@ -12,8 +12,8 @@ async function create(name, user_id) {
   return { id: classroom_id, name, classroom_admin_user_ids };
 }
 
-function getAll() {
-  return db("classrooms")
+async function getAll() {
+  return await db("classrooms")
 }
 
 async function getById(id) {
@@ -22,8 +22,8 @@ async function getById(id) {
     .first();
 }
 
-function update(id, changes) {
-  return db("classrooms")
+async function update(id, changes) {
+  return await db("classrooms")
     .where({ id })
     .update(changes);
 }

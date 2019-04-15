@@ -155,4 +155,68 @@ describe("classroom-router.js", () => {
         });
     });
   });
+
+  describe("PUT /api/classrooms/:id", () => {
+    it("should return 200 on success", async () => {
+      await request(server)
+        .post("/api/classrooms/")
+        .set("Authorization", token)
+        .send({ name: "Build Week 20" });
+
+      return request(server)
+        .put("/api/classrooms/1")
+        .set("Authorization", token)
+        .send({ name: "Build Week 19" })
+        .expect(200);
+    });
+
+    it("should return the updated classroom on success", async () => {
+      await request(server)
+        .post("/api/classrooms/")
+        .set("Authorization", token)
+        .send({ name: "Build Week 20" });
+
+      return request(server)
+        .put("/api/classrooms/1")
+        .set("Authorization", token)
+        .send({ name: "Build Week 19" })
+        .expect({ id: 1, name: "Build Week 19" });
+    });
+
+    it("should return 400 if name is not provided", () => {
+      return request(server)
+        .put("/api/classrooms/1")
+        .set("Authorization", token)
+        .send({ name: "" })
+        .expect(400);
+    });
+
+    it('should return an error message if name is not provided', () => {
+      return request(server)
+        .put("/api/classrooms/1")
+        .set("Authorization", token)
+        .send({ name: "" })
+        .expect({
+          message: "Classroom name required"
+        });
+    });
+
+    it("should return 404 if no classroom with given ID exists", () => {
+      return request(server)
+        .put("/api/classrooms/1")
+        .set("Authorization", token)
+        .send({ name: "Build Week 19" })
+        .expect(404);
+    });
+
+    it('should return an error message if no classroom with given ID exists', () => {
+      return request(server)
+        .put("/api/classrooms/1")
+        .set("Authorization", token)
+        .send({ name: "Build Week 19" })
+        .expect({
+          message: "Classroom not found"
+        });
+    });
+  });
 });
