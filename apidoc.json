@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "API team builder for Lambda School",
   "template": {
-    "forceLanguage": "en"
+    "forceLanguage": "en",
+    "withGenerator": true
   }
 }
