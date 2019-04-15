@@ -10,16 +10,15 @@ exports.up = function(knex, Promise) {
       .onUpdate("CASCADE");
     table
       .integer("user_id")
-      .notNullable()
       .references("id")
       .inTable("users")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
     table
-      .integer("project_id")
+      .integer("classroom_project_id")
       .notNullable()
       .references("id")
-      .inTable("projects")
+      .inTable("classroom_projects")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
   });

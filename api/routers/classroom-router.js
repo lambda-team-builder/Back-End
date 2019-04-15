@@ -2,6 +2,8 @@ const router = require("express").Router();
 
 const Classrooms = require("../../data/models/classroomsModel.js");
 const ClassroomProjects = require("../../data/models/classroomProjectsModel");
+const ProjectMember = require("../../data/models/projectMembersModel");
+const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
 /**
  *  @api {post} api/classrooms/ Create a classroom
  *  @apiVersion 0.1.0
@@ -103,6 +105,75 @@ router.post("/:id/projects", (req, res) => {
     res.status(401).json("All fields required");
   }
 });
+/**
+ *  @api {post} api/classrooms/:id/classroom_projects/:classroom_project_id/project_member Create a member slot for a classroom project.
+ *  @apiVersion 0.1.0
+ *  @apiName postClassroomProjectMember
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiParam {Number} role_id The role_id of the new slot for the classroom project.
+ *  @apiParamExample {json} Request-Example:
+ * {
+ *  "role_id": 2
+ * }
+ *  @apiSuccess {Number} id The id of the new classroom project member slot
+ *  @apiSuccess {Number} role_id The role_id for the role of the member slot
+ *  @apiSuccess {Number} classroom_project_id The classroom_project_id for the classroom project that this member slot belongs to.
+ *  @apiSuccess {Number} user_id Will be null, When a user takes this slot it contains that users_id
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 201 CREATED
+ *    {
+ *        "id": 1,
+ *        "role_id": 1,
+ *        "user_id": null,
+ *        "classroom_project_id": 1
+ *    }
+ *  @apiErrorExample Error-Response: Not all fields
+ *    HTTP/1.1 401 BAD REQUEST
+ *    {
+ *      "message": "All fields required"
+ *    }
+ */
+
+router.post(
+  "/:id/classroom_projects/:classroom_project_id/project_members",
+  async (req, res) => {
+    const role_id = req.body.role_id;
+    const classroom_project_id = req.params.classroom_project_id * 1;
+    const classroom_id = req.params.id * 1;
+    // NEED TO MAKE SURE THE USER IS A ADMIN OF THIS CLASSROOM
+    let classroomAdminUserIds;
+    try {
+      classroomAdminUserIds = await ClassroomAdmin.getAdminsByClassRoomId(
+        classroom_id
+      );
+    } catch (error) {
+      res.status(500).json({ message: "Server error", error });
+    }
+    if (!classroomAdminUserIds.includes(req.user.id)) {
+      res.status(403).json({
+        message: "This user is not a group admin for this group"
+      });
+    } else if (role_id && classroom_project_id) {
+      ProjectMember.create(role_id, classroom_project_id)
+        .then(projectMember => {
+          res.status(201).json(projectMember);
+        })
+        .catch(error => {
+          res.status(500).json({
+            message: "Server error",
+            error
+          });
+        });
+    } else {
+      res.status(401).json("All fields required");
+    }
+  }
+);
+
 /**
  *  @api {get} api/classrooms/ Get list of all classrooms
  *  @apiVersion 0.1.0

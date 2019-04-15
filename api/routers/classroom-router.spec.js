@@ -97,10 +97,12 @@ describe("classroom-router.js", () => {
       return request(server)
         .get("/api/classrooms")
         .set("Authorization", token)
-        .expect([{
-          id: 1,
-          name: "Build Week 20",
-        }]);
+        .expect([
+          {
+            id: 1,
+            name: "Build Week 20"
+          }
+        ]);
     });
 
     it("should return an empty classroom list if no classrooms exist", () => {
@@ -135,7 +137,7 @@ describe("classroom-router.js", () => {
         .set("Authorization", token)
         .expect({
           id: 1,
-          name: "Build Week 20",
+          name: "Build Week 20"
         });
     });
 
@@ -146,7 +148,7 @@ describe("classroom-router.js", () => {
         .expect(404);
     });
 
-    it('should return an error message if no classroom with given ID exists', () => {
+    it("should return an error message if no classroom with given ID exists", () => {
       return request(server)
         .get("/api/classrooms/1")
         .set("Authorization", token)
@@ -191,7 +193,7 @@ describe("classroom-router.js", () => {
         .expect(400);
     });
 
-    it('should return an error message if name is not provided', () => {
+    it("should return an error message if name is not provided", () => {
       return request(server)
         .put("/api/classrooms/1")
         .set("Authorization", token)
@@ -209,7 +211,7 @@ describe("classroom-router.js", () => {
         .expect(404);
     });
 
-    it('should return an error message if no classroom with given ID exists', () => {
+    it("should return an error message if no classroom with given ID exists", () => {
       return request(server)
         .put("/api/classrooms/1")
         .set("Authorization", token)

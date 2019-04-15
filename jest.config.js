@@ -24,13 +24,11 @@ module.exports = {
   // collectCoverageFrom: null,
 
   // The directory where Jest should output its coverage files
-  // coverageDirectory: null,
+  coverageDirectory: "jest-coverage/",
 
   // An array of regexp pattern strings used to skip coverage collection
-  // coveragePathIgnorePatterns: [
-  //   "\\\\node_modules\\\\"
-  // ],
-
+  coveragePathIgnorePatterns: ["\\\\node_modules\\\\", "/knexfile.js/"],
+  //dd//
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
   //   "json",
@@ -144,9 +142,7 @@ module.exports = {
   // ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  // testPathIgnorePatterns: [
-  //   "\\\\node_modules\\\\"
-  // ],
+  testPathIgnorePatterns: ["\\\\node_modules\\\\", "/knexfile.js/"]
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
