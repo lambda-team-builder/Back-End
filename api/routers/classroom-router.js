@@ -106,7 +106,7 @@ router.post("/:id/projects", (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const classroomList = Classrooms.getAll();
+    const classroomList = await Classrooms.getAll();
 
     res.status(200).json(classroomList);
   } catch (error) {
@@ -114,7 +114,19 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", (req, res) => {});
+router.get("/:id", async (req, res) => {
+  try {
+    const classroom = await Classrooms.getById(req.params.id);
+
+    if (classroom) {
+      res.status(200).json(classroom);
+    } else {
+      res.status(404).json({ message: "Could not find a classroom with given ID" })
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+});
 
 router.put("/:id", (req, res) => {});
 
