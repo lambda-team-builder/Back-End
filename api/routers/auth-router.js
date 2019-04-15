@@ -61,14 +61,13 @@ router.post("/register", async (req, res) => {
     const hash = bcrypt.hashSync(password, 14);
     password = hash;
     const userPromise = Users.create(name, email, user_type_id, password);
-    const user_typePromise = Users.getUserTypeById(user_type_id);
+    //const user_typePromise = Users.getUserTypeById(user_type_id);
 
-    Promise.all([userPromise, user_typePromise])
-      .then(([user, user_type]) => {
+    Promise.all([userPromise])
+      .then(([user]) => {
         const token = generateToken(user);
         res.status(201).json({
           ...user,
-          user_type,
           token
         });
       })
