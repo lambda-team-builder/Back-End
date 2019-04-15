@@ -104,6 +104,8 @@ router.post("/:id/projects", (req, res) => {
   }
 });
 
+router.get("/", (req, res) => {});
+
 router.get("/:id", (req, res) => {});
 
 router.put("/:id", (req, res) => {});

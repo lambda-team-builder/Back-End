@@ -12,6 +12,10 @@ async function create(name, user_id) {
   return { id: classroom_id, name, classroom_admin_user_ids };
 }
 
+function getAll() {
+  return db("classrooms")
+}
+
 async function getById(id) {
   return await db("classrooms")
     .where({ id })
