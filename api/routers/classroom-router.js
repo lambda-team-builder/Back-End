@@ -111,14 +111,14 @@ router.post("/:id/projects", (req, res) => {
  *
  *  @apiHeader {String} Authorization Users auth token.
  *
- *  @apiSuccess {Array} id The id of the classroom project
+ *  @apiSuccess {Array} [] A list of all classrooms
  *
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 201 CREATED
-        [{
-          id: 1,
-          name: "Build Week 2",
-        }]
+ *       [{
+ *          id: 1,
+ *         name: "Build Week 2",
+ *       }]
  */
 router.get("/", async (req, res) => {
   try {
@@ -129,7 +129,29 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 });
-
+/**
+ *  @api {get} api/classrooms/:1d Find classroom by ID
+ *  @apiVersion 0.1.0
+ *  @apiName getClassroom
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiSuccess {Object} {} The requested classroom
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 201 CREATED
+ *      [{
+ *         id: 1,
+ *        name: "Build Week 2",
+ *     }]
+ *
+ *  @apiErrorExample Error-Response: 
+ *    HTTP/1.1 404 FORBIDDEN
+ *    {
+ *      "message": "Classroom not found"
+ *    }   
+ */
 router.get("/:id", async (req, res) => {
   try {
     const classroom = await Classrooms.getById(req.params.id);
