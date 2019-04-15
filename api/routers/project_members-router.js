@@ -20,9 +20,10 @@ const ProjectMember = require("../../data/models/projectMembersModel");
  *  "user_id": null
  * }
  *
- *  @apiSuccess {Number} id The id of the classroom
- *  @apiSuccess {String} name Name of the classroom
- *  @apiSuccess {Array} classroom_admin_user_ids List of group's admins by id
+ *  @apiSuccess {Number} id The id of the project member
+ *  @apiSuccess {Number} role_id The role id of this project member
+ *  @apiSuccess {Number} user_id The user id of this project member
+ *  @apiSuccess {Number} classroom_project_id The id of C.P. that this project member belongs to
  *
  *  @apiSuccessExample Success-Response: add user
  *    HTTP/1.1 201 CREATED
@@ -96,5 +97,96 @@ router.put("/:id", async (req, res) => {
     res.status(401).json("All fields required");
   }
 });
-
+/**
+ *  @api {put} api/project_members/:id/join  User fills a member slot
+ *  @apiVersion 0.1.0
+ *  @apiName putProjectMembers/:id/join
+ *  @apiGroup ProjectMembers
+ *
+ *  @apiHeader {String} Authorization User's auth token.
+ *
+ *  @apiSuccess {Number} id The id of the project member
+ *  @apiSuccess {Number} role_id The role id of this project member
+ *  @apiSuccess {Number} user_id The user id of this project member
+ *  @apiSuccess {Number} classroom_project_id The id of C.P. that this project member belongs to
+ *
+ *  @apiSuccessExample Success-Response: add user
+ *    HTTP/1.1 201 CREATED
+ *    {
+ *      "id": 1,
+ *      "role_id": 1,
+ *      "user_id": 1,
+ *      "classroom_project_id": 1
+ *    }
+ *  @apiErrorExample Error-Response: spot filled
+ *    HTTP/1.1 403 FORBIDDEN
+ *    {
+ *      "message": "Spot is already filled"
+ *    }
+ */
+// user joins a member_slot
+router.put("/:id/join", async (req, res) => {
+  try {
+    const project_member_id = req.params.id * 1;
+    // can only join if the slot is open
+    const projectMember = await ProjectMember.getById(project_member_id);
+    if (projectMember.user_id === null) {
+      // it is open
+      const newProjectMember = await ProjectMember.updateUserId(
+        project_member_id,
+        req.user.user_id
+      );
+      res.status(200).json(newProjectMember);
+    } else {
+      res.status(403).json({ message: "Spot is already filled" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+/**
+ *  @api {put} api/project_members/:id/leave  User leaves a member slot
+ *  @apiVersion 0.1.0
+ *  @apiName putProjectMembers/:id/leave
+ *  @apiGroup ProjectMembers
+ *
+ *  @apiHeader {String} Authorization User's auth token.
+ *
+ *  @apiSuccess {Number} id The id of the project member
+ *  @apiSuccess {Number} role_id The role id of this project member
+ *  @apiSuccess {Number} user_id The user id of this project member
+ *  @apiSuccess {Number} classroom_project_id The id of C.P. that this project member belongs to
+ *
+ *  @apiSuccessExample Success-Response: add user
+ *    HTTP/1.1 201 CREATED
+ *    {
+ *      "id": 1,
+ *      "role_id": 1,
+ *      "user_id": null,
+ *      "classroom_project_id": 1
+ *    }
+ *  @apiErrorExample Error-Response: spot filled
+ *    HTTP/1.1 403 FORBIDDEN
+ *    {
+ *      "message": "User already not filling this spot."
+ *    }
+ */
+router.put("/:id/leave", async (req, res) => {
+  try {
+    const project_member_id = req.params.id * 1;
+    // can only leave if this user is alread a member
+    const projectMember = await ProjectMember.getById(project_member_id);
+    if (projectMember.user_id === req.user.id) {
+      const newProjectMember = await ProjectMember.updateUserId(
+        project_member_id,
+        null
+      );
+      res.status(200).json(newProjectMember);
+    } else {
+      res.status(403).json({ message: "User already not filling this spot." });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
 module.exports = router;

@@ -508,21 +508,28 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>The id of the classroom</p>"
+            "description": "<p>The id of the project member</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Number",
             "optional": false,
-            "field": "name",
-            "description": "<p>Name of the classroom</p>"
+            "field": "role_id",
+            "description": "<p>The role id of this project member</p>"
           },
           {
             "group": "Success 200",
-            "type": "Array",
+            "type": "Number",
             "optional": false,
-            "field": "classroom_admin_user_ids",
-            "description": "<p>List of group's admins by id</p>"
+            "field": "user_id",
+            "description": "<p>The user id of this project member</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "classroom_project_id",
+            "description": "<p>The id of C.P. that this project member belongs to</p>"
           }
         ]
       },
@@ -554,6 +561,225 @@ define({ "api": [
         {
           "title": "Error-Response: not valid member",
           "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"That project member slot does not exist\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./api/routers/project_members-router.js",
+    "groupTitle": "ProjectMembers"
+  },
+  {
+    "type": "put",
+    "url": "api/project_members/:id/join",
+    "title": "User fills a member slot",
+    "version": "0.1.0",
+    "name": "putProjectMembers__id_join",
+    "group": "ProjectMembers",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>User's auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the project member</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "role_id",
+            "description": "<p>The role id of this project member</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The user id of this project member</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "classroom_project_id",
+            "description": "<p>The id of C.P. that this project member belongs to</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: add user",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1,\n  \"role_id\": 1,\n  \"user_id\": 1,\n  \"classroom_project_id\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: spot filled",
+          "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"Spot is already filled\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./api/routers/project_members-router.js",
+    "groupTitle": "ProjectMembers"
+  },
+  {
+    "type": "put",
+    "url": "api/project_members/:id/leave",
+    "title": "User leaves a member slot",
+    "version": "0.1.0",
+    "name": "putProjectMembers__id_leave",
+    "group": "ProjectMembers",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>User's auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the project member</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "role_id",
+            "description": "<p>The role id of this project member</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The user id of this project member</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "classroom_project_id",
+            "description": "<p>The id of C.P. that this project member belongs to</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: add user",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1,\n  \"role_id\": 1,\n  \"user_id\": null,\n  \"classroom_project_id\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: spot filled",
+          "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"User already not filling this spot.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./data/models/projectMembersModel.js",
+    "groupTitle": "ProjectMembers"
+  },
+  {
+    "type": "put",
+    "url": "api/project_members/:id/leave",
+    "title": "User leaves a member slot",
+    "version": "0.1.0",
+    "name": "putProjectMembers__id_leave",
+    "group": "ProjectMembers",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>User's auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the project member</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "role_id",
+            "description": "<p>The role id of this project member</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The user id of this project member</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "classroom_project_id",
+            "description": "<p>The id of C.P. that this project member belongs to</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: add user",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1,\n  \"role_id\": 1,\n  \"user_id\": null,\n  \"classroom_project_id\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: spot filled",
+          "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"User already not filling this spot.\"\n}",
           "type": "json"
         }
       ]
