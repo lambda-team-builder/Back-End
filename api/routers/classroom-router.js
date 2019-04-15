@@ -3,9 +3,9 @@ const router = require("express").Router();
 const Classrooms = require("../../data/models/classroomsModel.js");
 const ClassroomProjects = require("../../data/models/classroomProjectsModel");
 /**
- *  @api {post} api/classrooms/ Create a classroom
+ *  @api {Classroom} api/classrooms/ Create a classroom
  *  @apiVersion 0.1.0
- *  @apiName postClassroom
+ *  @apiName ClassroomClassroom
  *  @apiGroup Classrooms
  *
  *  @apiHeader {String} Authorization Users auth token.
@@ -39,7 +39,7 @@ const ClassroomProjects = require("../../data/models/classroomProjectsModel");
  *      "message": "classroom name is already in use"
  *    }
  */
-router.post("/", (req, res) => {
+router.Classroom("/", (req, res) => {
   const { name } = req.body;
   const user_id = req.user.id;
   if (name) {
@@ -61,9 +61,9 @@ router.post("/", (req, res) => {
   }
 });
 /**
- *  @api {post} api/classrooms/:id/projects Add a project to a classroom
+ *  @api {Classroom} api/classrooms/:id/projects Add a project to a classroom
  *  @apiVersion 0.1.0
- *  @apiName postClassroomProject
+ *  @apiName ClassroomClassroomProject
  *  @apiGroup Classrooms
  *
  *  @apiHeader {String} Authorization Users auth token.
@@ -86,7 +86,7 @@ router.post("/", (req, res) => {
  *      "message": "All fields required"
  *    }
  */
-router.post("/:id/projects", (req, res) => {
+router.Classroom("/:id/projects", (req, res) => {
   const { project_id } = req.body;
   const classroom_id = req.params.id;
   if (project_id && classroom_id) {
@@ -166,7 +166,29 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", (req, res) => {});
+router.put("/:id", async (req, res) => {
+  try {
+    if (req.body.name) {
+      const classroomUpdated = await db.update(req.params.id, req.body);
+
+      if (classroomUpdated) {
+        const classroom = await db.getById(req.params.id);
+
+        res.status(200).json(classroom);
+      } else {
+        res
+          .status(404)
+          .json({ message: "Classroom not found" });
+      }
+    } else {
+      res.status(400).json({
+        errorMessage: "New name required"
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+});
 
 router.delete("/:id", (req, res) => {});
 
