@@ -15,5 +15,6 @@ async function create(name, email, user_type_id, password) {
 }
 
 async function getUserTypeById(id) {
-  return await db("user_types").where({ id });
+  const [user_type] = await db("user_types").where({ id });
+  return user_type;
 }
