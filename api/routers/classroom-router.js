@@ -103,7 +103,23 @@ router.post("/:id/projects", (req, res) => {
     res.status(401).json("All fields required");
   }
 });
-
+/**
+ *  @api {get} api/classrooms/ Get list of all classrooms
+ *  @apiVersion 0.1.0
+ *  @apiName getClassrooms
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiSuccess {Array} id The id of the classroom project
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 201 CREATED
+        [{
+          id: 1,
+          name: "Build Week 2",
+        }]
+ */
 router.get("/", async (req, res) => {
   try {
     const classroomList = await Classrooms.getAll();
