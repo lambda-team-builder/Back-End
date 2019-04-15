@@ -3,4 +3,3 @@ doc
 .env
 data/dev.sqlite3
 data/testing.sqlite3
-coverage/
