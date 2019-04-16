@@ -1,6 +1,6 @@
 const db = require("../dbConfig");
 
-module.exports = { create, getById };
+module.exports = { create, getById, getClassroomProjectRoles };
 
 async function create(project_id, classroom_id) {
   const [id] = await db("classroom_projects")
@@ -12,6 +12,7 @@ async function create(project_id, classroom_id) {
 async function getProjectsByClassroomId(classroom_id) {}
 
 async function getById(id) {
+  // classroom_project_id
   const projectPromise = db("classroom_projects")
     .select("classroom_projects.id", "projects.name", "projects.description")
     .join("projects", { "classroom_projects.project_id": "projects.id" })
