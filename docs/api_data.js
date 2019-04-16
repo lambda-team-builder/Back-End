@@ -907,7 +907,7 @@ define({ "api": [
             "group": "Success 200",
             "type": "Array",
             "optional": false,
-            "field": "A",
+            "field": "array_of_roles",
             "description": "<p>list of all roles</p>"
           }
         ]

@@ -65,7 +65,7 @@ router.post("/", (req, res) => {
  *
  *  @apiHeader {String} Authorization Users auth token.
  *
- *  @apiSuccess {Array} A list of all roles
+ *  @apiSuccess {Array} array_of_roles list of all roles
  *
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 200 OK
@@ -143,12 +143,10 @@ router.put("/:id", (req, res) => {
         }
       })
       .catch(error => {
-        res
-          .status(400)
-          .json({
-            message: "Cannot update because that role already exists",
-            error
-          });
+        res.status(400).json({
+          message: "Cannot update because that role already exists",
+          error
+        });
       });
   } else {
     res.status(401).json({ message: "All fields required" });
