@@ -107,7 +107,6 @@ router.post("/:id/projects", restrictClassroomAdmin, (req, res) => {
       })
       .catch(error => {
         // add sq errors
-
         res.status(500).json("Server error");
       });
   } else {
@@ -216,7 +215,7 @@ router.get("/", async (req, res) => {
 });
 /**
  *  @api {get} api/classrooms/:id Find classroom by ID
- *  @apiVersion 0.1.0
+ *  @apiVersion 0.2.0
  *  @apiName getClassroom
  *  @apiGroup Classrooms
  *

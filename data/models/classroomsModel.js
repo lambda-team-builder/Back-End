@@ -21,9 +21,19 @@ async function getAll() {
 }
 
 async function getById(id) {
-  return await db("classrooms")
+  const classroomPromise = db("classrooms")
     .where({ id })
     .first();
+  const classroomProjectsPromise = db
+    .from("classroom_projects")
+    .select("classroom_projects.id", "projects.name", "projects.description")
+    .join("projects", { "classroom_projects.project_id": "projects.id" })
+    .where({ classroom_project_id: id });
+  const [classroom, projects] = await Promise.all([
+    classroomPromise,
+    classroomProjectsPromise
+  ]);
+  return { ...classroom, projects };
 }
 
 async function update(id, changes) {
