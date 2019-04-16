@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
-    "test": "./test.sh",
+    "test": "knex migrate:latest --env testing && knex seed:run --env testing && cross-env DB_ENV=testing jest --verbose --runInBand",
+    "bash-test": "./test.sh",
     "local-test": "cross-env DB_ENV=testing jest --watch --verbose --runInBand -detectOpenHandles",
     "coverage": "jest --coverage --runInBand",
     "docs": "npx apidoc -f .js -i ./api/routers -o docs/ -e node_modules/",
