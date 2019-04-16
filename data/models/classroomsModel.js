@@ -1,5 +1,8 @@
 const db = require("../dbConfig");
 
+const getClassroomProjectRoles = require("./classroomProjectsModel")
+  .getClassroomProjectRoles;
+
 module.exports = { create, getAll, getById, update, reset };
 
 async function create(name, user_id) {
@@ -33,7 +36,16 @@ async function getById(id) {
     classroomPromise,
     classroomProjectsPromise
   ]);
-  return { ...classroom, projects };
+  const arrayOfRoles = [];
+  projects.forEach(project => {
+    arrayOfRoles.push(getClassroomProjectRoles(project.id));
+  });
+  const roles = await Promise.all(arrayOfRoles);
+  const projectsWithRoles = projects.map((project, i) => ({
+    ...project,
+    roles: roles[i]
+  }));
+  return { ...classroom, projects: projectsWithRoles };
 }
 
 async function update(id, changes) {
