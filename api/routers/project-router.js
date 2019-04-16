@@ -1,10 +1,13 @@
 const router = require("express").Router();
 
+const restrictAdmin = require("../authorization/authenticate").restrictAdmin;
+
 const Projects = require("../../data/models/projectsModel.js");
 /**
  *  @api {post} api/projects/ Create a project
  *  @apiVersion 0.1.0
  *  @apiName postProjects
+ *  @apiPermission  Admin
  *  @apiGroup Projects
  *
  *  @apiHeader {String} Authorization Users auth token.
@@ -40,7 +43,7 @@ const Projects = require("../../data/models/projectsModel.js");
  *      "message": "Project already exists"
  *    }
  */
-router.post("/", (req, res) => {
+router.post("/", restrictAdmin, (req, res) => {
   const { name, description } = req.body;
   if (name && description) {
     Projects.create(name, description)

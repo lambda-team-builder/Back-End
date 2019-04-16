@@ -1,5 +1,7 @@
 const router = require("express").Router();
-
+//auth
+const restrictAdmin = require("../authorization/authenticate").restrictAdmin;
+//models
 const Classrooms = require("../../data/models/classroomsModel.js");
 const ClassroomProjects = require("../../data/models/classroomProjectsModel");
 const ProjectMember = require("../../data/models/projectMembersModel");
@@ -8,9 +10,10 @@ const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
  *  @api {post} api/classrooms/ Create a classroom
  *  @apiVersion 0.1.0
  *  @apiName postClassroom
+ *  @apiPermission admin
  *  @apiGroup Classrooms
  *
- *  @apiHeader {String} Authorization Users auth token.
+ *  @apiHeader {String} Authorization Admin auth token.
  *
  *  @apiParam {String} name Name of classroom
  *
@@ -40,8 +43,13 @@ const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
  *    {
  *      "message": "classroom name is already in use"
  *    }
+ *  @apiErrorExample Error-Response: not admin
+ *  HTTP/1.1 401 UNAUTHORIZED
+ *  {
+ *    message: "User does not have permission to perform this action."
+ *  }
  */
-router.post("/", (req, res) => {
+router.post("/", restrictAdmin, (req, res) => {
   const { name } = req.body;
   const user_id = req.user.id;
   if (name) {
@@ -66,6 +74,7 @@ router.post("/", (req, res) => {
  *  @api {post} api/classrooms/:id/projects Add a project to a classroom
  *  @apiVersion 0.1.0
  *  @apiName postClassroomProject
+ *  @apiPermission  classroomAdmin
  *  @apiGroup Classrooms
  *
  *  @apiHeader {String} Authorization Users auth token.
@@ -88,9 +97,9 @@ router.post("/", (req, res) => {
  *      "message": "All fields required"
  *    }
  */
-router.post("/:id/projects", (req, res) => {
+router.post("/:id/projects", restrictClassroomAdmin, (req, res) => {
   const { project_id } = req.body;
-  const classroom_id = req.params.id;
+  const classroom_id = req.params.id * 1;
   if (project_id && classroom_id) {
     ClassroomProjects.create(project_id, classroom_id)
       .then(classroomProject => {
@@ -98,7 +107,6 @@ router.post("/:id/projects", (req, res) => {
       })
       .catch(error => {
         // add sq errors
-
         res.status(500).json("Server error");
       });
   } else {
@@ -109,6 +117,7 @@ router.post("/:id/projects", (req, res) => {
  *  @api {post} api/classrooms/:id/classroom_projects/:classroom_project_id/project_member Create a member slot for a classroom project.
  *  @apiVersion 0.1.0
  *  @apiName postClassroomProjectMember
+ *  @apiPermission  classroomAdmin
  *  @apiGroup Classrooms
  *
  *  @apiHeader {String} Authorization Users auth token.
@@ -140,24 +149,12 @@ router.post("/:id/projects", (req, res) => {
 
 router.post(
   "/:id/classroom_projects/:classroom_project_id/project_members",
+  restrictClassroomAdmin,
   async (req, res) => {
     const role_id = req.body.role_id;
     const classroom_project_id = req.params.classroom_project_id * 1;
-    const classroom_id = req.params.id * 1;
-    // NEED TO MAKE SURE THE USER IS A ADMIN OF THIS CLASSROOM
-    let classroomAdminUserIds;
-    try {
-      classroomAdminUserIds = await ClassroomAdmin.getAdminsByClassRoomId(
-        classroom_id
-      );
-    } catch (error) {
-      res.status(500).json({ message: "Server error", error });
-    }
-    if (!classroomAdminUserIds.includes(req.user.id)) {
-      res.status(403).json({
-        message: "This user is not a group admin for this group"
-      });
-    } else if (role_id && classroom_project_id) {
+
+    if (role_id && classroom_project_id) {
       ProjectMember.create(role_id, classroom_project_id)
         .then(projectMember => {
           res.status(201).json(projectMember);
@@ -205,21 +202,30 @@ router.get("/", async (req, res) => {
   }
 });
 /**
- *  @api {get} api/classrooms/:id Find classroom by ID
- *  @apiVersion 0.1.0
+ *  @api {get} api/classrooms/:id Get classroom by ID
+ *  @apiVersion 0.2.0
  *  @apiName getClassroom
  *  @apiGroup Classrooms
  *
  *  @apiHeader {String} Authorization Users auth token.
  *
- *  @apiSuccess {Object} The requested classroom
+ *  @apiSuccess {Number} id the id of the classroom
+ *  @apiSuccess {String} name The name of the classroom
+ *  @apiSuccess {Array} projects A list of the classroom's projects
  *
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 200 OK
- *      [{
- *         id: 1,
- *         name: "Build Week 2",
- *      }]
+ *      {
+ *         "id": 1,
+ *         "name": "Build Week 2",
+ *         "projects": [
+ *                       {
+ *                          "id": 1,
+ *                          "name": " a project",
+ *                          "description": "This is a long and boring project."
+ *                       }
+ *                     ]
+ *      }
  *
  *  @apiErrorExample Error-Response:
  *    HTTP/1.1 404 FORBIDDEN
@@ -241,9 +247,72 @@ router.get("/:id", async (req, res) => {
   }
 });
 /**
+ *  @api {put} api/classrooms/:id/projects/:classroom_project_id get classroom project
+ *  @apiVersion 0.1.0
+ *  @apiName getClassroomProject
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiSuccess {Number} id the id of the classroom project
+ *  @apiSuccess {String} name The name of the project
+ *  @apiSuccess {String} description The description of the project
+ *  @apiSuccess {Array} project_members A list of project member objects
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 200 OK
+ *    {
+ *        "id": 1,
+ *        "name": " a project",
+ *        "description": "This is a long and boring project.",
+ *        "project_members": [
+ *            {
+ *                "id": 1,
+ *                "user_id": 1,
+ *                "user_name": "admin",
+ *                "role_name": "Lead"
+ *            },
+ *            {
+ *                "id": 2,
+ *                "user_id": null,
+ *                "user_name": null,
+ *                "role_name": "Backend"
+ *            },
+ *            {
+ *                "id": 3,
+ *                "user_id": 2,
+ *                "user_name": "connor",
+ *                "role_name": "Backend"
+ *            },
+ *            {
+ *                "id": 4,
+ *                "user_id": null,
+ *                "user_name": null,
+ *                "role_name": "Lead"
+ *            }
+ *        ]
+ *    }
+ *  @apiErrorExample Error-Response: If no project was found
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "Classroom not found"
+ *    }
+ */
+router.get("/:id/projects/:classroom_project_id", (req, res) => {
+  ClassroomProjects.getById(req.params.classroom_project_id * 1)
+    .then(project => {
+      res.status(200).json(project);
+    })
+    .catch(error => {
+      res.status(404).json({ message: "Classroom's project not found", error });
+    });
+});
+
+/**
  *  @api {put} api/classrooms/:id Edit classroom name
  *  @apiVersion 0.1.0
  *  @apiName putClassroom
+ *  @apiPermission  classroomAdmin
  *  @apiGroup Classrooms
  *
  *  @apiHeader {String} Authorization Users auth token.
@@ -272,7 +341,7 @@ router.get("/:id", async (req, res) => {
  *      "message": "Classroom not found"
  *    }
  */
-router.put("/:id", async (req, res) => {
+router.put("/:id", restrictClassroomAdmin, async (req, res) => {
   try {
     if (req.body.name) {
       const classroomUpdated = await Classrooms.update(req.params.id, req.body);
@@ -293,6 +362,24 @@ router.put("/:id", async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 });
+
+//classrooms/:id
+// after athenticate route
+function restrictClassroomAdmin(req, res, next) {
+  const user_id = req.user.id;
+  const classroom_id = req.params.id * 1;
+  ClassroomAdmin.getAdminsByClassRoomId(classroom_id)
+    .then(user_ids => {
+      if (user_ids.includes(user_id)) {
+        next();
+      } else {
+        res.status(401).json({ message: "Not a admin for this classroom" });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ message: "Server Error", error });
+    });
+}
 
 router.delete("/:id", (req, res) => {});
 

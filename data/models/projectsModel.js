@@ -3,7 +3,9 @@ const db = require("../dbConfig");
 module.exports = { create, get, reset };
 
 async function create(name, description) {
-  const [id] = await db("projects").insert({ name, description });
+  const [id] = await db("projects")
+    .insert({ name, description })
+    .returning("id");
   return id;
 }
 

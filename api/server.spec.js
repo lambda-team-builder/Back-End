@@ -15,12 +15,13 @@ describe("server.js", () => {
         .expect("Content-Type", /json/);
     });
 
-    it("should return a welcome message", () => {
+    it("should return a welcome message", done => {
       return request(server)
         .get("/")
-        .then(response => {
-          expect(response.body).toEqual({ message: "Welcome to our Team Builder API" });
-        });
+        .expect({
+          message: "Welcome to our Team Builder API"
+        })
+        .end(done); // seeing if this closes open handles
     });
   });
-})
+});

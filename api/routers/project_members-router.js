@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const ProjectMember = require("../../data/models/projectMembersModel");
+
 /**
  *  @api {put} api/project_members/:id  Add user to a member slot for group admin
  *  @apiVersion 0.1.0

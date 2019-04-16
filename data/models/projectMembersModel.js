@@ -10,10 +10,12 @@ module.exports = {
 };
 
 async function create(role_id, classroom_project_id) {
-  const [id] = await db("project_members").insert({
-    role_id,
-    classroom_project_id
-  });
+  const [id] = await db("project_members")
+    .insert({
+      role_id,
+      classroom_project_id
+    })
+    .returning("id");
   return await db("project_members")
     .where({ id })
     .first();
@@ -60,30 +62,3 @@ async function getClassroomAdminsByProjectMemberId(project_member_id) {
 async function reset() {
   await db("project_members").truncate();
 }
-/**
- *  @api {put} api/project_members/:id/leave  User leaves a member slot
- *  @apiVersion 0.1.0
- *  @apiName putProjectMembers/:id/leave
- *  @apiGroup ProjectMembers
- *
- *  @apiHeader {String} Authorization User's auth token.
- *
- *  @apiSuccess {Number} id The id of the project member
- *  @apiSuccess {Number} role_id The role id of this project member
- *  @apiSuccess {Number} user_id The user id of this project member
- *  @apiSuccess {Number} classroom_project_id The id of C.P. that this project member belongs to
- *
- *  @apiSuccessExample Success-Response: add user
- *    HTTP/1.1 201 CREATED
- *    {
- *      "id": 1,
- *      "role_id": 1,
- *      "user_id": null,
- *      "classroom_project_id": 1
- *    }
- *  @apiErrorExample Error-Response: spot filled
- *    HTTP/1.1 403 FORBIDDEN
- *    {
- *      "message": "User already not filling this spot."
- *    }
- */
