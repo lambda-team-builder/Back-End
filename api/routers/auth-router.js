@@ -151,7 +151,7 @@ router.put("/login", async (req, res) => {
         });
       } else {
         res.status(401).json({
-          message: "Wrong password"
+          message: "Bad credentials"
         });
       }
     } else {
