@@ -35,6 +35,7 @@ describe("classroom-router.js", () => {
     // resets classrooms and classroom admins
     await Classrooms.reset();
     await db("users").truncate();
+    db.destroy();
   });
 
   describe("POST /api/classrooms/", () => {

@@ -10,6 +10,7 @@ describe("auth-router.js", () => {
 
   afterAll(async () => {
     await db("users").truncate();
+    db.destroy();
   });
   const testUser = {
     name: "Ryan Hamblin",
@@ -25,6 +26,7 @@ describe("auth-router.js", () => {
 
   describe("POST /api/auth/register", () => {
     it("should return 201 status code on success", () => {
+
       return request(server)
         .post("/api/auth/register")
         .send(testUser)
