@@ -201,6 +201,11 @@ define({ "api": [
     "title": "Add a project to a classroom",
     "version": "0.1.0",
     "name": "postClassroomProject",
+    "permission": [
+      {
+        "name": "classroomAdmin"
+      }
+    ],
     "group": "Classrooms",
     "header": {
       "fields": {
@@ -273,6 +278,11 @@ define({ "api": [
     "title": "Create a member slot for a classroom project.",
     "version": "0.1.0",
     "name": "postClassroomProjectMember",
+    "permission": [
+      {
+        "name": "classroomAdmin"
+      }
+    ],
     "group": "Classrooms",
     "header": {
       "fields": {
@@ -366,6 +376,11 @@ define({ "api": [
     "title": "Edit classroom name",
     "version": "0.1.0",
     "name": "putClassroom",
+    "permission": [
+      {
+        "name": "classroomAdmin"
+      }
+    ],
     "group": "Classrooms",
     "header": {
       "fields": {

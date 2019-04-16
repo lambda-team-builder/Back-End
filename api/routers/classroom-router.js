@@ -97,9 +97,9 @@ router.post("/", restrictAdmin, (req, res) => {
  *      "message": "All fields required"
  *    }
  */
-router.post("/:id/projects", (req, res) => {
+router.post("/:id/projects", restrictClassroomAdmin, (req, res) => {
   const { project_id } = req.body;
-  const classroom_id = req.params.id;
+  const classroom_id = req.params.id * 1;
   if (project_id && classroom_id) {
     ClassroomProjects.create(project_id, classroom_id)
       .then(classroomProject => {
@@ -118,6 +118,7 @@ router.post("/:id/projects", (req, res) => {
  *  @api {post} api/classrooms/:id/classroom_projects/:classroom_project_id/project_member Create a member slot for a classroom project.
  *  @apiVersion 0.1.0
  *  @apiName postClassroomProjectMember
+ *  @apiPermission  classroomAdmin
  *  @apiGroup Classrooms
  *
  *  @apiHeader {String} Authorization Users auth token.
@@ -253,6 +254,7 @@ router.get("/:id", async (req, res) => {
  *  @api {put} api/classrooms/:id Edit classroom name
  *  @apiVersion 0.1.0
  *  @apiName putClassroom
+ *  @apiPermission  classroomAdmin
  *  @apiGroup Classrooms
  *
  *  @apiHeader {String} Authorization Users auth token.
@@ -281,7 +283,7 @@ router.get("/:id", async (req, res) => {
  *      "message": "Classroom not found"
  *    }
  */
-router.put("/:id", async (req, res) => {
+router.put("/:id", restrictClassroomAdmin, async (req, res) => {
   try {
     if (req.body.name) {
       const classroomUpdated = await Classrooms.update(req.params.id, req.body);
@@ -306,8 +308,8 @@ router.put("/:id", async (req, res) => {
 //classrooms/:id
 // after athenticate route
 function restrictClassroomAdmin(req, res, next) {
-  const user_id = user.id;
-  const classroom_id = req.params.id;
+  const user_id = req.user.id;
+  const classroom_id = req.params.id * 1;
   ClassroomAdmin.getAdminsByClassRoomId(classroom_id)
     .then(user_ids => {
       if (user_ids.includes(user_id)) {
