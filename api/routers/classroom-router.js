@@ -1,5 +1,7 @@
 const router = require("express").Router();
-
+//auth
+const restrictAdmin = require("../authorization/authenticate").restrictAdmin;
+//models
 const Classrooms = require("../../data/models/classroomsModel.js");
 const ClassroomProjects = require("../../data/models/classroomProjectsModel");
 const ProjectMember = require("../../data/models/projectMembersModel");
@@ -41,7 +43,7 @@ const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
  *      "message": "classroom name is already in use"
  *    }
  */
-router.post("/", (req, res) => {
+router.post("/", restrictAdmin, (req, res) => {
   const { name } = req.body;
   const user_id = req.user.id;
   if (name) {
