@@ -221,14 +221,23 @@ router.get("/", async (req, res) => {
  *
  *  @apiHeader {String} Authorization Users auth token.
  *
- *  @apiSuccess {Object} The requested classroom
+ *  @apiSuccess {Number} id the id of the classroom
+ *  @apiSuccess {String} name The name of the classroom
+ *  @apiSuccess {Array} projects A list of the classroom's projects
  *
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 200 OK
- *      [{
- *         id: 1,
- *         name: "Build Week 2",
- *      }]
+ *      {
+ *         "id": 1,
+ *         "name": "Build Week 2",
+ *         "projects": [
+ *                       {
+ *                          "id": 1,
+ *                          "name": " a project",
+ *                          "description": "This is a long and boring project."
+ *                       }
+ *                     ]
+ *      }
  *
  *  @apiErrorExample Error-Response:
  *    HTTP/1.1 404 FORBIDDEN

@@ -28,7 +28,7 @@ async function getById(id) {
     .from("classroom_projects")
     .select("classroom_projects.id", "projects.name", "projects.description")
     .join("projects", { "classroom_projects.project_id": "projects.id" })
-    .where({ classroom_project_id: id });
+    .where({ "classroom_projects.id": id });
   const [classroom, projects] = await Promise.all([
     classroomPromise,
     classroomProjectsPromise

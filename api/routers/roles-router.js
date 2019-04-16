@@ -86,4 +86,26 @@ router.get("/", (req, res) => {
     });
 });
 
+router.put("/:id", (req, res) => {
+  const name = req.body.name;
+  const id = req.params.id * 1;
+  if (name) {
+    Roles.update(id, name)
+      .then(updated => {
+        if (updated) {
+          res.status(200).json({ id, name });
+        } else {
+          res.status(404).json({ message: "Role not found" });
+        }
+      })
+      .catch(error => {
+        res
+          .status(400)
+          .json({ message: "Cannot update to existing role", error });
+      });
+  } else {
+    res.status(401).json({ message: "All fields required" });
+  }
+});
+
 module.exports = router;

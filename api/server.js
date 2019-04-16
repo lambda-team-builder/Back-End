@@ -4,7 +4,7 @@ const cors = require("cors");
 
 //mw
 const restrict = require("./authorization/authenticate.js").restrict;
-
+const restrictAdmin = require("./authorization/authenticate.js").restrictAdmin;
 // Routers
 const authRouter = require("./routers/auth-router.js");
 const classroomRouter = require("./routers/classroom-router.js");
@@ -26,7 +26,7 @@ server.get("/", async (req, res) => {
 server.use("/api/auth", authRouter);
 server.use("/api/classrooms", restrict, classroomRouter);
 server.use("/api/projects", restrict, projectRouter);
-server.use("/api/roles", restrict, roleRouter);
+server.use("/api/roles", restrictAdmin, roleRouter);
 server.use("/api/project_members", restrict, projectMemberRouter);
 server.use(function(req, res) {
   res.status(404).send("This route does not exist");

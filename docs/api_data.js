@@ -3,7 +3,7 @@ define({ "api": [
     "type": "get",
     "url": "api/classrooms/:id",
     "title": "Find classroom by ID",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "name": "getClassroom",
     "group": "Classrooms",
     "header": {
@@ -24,17 +24,31 @@ define({ "api": [
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "Object",
+            "type": "Number",
             "optional": false,
-            "field": "The",
-            "description": "<p>requested classroom</p>"
+            "field": "id",
+            "description": "<p>the id of the classroom</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the classroom</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "projects",
+            "description": "<p>A list of the classroom's projects</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n  [{\n     id: 1,\n     name: \"Build Week 2\",\n  }]",
+          "content": "HTTP/1.1 200 OK\n  {\n     \"id\": 1,\n     \"name\": \"Build Week 2\",\n     \"projects\": [\n                   {\n                      \"id\": 1,\n                      \"name\": \" a project\",\n                      \"description\": \"This is a long and boring project.\"\n                   }\n                 ]\n  }",
           "type": "json"
         }
       ]
