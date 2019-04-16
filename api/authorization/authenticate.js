@@ -32,17 +32,17 @@ function restrict(req, res, next) {
   }
 }
 
-function restrictAdmin(req, res, next) {
+async function restrictAdmin(req, res, next) {
   if (req.header("Authorization")) {
     if (!req.user) {
       // needs basic auth
       const token = req.header("Authorization");
-      jwt.verify(token, jwtSecret, (error, decocedToken) => {
+      await jwt.verify(token, jwtSecret, async (error, decocedToken) => {
         if (error) {
           res.status(403).json({ message: "No valid credentials provided" });
         } else {
           const id = decocedToken.subject;
-          db("users")
+          await db("users")
             .where({ id })
             .first()
             .then(user => {

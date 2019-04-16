@@ -881,6 +881,11 @@
     "title": "Get list of all roles",
     "version": "0.1.0",
     "name": "getRoles",
+    "permission": [
+      {
+        "name": "Admin"
+      }
+    ],
     "group": "Roles",
     "header": {
       "fields": {
@@ -924,6 +929,11 @@
     "title": "Create a role",
     "version": "0.1.0",
     "name": "postRole",
+    "permission": [
+      {
+        "name": "Admin"
+      }
+    ],
     "group": "Roles",
     "header": {
       "fields": {
@@ -995,6 +1005,100 @@
         {
           "title": "Error-Response: Name in use",
           "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"Role already exists\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/roles-router.js",
+    "groupTitle": "Roles"
+  },
+  {
+    "type": "put",
+    "url": "api/roles/:id",
+    "title": "Update a role",
+    "version": "0.1.0",
+    "name": "putRole",
+    "permission": [
+      {
+        "name": "Admin"
+      }
+    ],
+    "group": "Roles",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of role</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"name\":\"frontend\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the frontend</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of the role</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"id\": \"1\",\n  \"name\": \"frontend\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Not all fields",
+          "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"All fields required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: Name in use",
+          "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"Cannot update because that role already exists\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: Not found",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Role not found\"\n}",
           "type": "json"
         }
       ]
