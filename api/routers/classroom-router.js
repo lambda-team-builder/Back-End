@@ -12,7 +12,7 @@ const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
  *  @apiName postClassroom
  *  @apiGroup Classrooms
  *
- *  @apiHeader {String} Authorization Users auth token.
+ *  @apiHeader {String} Authorization Admin auth token.
  *
  *  @apiParam {String} name Name of classroom
  *
@@ -42,6 +42,11 @@ const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
  *    {
  *      "message": "classroom name is already in use"
  *    }
+ *  @apiErrorExample Error-Response: not admin
+ *  HTTP/1.1 401 UNAUTHORIZED
+ *  {
+ *    message: "User does not have permission to perform this action."
+ *  }
  */
 router.post("/", restrictAdmin, (req, res) => {
   const { name } = req.body;

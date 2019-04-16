@@ -48,7 +48,7 @@
         }
       ]
     },
-    "filename": "./api/routers/classroom-router.js",
+    "filename": "api/routers/classroom-router.js",
     "groupTitle": "Classrooms"
   },
   {
@@ -91,7 +91,7 @@
         }
       ]
     },
-    "filename": "./api/routers/classroom-router.js",
+    "filename": "api/routers/classroom-router.js",
     "groupTitle": "Classrooms"
   },
   {
@@ -109,7 +109,7 @@
             "type": "String",
             "optional": false,
             "field": "Authorization",
-            "description": "<p>Users auth token.</p>"
+            "description": "<p>Admin auth token.</p>"
           }
         ]
       }
@@ -179,10 +179,15 @@
           "title": "Error-Response: Name in use",
           "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"classroom name is already in use\"\n}",
           "type": "json"
+        },
+        {
+          "title": "Error-Response: not admin",
+          "content": "HTTP/1.1 401 UNAUTHORIZED\n{\n  message: \"User does not have permission to perform this action.\"\n}",
+          "type": "json"
         }
       ]
     },
-    "filename": "./api/routers/classroom-router.js",
+    "filename": "api/routers/classroom-router.js",
     "groupTitle": "Classrooms"
   },
   {
@@ -254,7 +259,7 @@
         }
       ]
     },
-    "filename": "./api/routers/classroom-router.js",
+    "filename": "api/routers/classroom-router.js",
     "groupTitle": "Classrooms"
   },
   {
@@ -347,7 +352,7 @@
         }
       ]
     },
-    "filename": "./api/routers/classroom-router.js",
+    "filename": "api/routers/classroom-router.js",
     "groupTitle": "Classrooms"
   },
   {
@@ -424,7 +429,7 @@
         }
       ]
     },
-    "filename": "./api/routers/classroom-router.js",
+    "filename": "api/routers/classroom-router.js",
     "groupTitle": "Classrooms"
   },
   {
@@ -537,7 +542,7 @@
         }
       ]
     },
-    "filename": "./api/routers/project_members-router.js",
+    "filename": "api/routers/project_members-router.js",
     "groupTitle": "ProjectMembers"
   },
   {
@@ -610,7 +615,7 @@
         }
       ]
     },
-    "filename": "./api/routers/project_members-router.js",
+    "filename": "api/routers/project_members-router.js",
     "groupTitle": "ProjectMembers"
   },
   {
@@ -683,80 +688,7 @@
         }
       ]
     },
-    "filename": "./api/routers/project_members-router.js",
-    "groupTitle": "ProjectMembers"
-  },
-  {
-    "type": "put",
-    "url": "api/project_members/:id/leave",
-    "title": "User leaves a member slot",
-    "version": "0.1.0",
-    "name": "putProjectMembers__id_leave",
-    "group": "ProjectMembers",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>User's auth token.</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>The id of the project member</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "role_id",
-            "description": "<p>The role id of this project member</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "user_id",
-            "description": "<p>The user id of this project member</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "classroom_project_id",
-            "description": "<p>The id of C.P. that this project member belongs to</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response: add user",
-          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1,\n  \"role_id\": 1,\n  \"user_id\": null,\n  \"classroom_project_id\": 1\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response: spot filled",
-          "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"User already not filling this spot.\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "./data/models/projectMembersModel.js",
+    "filename": "api/routers/project_members-router.js",
     "groupTitle": "ProjectMembers"
   },
   {
@@ -808,7 +740,7 @@
         }
       ]
     },
-    "filename": "./api/routers/project-router.js",
+    "filename": "api/routers/project-router.js",
     "groupTitle": "Projects"
   },
   {
@@ -906,7 +838,7 @@
         }
       ]
     },
-    "filename": "./api/routers/project-router.js",
+    "filename": "api/routers/project-router.js",
     "groupTitle": "Projects"
   },
   {
@@ -949,7 +881,7 @@
         }
       ]
     },
-    "filename": "./api/routers/roles-router.js",
+    "filename": "api/routers/roles-router.js",
     "groupTitle": "Roles"
   },
   {
@@ -1033,7 +965,7 @@
         }
       ]
     },
-    "filename": "./api/routers/roles-router.js",
+    "filename": "api/routers/roles-router.js",
     "groupTitle": "Roles"
   },
   {
@@ -1132,7 +1064,7 @@
         }
       ]
     },
-    "filename": "./api/routers/auth-router.js",
+    "filename": "api/routers/auth-router.js",
     "groupTitle": "User"
   },
   {
@@ -1238,7 +1170,7 @@
         }
       ]
     },
-    "filename": "./api/routers/auth-router.js",
+    "filename": "api/routers/auth-router.js",
     "groupTitle": "User"
   }
 ]
