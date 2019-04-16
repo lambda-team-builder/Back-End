@@ -188,7 +188,7 @@ router.post(
  *         name: "Build Week 2"
  *       },
  *       {
- *          id: 1,
+ *          id: 2,
  *         name: "Build Week 2"
  *       }]
  */
