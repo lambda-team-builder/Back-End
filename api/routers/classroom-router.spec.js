@@ -27,43 +27,48 @@ describe("classroom-router.js", () => {
     token = JSON.parse(res.text).token;
   });
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     // resets classrooms and classroom admins
     await Classrooms.reset();
   });
-  afterAll(async () => {
+
+  afterEach(async () => {
     // resets classrooms and classroom admins
     await Classrooms.reset();
+  });
+
+  afterAll(async () => {
     await db("users").truncate();
+    db.destroy();
   });
 
   describe("POST /api/classrooms/", () => {
-    it("returns 201 on success", () => {
-      return request(server)
+    it("returns 201 on success", async () => {
+      return await request(server)
         .post("/api/classrooms/")
         .set("Authorization", token)
         .send({ name: "group" })
         .expect(201);
     });
-    it("No name in req return status 401", () => {
-      return request(server)
+    it("No name in await req return status 401", async () => {
+      return await request(server)
         .post("/api/classrooms/")
         .set("Authorization", token)
         .expect(401);
     });
-    it("if name taken return status 403", async () => {
+    it("if name taken await return status 403", async () => {
       await request(server)
         .post("/api/classrooms/")
         .set("Authorization", token)
         .send({ name: "group" });
-      return request(server)
+      return await request(server)
         .post("/api/classrooms/")
         .set("Authorization", token)
         .send({ name: "group" })
         .expect(403);
     });
-    it("has right res body", () => {
-      return request(server)
+    it("has right res body", async () => {
+      return await request(server)
         .post("/api/classrooms/")
         .set("Authorization", token)
         .send({ name: "group" })
@@ -82,7 +87,7 @@ describe("classroom-router.js", () => {
         .set("Authorization", token)
         .send({ name: "Build Week 20" });
 
-      return request(server)
+      return await request(server)
         .get("/api/classrooms")
         .set("Authorization", token)
         .expect(200);
@@ -94,7 +99,7 @@ describe("classroom-router.js", () => {
         .set("Authorization", token)
         .send({ name: "Build Week 20" });
 
-      return request(server)
+      return await request(server)
         .get("/api/classrooms")
         .set("Authorization", token)
         .expect([
@@ -105,8 +110,8 @@ describe("classroom-router.js", () => {
         ]);
     });
 
-    it("should return an empty classroom list if no classrooms exist", () => {
-      return request(server)
+    it("should return an empty classroom list if no classrooms exist", async () => {
+      return await request(server)
         .get("/api/classrooms")
         .set("Authorization", token)
         .expect([]);
@@ -120,7 +125,7 @@ describe("classroom-router.js", () => {
         .set("Authorization", token)
         .send({ name: "Build Week 20" });
 
-      return request(server)
+      return await request(server)
         .get("/api/classrooms/1")
         .set("Authorization", token)
         .expect(200);
@@ -132,7 +137,7 @@ describe("classroom-router.js", () => {
         .set("Authorization", token)
         .send({ name: "Build Week 20" });
 
-      return request(server)
+      return await request(server)
         .get("/api/classrooms/1")
         .set("Authorization", token)
         .expect({
@@ -141,15 +146,15 @@ describe("classroom-router.js", () => {
         });
     });
 
-    it("should return 404 if no classroom with given ID exists", () => {
-      return request(server)
+    it("should return 404 if no classroom with given ID exists", async () => {
+      return await request(server)
         .get("/api/classrooms/1")
         .set("Authorization", token)
         .expect(404);
     });
 
-    it("should return an error message if no classroom with given ID exists", () => {
-      return request(server)
+    it("should return an error message if no classroom with given ID exists", async () => {
+      return await request(server)
         .get("/api/classrooms/1")
         .set("Authorization", token)
         .expect({
@@ -165,7 +170,7 @@ describe("classroom-router.js", () => {
         .set("Authorization", token)
         .send({ name: "Build Week 20" });
 
-      return request(server)
+      return await request(server)
         .put("/api/classrooms/1")
         .set("Authorization", token)
         .send({ name: "Build Week 19" })
@@ -178,23 +183,23 @@ describe("classroom-router.js", () => {
         .set("Authorization", token)
         .send({ name: "Build Week 20" });
 
-      return request(server)
+      return await request(server)
         .put("/api/classrooms/1")
         .set("Authorization", token)
         .send({ name: "Build Week 19" })
         .expect({ id: 1, name: "Build Week 19" });
     });
 
-    it("should return 400 if name is not provided", () => {
-      return request(server)
+    it("should return 400 if name is not provided", async () => {
+      return await request(server)
         .put("/api/classrooms/1")
         .set("Authorization", token)
         .send({ name: "" })
         .expect(400);
     });
 
-    it("should return an error message if name is not provided", () => {
-      return request(server)
+    it("should return an error message if name is not provided", async () => {
+      return await request(server)
         .put("/api/classrooms/1")
         .set("Authorization", token)
         .send({ name: "" })
@@ -203,16 +208,16 @@ describe("classroom-router.js", () => {
         });
     });
 
-    it("should return 404 if no classroom with given ID exists", () => {
-      return request(server)
+    it("should return 404 if no classroom with given ID exists", async () => {
+      return await request(server)
         .put("/api/classrooms/1")
         .set("Authorization", token)
         .send({ name: "Build Week 19" })
         .expect(404);
     });
 
-    it("should return an error message if no classroom with given ID exists", () => {
-      return request(server)
+    it("should return an error message if no classroom with given ID exists", async () => {
+      return await request(server)
         .put("/api/classrooms/1")
         .set("Authorization", token)
         .send({ name: "Build Week 19" })

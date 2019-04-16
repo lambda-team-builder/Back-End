@@ -4,13 +4,18 @@ const server = require("../server.js");
 const db = require("../../data/dbConfig");
 
 describe("auth-router.js", () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
+    await db("users").truncate();
+  });
+
+  afterEach(async () => {
     await db("users").truncate();
   });
 
   afterAll(async () => {
-    await db("users").truncate();
+    db.destroy();
   });
+
   const testUser = {
     name: "Ryan Hamblin",
     email: "ryan.hamblin@lambdaschool.com",
@@ -143,7 +148,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
 
-      return request(server)
+      return await request(server)
         .put("/api/auth/login")
         .send({ email: testUser.email, password: testUser.password })
         .expect(200);
@@ -154,7 +159,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
 
-      return request(server)
+      return await request(server)
         .put("/api/auth/login")
         .send({ email: testUser.email, password: testUser.password })
         .expect("Content-Type", /json/);
@@ -165,7 +170,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
 
-      return request(server)
+      return await request(server)
         .put("/api/auth/login")
         .send({ email: testUser.email, password: testUser.password })
         .then(response => {
@@ -228,7 +233,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
 
-      return request(server)
+      return await request(server)
         .put("/api/auth/login")
         .send({ email: testUser.email, password: "321" })
         .expect(401);
@@ -239,7 +244,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
 
-      return request(server)
+      return await request(server)
         .put("/api/auth/login")
         .send({ email: testUser.email, password: "321" })
         .expect("Content-Type", /json/);
@@ -250,7 +255,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
 
-      return request(server)
+      return await request(server)
         .put("/api/auth/login")
         .send({ email: testUser.email, password: "321" })
         .then(response => {
