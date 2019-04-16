@@ -173,7 +173,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n   [{\n      id: 1,\n     name: \"Build Week 2\"\n   },\n   {\n      id: 1,\n     name: \"Build Week 2\"\n   }]",
+          "content": "HTTP/1.1 200 OK\n   [{\n      id: 1,\n     name: \"Build Week 2\"\n   },\n   {\n      id: 2,\n     name: \"Build Week 2\"\n   }]",
           "type": "json"
         }
       ]
