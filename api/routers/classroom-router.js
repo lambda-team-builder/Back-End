@@ -10,6 +10,7 @@ const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
  *  @api {post} api/classrooms/ Create a classroom
  *  @apiVersion 0.1.0
  *  @apiName postClassroom
+ *  @apiPermission admin
  *  @apiGroup Classrooms
  *
  *  @apiHeader {String} Authorization Admin auth token.
@@ -73,6 +74,7 @@ router.post("/", restrictAdmin, (req, res) => {
  *  @api {post} api/classrooms/:id/projects Add a project to a classroom
  *  @apiVersion 0.1.0
  *  @apiName postClassroomProject
+ *  @apiPermission  classroomAdmin
  *  @apiGroup Classrooms
  *
  *  @apiHeader {String} Authorization Users auth token.
@@ -300,6 +302,24 @@ router.put("/:id", async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 });
+
+//classrooms/:id
+// after athenticate route
+function restrictClassroomAdmin(req, res, next) {
+  const user_id = user.id;
+  const classroom_id = req.params.id;
+  ClassroomAdmin.getAdminsByClassRoomId(classroom_id)
+    .then(user_ids => {
+      if (user_ids.includes(user_id)) {
+        next();
+      } else {
+        res.status(401).json({ message: "Not a admin for this classroom" });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ message: "Server Error", error });
+    });
+}
 
 router.delete("/:id", (req, res) => {});
 

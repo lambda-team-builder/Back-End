@@ -100,6 +100,11 @@ define({ "api": [
     "title": "Create a classroom",
     "version": "0.1.0",
     "name": "postClassroom",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
     "group": "Classrooms",
     "header": {
       "fields": {
