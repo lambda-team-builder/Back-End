@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 
 const generateToken = require("../authorization/authenticate.js").generateToken;
 
+const restrict = require("../authorization/authenticate").restrict;
+
 const db = require("../../data/dbConfig.js");
 const Users = require("../../data/models/usersModel.js");
 
@@ -161,6 +163,38 @@ router.put("/login", async (req, res) => {
     }
   } catch (error) {
     res.status(500).json(error);
+  }
+});
+
+/**
+ *  @api {get} api/auth/refresh Refresh JWT
+ *  @apiVersion 0.1.0
+ *  @apiName refreshUser
+ *  @apiGroup User
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *
+ *  @apiSuccess {String} token The auth token
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "token": "GHFHJUI#Y$SAHDJKHA"
+ *    }
+ *  @apiErrorExample Error-Response: Bad credentials
+ *    HTTP/1.1 403 RESTRICTED
+ *    {
+ *      "message": "No valid credentials provided"
+ *    }
+ */
+
+router.get("/refresh", restrict, async (req, res) => {
+  const token = generateToken(req.user);
+  if (token) {
+    res.status(200).json({ token });
+  } else {
+    res.status(500).json("Show Connor this error", error);
   }
 });
 
