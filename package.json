@@ -10,7 +10,7 @@
     "local-test": "cross-env DB_ENV=testing jest --watch --verbose --runInBand",
     "coverage": "jest --coverage --runInBand",
     "docs": "npx apidoc -f .js -i ./api/routers -o docs/ -e node_modules/",
-    "migrate-seed": "nex migrate:latest --env testing && knex seed:run --env testing",
+    "migrate-seed-test": "knex migrate:latest --env testing && knex seed:run --env testing",
     "rollback": "knex migrate:rollback"
   },
   "repository": {
