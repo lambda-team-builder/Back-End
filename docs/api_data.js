@@ -1068,6 +1068,58 @@ define({ "api": [
     "groupTitle": "User"
   },
   {
+    "type": "get",
+    "url": "api/auth/refresh",
+    "title": "Refresh JWT",
+    "version": "0.1.0",
+    "name": "refreshUser",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>The auth token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"token\": \"GHFHJUI#Y$SAHDJKHA\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Bad credentials",
+          "content": "HTTP/1.1 403 RESTRICTED\n{\n  \"message\": \"No valid credentials provided\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/auth-router.js",
+    "groupTitle": "User"
+  },
+  {
     "type": "post",
     "url": "api/auth/register",
     "title": "Register a user",
