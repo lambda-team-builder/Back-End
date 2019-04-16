@@ -1362,5 +1362,96 @@ define({ "api": [
     },
     "filename": "api/routers/auth-router.js",
     "groupTitle": "User"
+  },
+  {
+    "type": "put",
+    "url": "api/auth/password",
+    "title": "Update users password",
+    "version": "0.1.0",
+    "name": "updatePasswordUser",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Email of user</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>Current password of user</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "new_password",
+            "description": "<p>New password of user</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"email\":\"connor@gmail.com\",\n \"password\": \"1234\",\n \"new_password\": \"12345\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Auth Token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"token\" : \"hdf78623rhfkjsdhkf\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Not all fields",
+          "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"message\": \"Email, password and new password are required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: Cannot login",
+          "content": "HTTP/1.1 401 UNAUTHORIZED\n{\n  \"message\": \"Bad credentials\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/auth-router.js",
+    "groupTitle": "User"
   }
 ] });

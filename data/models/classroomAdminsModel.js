@@ -6,5 +6,6 @@ async function getAdminsByClassRoomId(classroom_id) {
   const adminIdsInObj = await db("classroom_admins")
     .select("user_id")
     .where({ classroom_id });
-  return adminIdsInObj.map(admin => admin.user_id);
+  const ids = adminIdsInObj.map(admin => admin.user_id);
+  return ids;
 }

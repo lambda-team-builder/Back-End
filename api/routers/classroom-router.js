@@ -149,24 +149,12 @@ router.post("/:id/projects", restrictClassroomAdmin, (req, res) => {
 
 router.post(
   "/:id/classroom_projects/:classroom_project_id/project_members",
+  restrictClassroomAdmin,
   async (req, res) => {
     const role_id = req.body.role_id;
     const classroom_project_id = req.params.classroom_project_id * 1;
-    const classroom_id = req.params.id * 1;
-    // NEED TO MAKE SURE THE USER IS A ADMIN OF THIS CLASSROOM
-    let classroomAdminUserIds;
-    try {
-      classroomAdminUserIds = await ClassroomAdmin.getAdminsByClassRoomId(
-        classroom_id
-      );
-    } catch (error) {
-      res.status(500).json({ message: "Server error", error });
-    }
-    if (!classroomAdminUserIds.includes(req.user.id)) {
-      res.status(403).json({
-        message: "This user is not a group admin for this group"
-      });
-    } else if (role_id && classroom_project_id) {
+
+    if (role_id && classroom_project_id) {
       ProjectMember.create(role_id, classroom_project_id)
         .then(projectMember => {
           res.status(201).json(projectMember);
