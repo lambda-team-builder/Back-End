@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
       .string("name", 255)
       .notNullable()
       .unique();
-    table.string("description", 255).notNullable();
+    table.text("description", 3000).notNullable();
   });
 };
 
