@@ -4,14 +4,9 @@ const server = require("../server.js");
 const db = require("../../data/dbConfig");
 
 describe("auth-router.js", () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await db("users").truncate();
-  });
-
-  afterEach(async () => {
-    await db("users").truncate();
-    db.destroy();
-  });
+  }, 10000);
 
   afterAll(async () => {
     db.destroy();
@@ -25,13 +20,12 @@ describe("auth-router.js", () => {
   };
 
   const userType = {
-    id: 2,
-    name: "student"
+    id: 1,
+    name: "admin"
   };
 
   describe("POST /api/auth/register", () => {
     it("should return 201 status code on success", () => {
-
       return request(server)
         .post("/api/auth/register")
         .send(testUser)
