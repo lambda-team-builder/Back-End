@@ -6,11 +6,11 @@
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
-    "test": "cross-env DB_ENV=testing jest --verbose --runInBand",
+    "test": "knex migrate:latest --env testing && knex seed:run --env testing && cross-env DB_ENV=testing jest --verbose --runInBand",
+    "local-test": "cross-env DB_ENV=testing jest --watch --verbose --runInBand",
     "coverage": "jest --coverage --runInBand",
     "docs": "npx apidoc -f .js -i ./api/routers -o docs/ -e node_modules/",
-    "migrate": "knex migrate:latest",
-    "seed": "knex seed:run",
+    "migrate-seed": "nex migrate:latest --env testing && knex seed:run --env testing",
     "rollback": "knex migrate:rollback"
   },
   "repository": {
