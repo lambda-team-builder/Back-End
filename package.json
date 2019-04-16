@@ -12,7 +12,7 @@
     "coverage": "jest --coverage --runInBand",
     "docs": "npx apidoc -f .js -i ./api/routers -o docs/ -e node_modules/",
     "migrate-seed": "knex migrate:latest --env testing && knex seed:run --env testing",
-    "rollback": "knex migrate:rollback"
+    "rollback": "knex migrate:rollback --env production"
   },
   "repository": {
     "type": "git",
