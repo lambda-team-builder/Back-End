@@ -26,6 +26,13 @@ async function getById(id) {
 }
 
 function getClassroomProjectRoles(classroom_project_id) {
+  // SELECT pm.id, pm.user_id, u.name as user_name, r.id as role_id ,r.name as role_name
+  // FROM project_members AS pm
+  // JOIN roles as r
+  // ON r.id = pm.role_id
+  // LEFT JOIN users as u
+  // ON u.id = pm.user_id
+  // WHERE pm.classroom_project_id = 1
   return db
     .from("project_members")
     .select(
@@ -35,15 +42,13 @@ function getClassroomProjectRoles(classroom_project_id) {
       "project_members.id",
       "roles.name as role_name"
     )
-    .join("roles", { "project_members.role_id": "roles.id" })
-    .leftJoin("users", { "project_members.user_id": "users.id" })
-    .where({ "project_members.classroom_project_id": classroom_project_id });
+    .join("roles", {
+      "project_members.role_id": "roles.id"
+    })
+    .leftJoin("users", {
+      "project_members.user_id": "users.id"
+    })
+    .where({
+      "project_members.classroom_project_id": classroom_project_id
+    });
 }
-
-// SELECT pm.id, pm.user_id, u.name as user_name, r.id as role_id ,r.name as role_name
-// FROM project_members AS pm
-// JOIN roles as r
-// ON r.id = pm.role_id
-// LEFT JOIN users as u
-// ON u.id = pm.user_id
-// WHERE pm.classroom_project_id = 1

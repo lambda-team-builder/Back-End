@@ -202,7 +202,7 @@ router.get("/", async (req, res) => {
   }
 });
 /**
- *  @api {get} api/classrooms/:id Find classroom by ID
+ *  @api {get} api/classrooms/:id Get classroom by ID
  *  @apiVersion 0.2.0
  *  @apiName getClassroom
  *  @apiGroup Classrooms
@@ -260,7 +260,7 @@ router.get("/:id", async (req, res) => {
  *  @apiSuccess {Array} project_members A list of project member objects
  *
  *  @apiSuccessExample Success-Response:
- *    HTTP/1.1 200 CREATED
+ *    HTTP/1.1 200 OK
  *    {
  *        "id": 1,
  *        "name": " a project",
