@@ -10,6 +10,7 @@ describe("auth-router.js", () => {
 
   afterEach(async () => {
     await db("users").truncate();
+    db.destroy();
   });
 
   afterAll(async () => {
@@ -30,6 +31,7 @@ describe("auth-router.js", () => {
 
   describe("POST /api/auth/register", () => {
     it("should return 201 status code on success", () => {
+
       return request(server)
         .post("/api/auth/register")
         .send(testUser)

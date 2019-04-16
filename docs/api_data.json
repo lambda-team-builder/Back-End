@@ -2,7 +2,7 @@
   {
     "type": "get",
     "url": "api/classrooms/:id",
-    "title": "Find classroom by ID",
+    "title": "Get classroom by ID",
     "version": "0.2.0",
     "name": "getClassroom",
     "group": "Classrooms",
@@ -48,7 +48,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n  {\n     \"id\": 1,\n     \"name\": \"Build Week 2\",\n     \"projects\": [\n                   {\n                      \"id\": 1,\n                      \"name\": \" a project\",\n                      \"description\": \"This is a long and boring project.\"\n                   }\n                 ]\n  }",
+          "content": "HTTP/1.1 200 OK\n\n  {\n      \"id\": 1,\n      \"name\": \"Classroom one\",\n      \"projects\": [\n          {\n              \"id\": 1,\n              \"name\": \" a project\",\n              \"description\": \"This is a long and boring project.\",\n              \"roles\": [\n                  {\n                      \"id\": 1,\n                      \"user_id\": 1,\n                      \"user_name\": \"admin\",\n                      \"role_name\": \"Lead\"\n                  },\n                  {\n                      \"id\": 2,\n                      \"user_id\": null,\n                      \"user_name\": null,\n                      \"role_name\": \"Backend\"\n                  },\n                  {\n                      \"id\": 3,\n                      \"user_id\": 2,\n                      \"user_name\": \"connor\",\n                      \"role_name\": \"Backend\"\n                  },\n                  {\n                      \"id\": 4,\n                      \"user_id\": null,\n                      \"user_name\": null,\n                      \"role_name\": \"Lead\"\n                  }\n              ]\n          }\n      ]\n  }",
           "type": "json"
         }
       ]
@@ -121,7 +121,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 CREATED\n{\n    \"id\": 1,\n    \"name\": \" a project\",\n    \"description\": \"This is a long and boring project.\",\n    \"project_members\": [\n        {\n            \"id\": 1,\n            \"user_id\": 1,\n            \"user_name\": \"admin\",\n            \"role_name\": \"Lead\"\n        },\n        {\n            \"id\": 2,\n            \"user_id\": null,\n            \"user_name\": null,\n            \"role_name\": \"Backend\"\n        },\n        {\n            \"id\": 3,\n            \"user_id\": 2,\n            \"user_name\": \"connor\",\n            \"role_name\": \"Backend\"\n        },\n        {\n            \"id\": 4,\n            \"user_id\": null,\n            \"user_name\": null,\n            \"role_name\": \"Lead\"\n        }\n    ]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"id\": 1,\n    \"name\": \" a project\",\n    \"description\": \"This is a long and boring project.\",\n    \"project_members\": [\n        {\n            \"id\": 1,\n            \"user_id\": 1,\n            \"user_name\": \"admin\",\n            \"role_name\": \"Lead\"\n        },\n        {\n            \"id\": 2,\n            \"user_id\": null,\n            \"user_name\": null,\n            \"role_name\": \"Backend\"\n        },\n        {\n            \"id\": 3,\n            \"user_id\": 2,\n            \"user_name\": \"connor\",\n            \"role_name\": \"Backend\"\n        },\n        {\n            \"id\": 4,\n            \"user_id\": null,\n            \"user_name\": null,\n            \"role_name\": \"Lead\"\n        }\n    ]\n}",
           "type": "json"
         }
       ]
@@ -173,7 +173,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n   [{\n      id: 1,\n     name: \"Build Week 2\"\n   },\n   {\n      id: 1,\n     name: \"Build Week 2\"\n   }]",
+          "content": "HTTP/1.1 200 OK\n   [{\n      id: 1,\n     name: \"Build Week 2\"\n   },\n   {\n      id: 2,\n     name: \"Build Week 2\"\n   }]",
           "type": "json"
         }
       ]
