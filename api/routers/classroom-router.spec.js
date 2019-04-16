@@ -12,26 +12,30 @@ const admin = {
 
 describe("classroom-router.js", () => {
   let token;
+  let user_id;
+
   beforeAll(async (done) => {
     // Register
-    // await request(server)
-    //   .post("/api/auth/register")
-    //   .send(admin);
+    const registerRes = await request(server)
+      .post("/api/auth/register")
+      .send(admin);
 
     // Login
-    const res = await request(server)
+    const loginRes = await request(server)
       .put("/api/auth/login")
       .send({
-        email: "admin@admin",
-        password: "123"
+        email: admin.email,
+        password: admin.password
       });
-    token = JSON.parse(res.text).token;
+
+    token = JSON.parse(loginRes.text).token;
+    user_id = JSON.parse(registerRes.text).id;
 
     done();
   });
 
   beforeEach(async () => {
-    // resets classrooms and classroom admins
+    // resets classrooms
     await Classrooms.reset();
   });
 
@@ -40,38 +44,40 @@ describe("classroom-router.js", () => {
   });
 
   describe("POST /api/classrooms/", () => {
-    it("returns 201 on success", async () => {
+    it("should return 201 on success", async () => {
       return await request(server)
         .post("/api/classrooms/")
         .set("Authorization", token)
-        .send({ name: "group" })
+        .send({ name: "group", user_id })
         .expect(201);
     });
 
-    it("No name in await req return status 401", async () => {
+    it("Should return 401 if name is not provided", async () => {
       return await request(server)
         .post("/api/classrooms/")
         .set("Authorization", token)
+        .send({ name: "", user_id })
         .expect(401);
     });
 
-    it("if name taken await return status 403", async () => {
+    it("should return 403 if classroom name is taken", async () => {
       await request(server)
         .post("/api/classrooms/")
         .set("Authorization", token)
-        .send({ name: "group" });
+        .send({ name: "group", user_id })
+
       return await request(server)
         .post("/api/classrooms/")
         .set("Authorization", token)
-        .send({ name: "group" })
+        .send({ name: "group", user_id })
         .expect(403);
     });
 
-    it("has right res body", async () => {
+    it("should return tailored response on success", async () => {
       return await request(server)
         .post("/api/classrooms/")
         .set("Authorization", token)
-        .send({ name: "group" })
+        .send({ name: "group", user_id })
         .expect({
           id: 1,
           name: "group",
