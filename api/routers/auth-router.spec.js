@@ -4,9 +4,10 @@ const server = require("../server.js");
 const db = require("../../data/dbConfig");
 
 describe("auth-router.js", () => {
-  afterEach(async () => {
+  afterEach(async (done) => {
     // await db("users").truncate();
     await db("users").where("email", "ryan.hamblin@lambdaschool.com").del();
+    done();
   });
 
   afterAll(async () => {
@@ -38,7 +39,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
       const user = JSON.parse(res.text);
-      expect(user.id).toBe(1);
+      expect(user.id).toBeTruthy();
       expect(user.name).toBe(testUser.name);
       expect(user.email).toBe(testUser.email);
       expect(user.user_type).toEqual(userType);
@@ -78,7 +79,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
       const user = JSON.parse(res.text);
-      expect(user.id).toBe(1);
+      expect(user.id).toBeTruthy();
       expect(user.name).toBe(testUser.name);
       expect(user.email).toBe(testUser.email);
       expect(user.user_type).toEqual(userType);
