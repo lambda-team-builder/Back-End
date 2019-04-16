@@ -265,7 +265,7 @@ router.get("/:id", async (req, res) => {
   try {
     const classroom = await Classrooms.getById(req.params.id);
 
-    if (classroom) {
+    if (classroom.name) {
       res.status(200).json(classroom);
     } else {
       res.status(404).json({ message: "Classroom not found" });

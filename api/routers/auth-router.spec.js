@@ -4,9 +4,10 @@ const server = require("../server.js");
 const db = require("../../data/dbConfig");
 
 describe("auth-router.js", () => {
-  beforeEach(async () => {
-    await db("users").truncate();
-  }, 10000);
+  afterEach(async () => {
+    // await db("users").truncate();
+    await db("users").where("email", "ryan.hamblin@lambdaschool.com").del();
+  });
 
   afterAll(async () => {
     db.destroy();
