@@ -10,7 +10,7 @@ exports.seed = function(knex, Promise) {
     { id: 8, project_id: 8, classroom_id: 2 },
     { id: 9, project_id: 9, classroom_id: 2 },
     { id: 10, project_id: 1, classroom_id: 2 },
-    { id: 12, project_id: 2, classroom_id: 1 },
-    { id: 13, project_id: 1, classroom_id: 1 }
+    { id: 11, project_id: 2, classroom_id: 1 },
+    { id: 12, project_id: 1, classroom_id: 1 }
   ]);
 };
