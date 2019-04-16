@@ -21,8 +21,8 @@ describe("classroom-router.js", () => {
     const res = await request(server)
       .put("/api/auth/login")
       .send({
-        email: admin.email,
-        password: admin.password
+        email: "admin@admin", 
+        password: "1234"
       });
     token = JSON.parse(res.text).token;
   });
