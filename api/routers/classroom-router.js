@@ -247,6 +247,68 @@ router.get("/:id", async (req, res) => {
   }
 });
 /**
+ *  @api {put} api/classrooms/:id/projects/:classroom_project_id get classroom project
+ *  @apiVersion 0.1.0
+ *  @apiName getClassroomProject
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiSuccess {Number} id the id of the classroom project
+ *  @apiSuccess {String} name The name of the project
+ *  @apiSuccess {String} description The description of the project
+ *  @apiSuccess {Array} project_members A list of project member objects
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 200 CREATED
+ *    {
+ *        "id": 1,
+ *        "name": " a project",
+ *        "description": "This is a long and boring project.",
+ *        "project_members": [
+ *            {
+ *                "id": 1,
+ *                "user_id": 1,
+ *                "user_name": "admin",
+ *                "role_name": "Lead"
+ *            },
+ *            {
+ *                "id": 2,
+ *                "user_id": null,
+ *                "user_name": null,
+ *                "role_name": "Backend"
+ *            },
+ *            {
+ *                "id": 3,
+ *                "user_id": 2,
+ *                "user_name": "connor",
+ *                "role_name": "Backend"
+ *            },
+ *            {
+ *                "id": 4,
+ *                "user_id": null,
+ *                "user_name": null,
+ *                "role_name": "Lead"
+ *            }
+ *        ]
+ *    }
+ *  @apiErrorExample Error-Response: If no project was found
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "Classroom not found"
+ *    }
+ */
+router.get("/:id/projects/:classroom_project_id", (req, res) => {
+  ClassroomProjects.getById(req.params.classroom_project_id * 1)
+    .then(project => {
+      res.status(200).json(project);
+    })
+    .catch(error => {
+      res.status(404).json({ message: "Classroom's project not found", error });
+    });
+});
+
+/**
  *  @api {put} api/classrooms/:id Edit classroom name
  *  @apiVersion 0.1.0
  *  @apiName putClassroom

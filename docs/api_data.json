@@ -66,6 +66,79 @@
     "groupTitle": "Classrooms"
   },
   {
+    "type": "put",
+    "url": "api/classrooms/:id/projects/:classroom_project_id",
+    "title": "get classroom project",
+    "version": "0.1.0",
+    "name": "getClassroomProject",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the id of the classroom project</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the project</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The description of the project</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "project_members",
+            "description": "<p>A list of project member objects</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 CREATED\n{\n    \"id\": 1,\n    \"name\": \" a project\",\n    \"description\": \"This is a long and boring project.\",\n    \"project_members\": [\n        {\n            \"id\": 1,\n            \"user_id\": 1,\n            \"user_name\": \"admin\",\n            \"role_name\": \"Lead\"\n        },\n        {\n            \"id\": 2,\n            \"user_id\": null,\n            \"user_name\": null,\n            \"role_name\": \"Backend\"\n        },\n        {\n            \"id\": 3,\n            \"user_id\": 2,\n            \"user_name\": \"connor\",\n            \"role_name\": \"Backend\"\n        },\n        {\n            \"id\": 4,\n            \"user_id\": null,\n            \"user_name\": null,\n            \"role_name\": \"Lead\"\n        }\n    ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: If no project was found",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom not found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
     "type": "get",
     "url": "api/classrooms/",
     "title": "Get list of all classrooms",
@@ -783,6 +856,11 @@
     "title": "Create a project",
     "version": "0.1.0",
     "name": "postProjects",
+    "permission": [
+      {
+        "name": "Admin"
+      }
+    ],
     "group": "Projects",
     "header": {
       "fields": {
