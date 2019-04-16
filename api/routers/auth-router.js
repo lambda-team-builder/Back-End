@@ -67,11 +67,11 @@ router.post("/register", async (req, res) => {
     Promise.all([userPromise, user_typePromise])
       .then(([user, user_type]) => {
         // Token only needs to be given after login no? Let me know
-        // const token = generateToken(user);
+        const token = generateToken(user);
         res.status(201).json({
           ...user,
           user_type,
-          // token
+          token
         });
       })
       .catch(error => {
