@@ -8,7 +8,7 @@
     "server": "nodemon index.js",
     "test": "cross-env DB_ENV=testing jest --watch --verbose --runInBand",
     "coverage": "jest --coverage --runInBand",
-    "docs": "npx apidoc -o docs/ -e node_modules/",
+    "docs": "npx apidoc -f .js -i ./api/routers -o docs/ -e node_modules/",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",
     "rollback": "knex migrate:rollback"

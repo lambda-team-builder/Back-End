@@ -10,7 +10,7 @@ async function create(name, email, user_type_id, password) {
       user_type_id,
       password
     })
-    .returning("id");
+    .returning("id"); // .returning(["id", "email", "user_type_id"])
   return { id, name, email };
 }
 
