@@ -26,8 +26,8 @@
             "group": "Success 200",
             "type": "Array",
             "optional": false,
-            "field": "projects",
-            "description": "<p>A list of the classroom's projects</p>"
+            "field": "classrooms",
+            "description": "<p>A list of classrooms.</p>"
           }
         ]
       },

@@ -10,7 +10,7 @@ const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
  *
  *  @apiHeader {String} Authorization Users auth token.
  *
- *  @apiSuccess {Array} projects A list of the classroom's projects
+ *  @apiSuccess {Array} classrooms A list of classrooms.
  *
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 200 OK
