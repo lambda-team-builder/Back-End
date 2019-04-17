@@ -36,7 +36,7 @@ router.get("/", async (req, res) => {
 });
 /**
  *  @api {get} api/classrooms/:id Get classroom by ID
- *  @apiVersion 0.2.0
+ *  @apiVersion 0.3.0
  *  @apiName getClassroom
  *  @apiGroup Classrooms
  *
@@ -58,30 +58,30 @@ router.get("/", async (req, res) => {
  *                  "name": " a project",
  *                  "description": "This is a long and boring project.",
  *                  "roles": [
- *                      {
- *                          "id": 1,
- *                          "user_id": 1,
- *                          "user_name": "admin",
- *                          "role_name": "Lead"
- *                      },
- *                      {
- *                          "id": 2,
- *                          "user_id": null,
- *                          "user_name": null,
- *                          "role_name": "Backend"
- *                      },
- *                      {
- *                          "id": 3,
- *                          "user_id": 2,
- *                          "user_name": "connor",
- *                          "role_name": "Backend"
- *                      },
- *                      {
- *                          "id": 4,
- *                          "user_id": null,
- *                          "user_name": null,
- *                          "role_name": "Lead"
- *                      }
+ *                     {
+ *                         "id": 1,
+ *                         "classroom_member_id": 1,
+ *                         "user_id": 2,
+ *                         "user_name": "Tim",
+ *                         "role_id": 1,
+ *                         "role_name": "Front end"
+ *                     },
+ *                     {
+ *                         "id": 6,
+ *                         "classroom_member_id": 6,
+ *                         "user_id": 7,
+ *                         "user_name": "Jon",
+ *                         "role_id": 1,
+ *                         "role_name": "Front end"
+ *                     },
+ *                     {
+ *                         "id": 11,
+ *                         "classroom_member_id": 3,
+ *                         "user_id": 4,
+ *                         "user_name": "Connor",
+ *                         "role_id": 2,
+ *                         "role_name": "Back end"
+ *                     }
  *                  ]
  *              }
  *          ]
@@ -128,30 +128,30 @@ router.get("/:id", async (req, res) => {
  *        "name": " a project",
  *        "description": "This is a long and boring project.",
  *        "project_members": [
- *            {
- *                "id": 1,
- *                "user_id": 1,
- *                "user_name": "admin",
- *                "role_name": "Lead"
- *            },
- *            {
- *                "id": 2,
- *                "user_id": null,
- *                "user_name": null,
- *                "role_name": "Backend"
- *            },
- *            {
- *                "id": 3,
- *                "user_id": 2,
- *                "user_name": "connor",
- *                "role_name": "Backend"
- *            },
- *            {
- *                "id": 4,
- *                "user_id": null,
- *                "user_name": null,
- *                "role_name": "Lead"
- *            }
+ *                     {
+ *                         "id": 1,
+ *                         "classroom_member_id": 1,
+ *                         "user_id": 2,
+ *                         "user_name": "Tim",
+ *                         "role_id": 1,
+ *                         "role_name": "Front end"
+ *                     },
+ *                     {
+ *                         "id": 6,
+ *                         "classroom_member_id": 6,
+ *                         "user_id": 7,
+ *                         "user_name": "Jon",
+ *                         "role_id": 1,
+ *                         "role_name": "Front end"
+ *                     },
+ *                     {
+ *                         "id": 11,
+ *                         "classroom_member_id": 3,
+ *                         "user_id": 4,
+ *                         "user_name": "Connor",
+ *                         "role_id": 2,
+ *                         "role_name": "Back end"
+ *                     }
  *        ]
  *    }
  *  @apiErrorExample Error-Response: If no project was found
@@ -169,5 +169,25 @@ router.get("/:id/projects/:classroom_project_id", (req, res) => {
       res.status(404).json({ message: "Classroom's project not found", error });
     });
 });
+
+//classrooms/:id
+// after athenticate route
+function restrictClassroomAdmin(req, res, next) {
+  const user_id = req.user.id;
+  const classroom_id = req.params.id * 1;
+  ClassroomAdmin.getAdminsByClassroomId(classroom_id)
+    .then(user_ids => {
+      if (user_ids.includes(user_id)) {
+        next();
+      } else if (user_id) {
+        next();
+      } else {
+        res.status(401).json({ message: "Not a admin for this classroom" });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ message: "Server Error", error });
+    });
+}
 
 module.exports = router;

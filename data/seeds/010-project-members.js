@@ -40,4 +40,3 @@ exports.seed = function(knex, Promise) {
     { id: 39, role_id: 6, classroom_member_id: null, classroom_project_id: 12 }
   ]);
 };
-//8 classroom 1

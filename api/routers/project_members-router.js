@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 const ProjectMember = require("../../data/models/projectMembersModel");
 
+const ClassroomMember = require("../../data/models/classroomMembersModel.js");
 /**
  *  @api {put} api/project_members/:id  Add user to a member slot for group admin
  *  @apiVersion 0.1.0
@@ -78,7 +79,7 @@ router.put("/:id", async (req, res) => {
     });
     // allow for admins to remove a user from a spot
   } else if (user_id || user_id === null) {
-    ProjectMember.updateUserId(project_member_id, user_id)
+    ProjectMember.updateClassroomMemberId(project_member_id, user_id)
       .then(projectMember => {
         if (projectMember === null) {
           res
@@ -114,35 +115,65 @@ router.put("/:id", async (req, res) => {
  *  @apiSuccessExample Success-Response: add user
  *    HTTP/1.1 201 CREATED
  *    {
- *      "id": 1,
- *      "role_id": 1,
- *      "user_id": 1,
- *      "classroom_project_id": 1
+ *        "id": 29,
+ *        "role_id": 5,
+ *        "classroom_member_id": 20,
+ *        "classroom_project_id": 5
  *    }
  *  @apiErrorExample Error-Response: spot filled
  *    HTTP/1.1 403 FORBIDDEN
  *    {
  *      "message": "Spot is already filled"
  *    }
+ *  @apiErrorExample Error-Response: not is classroom
+ *    HTTP/1.1 400 BAD REQUEST
+ *    {
+ *      "message": "User not in that classroom"
+ *    }
  */
 // user joins a member_slot
 router.put("/:id/join", async (req, res) => {
+  // get list of this users classrooms
+  const user_id = req.user.id;
+  // check if user belongs to this classroom
+  let classroomsOfUser;
+  let classroomOfProjectMember;
   try {
-    const project_member_id = req.params.id * 1;
-    // can only join if the slot is open
-    const projectMember = await ProjectMember.getById(project_member_id);
-    if (projectMember.user_id === null) {
-      // it is open
-      const newProjectMember = await ProjectMember.updateUserId(
-        project_member_id,
-        req.user.user_id
-      );
-      res.status(200).json(newProjectMember);
-    } else {
-      res.status(403).json({ message: "Spot is already filled" });
-    }
+    classroomsOfUser = await ClassroomMember.getAllClassroomsByUserId(user_id);
+    classroomOfProjectMember = await ProjectMember.getClassroomIdByProjectMemberId(
+      req.params.id * 1
+    );
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server Error", error });
+  }
+
+  const classroom_member = classroomsOfUser.find(
+    classroom => classroom.classroom_id === classroomOfProjectMember
+  );
+  if (!classroom_member) {
+    res.status(400).json({ message: "User not in that classroom" });
+  } else {
+    try {
+      const project_member_id = req.params.id * 1;
+      // can only join if the slot is open
+      const projectMember = await ProjectMember.getById(project_member_id);
+      if (projectMember.classroom_member_id === null) {
+        // it is open
+        const newProjectMember = await ProjectMember.updateClassroomMemberId(
+          project_member_id,
+          classroom_member.classroom_member_id
+        );
+        res.status(200).json(newProjectMember);
+      } else {
+        res.status(403).json({
+          message: "Spot is already filled"
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: "Server error"
+      });
+    }
   }
 });
 /**
@@ -175,10 +206,12 @@ router.put("/:id/join", async (req, res) => {
 router.put("/:id/leave", async (req, res) => {
   try {
     const project_member_id = req.params.id * 1;
-    // can only leave if this user is alread a member
-    const projectMember = await ProjectMember.getById(project_member_id);
+    // can only leave if this user is already a member
+    const projectMember = await ProjectMember.getUserIdByProjectMember(
+      project_member_id
+    );
     if (projectMember.user_id === req.user.id) {
-      const newProjectMember = await ProjectMember.updateUserId(
+      const newProjectMember = await ProjectMember.updateClassroomMemberId(
         project_member_id,
         null
       );

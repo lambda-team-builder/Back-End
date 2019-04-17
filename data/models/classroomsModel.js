@@ -11,7 +11,7 @@ async function create(name, user_id, password) {
     .insert(newClassroom)
     .returning("id");
   const classroom_id = idsClassrooms[0];
-  const classroom_admin_user_ids = await db("classroom_admins")
+  await db("classroom_admins")
     .insert({
       classroom_id,
       user_id
