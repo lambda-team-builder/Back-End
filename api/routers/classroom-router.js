@@ -18,10 +18,16 @@ const ClassroomMember = require("../../data/models/classroomMembersModel.js");
  *  @apiHeader {String} Authorization Admin auth token.
  *
  *  @apiParam {String} name Name of classroom
+ *  @apiParam {String} password Optional password
  *
- *  @apiParamExample {json} Request-Example:
+ *  @apiParamExample {json} Request-Example: No password
+ * {
+ *  "name":"first class room"
+ * }
+ *  @apiParamExample {json} Request-Example: With password
  * {
  *  "name":"first class room",
+ *  "password":"1234"
  * }
  *
  *  @apiSuccess {Number} id The id of the classroom
@@ -52,10 +58,13 @@ const ClassroomMember = require("../../data/models/classroomMembersModel.js");
  *  }
  */
 router.post("/", restrictAdmin, (req, res) => {
-  const { name } = req.body;
+  let { name, password } = req.body;
+  if (password) {
+    password = bcrypt.hashSync(password, 14);
+  }
   const user_id = req.user.id;
   if (name) {
-    Classrooms.create(name, user_id)
+    Classrooms.create(name, user_id, password)
       .then(classroom => {
         res.status(201).json(classroom);
       })

@@ -5,9 +5,10 @@ const getClassroomProjectRoles = require("./classroomProjectsModel")
 
 module.exports = { create, getAll, getById, update, reset, get };
 
-async function create(name, user_id) {
+async function create(name, user_id, password) {
+  const newClassroom = password ? { name, password } : { name };
   const idsClassrooms = await db("classrooms")
-    .insert({ name })
+    .insert(newClassroom)
     .returning("id");
   const classroom_id = idsClassrooms[0];
   const classroom_admin_user_ids = await db("classroom_admins")
@@ -16,7 +17,7 @@ async function create(name, user_id) {
       user_id
     })
     .returning("id");
-  return { id: classroom_id, name, classroom_admin_user_ids };
+  return { id: classroom_id, name, classroom_admin_user_ids: [user_id] };
 }
 
 async function getAll() {

@@ -267,13 +267,25 @@
             "optional": false,
             "field": "name",
             "description": "<p>Name of classroom</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>Optional password</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Request-Example:",
-          "content": "{\n \"name\":\"first class room\",\n}",
+          "title": "Request-Example: No password",
+          "content": "{\n \"name\":\"first class room\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Example: With password",
+          "content": "{\n \"name\":\"first class room\",\n \"password\":\"1234\"\n}",
           "type": "json"
         }
       ]
