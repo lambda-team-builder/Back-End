@@ -1,0 +1,6 @@
+CRUD for classrooms - build week 1
+CRUD for projects - water my plants
+CRUD for users?? - user 1 (make it simple for admin to add non-registered users)
+CRUD for roles - UX, UI, Back-End, Front-End
+CRUD for project members - UX, user, water my plants
+CRUD for classroom projects - build week 1, water my plants
