@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const generateToken = require("../authorization/authenticate.js").generateToken;
 
 const restrict = require("../authorization/authenticate").restrict;
+const restrictAdmin = require("../authorization/authenticate").restrictAdmin;
 
 const db = require("../../data/dbConfig.js");
 const Users = require("../../data/models/usersModel.js");
@@ -268,6 +269,74 @@ router.put("/password", restrict, async (req, res) => {
     res.status(400).json({
       message: "Email, password and new password are required"
     });
+  }
+});
+
+/**
+ *  @api {put} api/auth/:user_id/user_type Change selected users user type
+ *  @apiVersion 0.1.0
+ *  @apiName updateUserType
+ *  @apiPermission admin
+ *  @apiGroup User
+ *
+ *  @apiHeader {String} Authorization Admins auth token.
+ *
+ *  @apiParam {String} name Name of user type to change to
+ *
+ *  @apiParamExample {json} Request-Example:
+ * {
+ *  "name":"admin"
+ * }
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 204 NO CONTENT
+ *
+ *  @apiErrorExample Error-Response: Not all fields
+ *    HTTP/1.1 400 BAD REQUEST
+ *    {
+ *      "message": "name required"
+ *    }
+ *  @apiErrorExample Error-Response: Cannot login
+ *    HTTP/1.1 401 UNAUTHORIZED
+ *    {
+ *      "message": "Bad credentials"
+ *    }
+ *
+ *  @apiErrorExample Error-Response: User not found
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "User not found"
+ *    }
+ *  @apiErrorExample Error-Response: Name not found
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "User type 'sam'  does not exist"
+ *    }
+ */
+
+router.put("/:user_id/user_type", restrictAdmin, async (req, res) => {
+  const user_type_name = req.body.name;
+  if (user_type_name) {
+    const user_type = await Users.getUserTypeByName(user_type_name);
+    if (user_type) {
+      Users.updateUserType(req.params.user_id, user_type.id)
+        .then(numUpdated => {
+          if (numUpdated) {
+            res.sendStatus(204);
+          } else {
+            res.status(404).json({ message: "User not found" });
+          }
+        })
+        .catch(error => {
+          res.status(500).json({ message: "Server Error", error });
+        });
+    } else {
+      res.status(404).json({
+        message: `User type '${user_type_name}'  does not exist`
+      });
+    }
+  } else {
+    res.status(400).json({ message: "name required" });
   }
 });
 

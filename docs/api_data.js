@@ -1583,5 +1583,86 @@ define({ "api": [
     },
     "filename": "api/routers/auth-router.js",
     "groupTitle": "User"
+  },
+  {
+    "type": "put",
+    "url": "api/auth/:user_id/user_type",
+    "title": "Change selected users user type",
+    "version": "0.1.0",
+    "name": "updateUserType",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Admins auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of user type to change to</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"name\":\"admin\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 NO CONTENT",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Not all fields",
+          "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"message\": \"name required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: Cannot login",
+          "content": "HTTP/1.1 401 UNAUTHORIZED\n{\n  \"message\": \"Bad credentials\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: User not found",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"User not found\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: Name not found",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"User type 'sam'  does not exist\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/auth-router.js",
+    "groupTitle": "User"
   }
 ] });
