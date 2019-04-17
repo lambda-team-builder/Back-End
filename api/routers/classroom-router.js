@@ -1,11 +1,13 @@
 const router = require("express").Router();
 //auth
+const bcrypt = require("bcryptjs");
 const restrictAdmin = require("../authorization/authenticate").restrictAdmin;
 //models
 const Classrooms = require("../../data/models/classroomsModel.js");
 const ClassroomProjects = require("../../data/models/classroomProjectsModel");
 const ProjectMember = require("../../data/models/projectMembersModel");
 const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
+const ClassroomMember = require("../../data/models/classroomMembersModel.js");
 /**
  *  @api {post} api/classrooms/ Create a classroom
  *  @apiVersion 0.1.0
@@ -388,6 +390,65 @@ router.put("/:id", restrictClassroomAdmin, async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
+  }
+});
+
+/**
+ *  @api {put} api/classrooms/:id/join Join classroom
+ *  @apiVersion 0.1.0
+ *  @apiName putClassroomJoin
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiParam {String} password If classroom has password it is required to join
+ *  @apiParamExample {json} Request-Example:
+ * {
+ *  "password": "1234"
+ * }
+ *  @apiParamExample {json} Request-Example: No password
+ * {
+ *  "password": null
+ * }
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 204 NO CONTENT
+ *  @apiErrorExample Error-Response: If missing name
+ *    HTTP/1.1 401 BAD REQUEST
+ *    {
+ *      "message": "Bad credentials"
+ *    }
+ *  @apiErrorExample Error-Response: If no classroom was found
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "Classroom not found"
+ *    }
+ */
+
+router.put("/:id/join", async (req, res) => {
+  const submittedPassword = req.body.password;
+  const id = req.params.id * 1;
+  // get the classroom and check if it has a password
+  const classroom = await Classrooms.get(id);
+
+  if (
+    !classroom.password ||
+    bcrypt.compareSync(submittedPassword, classroom.password)
+  ) {
+    ClassroomMember.join(id, req.user.id)
+      .then(numJoined => {
+        if (numJoined) {
+          res.sendStatus(204);
+        } else {
+          res.status(404).json({ message: "Classroom not found" });
+        }
+      })
+      .catch(error => {
+        res.status(500).json({ message: "Server error", error });
+      });
+  } else {
+    // not valid login
+    res.status(401).json({ message: "Bad credentials" });
   }
 });
 

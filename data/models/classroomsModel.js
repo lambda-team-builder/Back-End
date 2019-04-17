@@ -3,7 +3,7 @@ const db = require("../dbConfig");
 const getClassroomProjectRoles = require("./classroomProjectsModel")
   .getClassroomProjectRoles;
 
-module.exports = { create, getAll, getById, update, reset };
+module.exports = { create, getAll, getById, update, reset, get };
 
 async function create(name, user_id) {
   const idsClassrooms = await db("classrooms")
@@ -46,6 +46,12 @@ async function getById(id) {
     roles: roles[i]
   }));
   return { ...classroom, projects: projectsWithRoles };
+}
+
+async function get(id) {
+  return db("classrooms")
+    .where({ id })
+    .first();
 }
 
 async function update(id, changes) {

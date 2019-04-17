@@ -10,7 +10,7 @@ exports.up = function(knex, Promise) {
       .onUpdate("CASCADE");
     table
       .integer("classroom_id")
-      .nullable()
+      .notNullable()
       .references("id")
       .inTable("classrooms")
       .onDelete("CASCADE")

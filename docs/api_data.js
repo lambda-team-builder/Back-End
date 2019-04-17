@@ -593,6 +593,77 @@ define({ "api": [
   },
   {
     "type": "put",
+    "url": "api/classrooms/:id/join",
+    "title": "Join classroom",
+    "version": "0.1.0",
+    "name": "putClassroomJoin",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>If classroom has password it is required to join</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"password\": \"1234\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Example: No password",
+          "content": "{\n \"password\": null\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 NO CONTENT",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: If missing name",
+          "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"Bad credentials\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: If no classroom was found",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom not found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "put",
     "url": "api/project_members/:id",
     "title": "Add user to a member slot for group admin",
     "version": "0.1.0",
