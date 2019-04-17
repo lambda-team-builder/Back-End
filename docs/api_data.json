@@ -114,11 +114,11 @@
         }
       ]
     },
-    "filename": "api/routers/classroom-router.js",
+    "filename": "api/routers/get-classroom-router.js",
     "groupTitle": "Classrooms"
   },
   {
-    "type": "put",
+    "type": "get",
     "url": "api/classrooms/:id/projects/:classroom_project_id",
     "title": "get classroom project",
     "version": "0.1.0",
@@ -187,7 +187,7 @@
         }
       ]
     },
-    "filename": "api/routers/classroom-router.js",
+    "filename": "api/routers/get-classroom-router.js",
     "groupTitle": "Classrooms"
   },
   {
@@ -230,7 +230,7 @@
         }
       ]
     },
-    "filename": "api/routers/classroom-router.js",
+    "filename": "api/routers/get-classroom-router.js",
     "groupTitle": "Classrooms"
   },
   {
