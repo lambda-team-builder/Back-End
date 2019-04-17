@@ -706,20 +706,20 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "user_id",
-            "description": "<p>The user_id or null to remove a user</p>"
+            "field": "classroom_member_id",
+            "description": "<p>The classroom_member_id or null to remove a member</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example: Add user to slot",
-          "content": "{\n \"user_id\": 2\n}",
+          "content": "{\n \"classroom_member_id\": 2\n}",
           "type": "json"
         },
         {
           "title": "Request-Example: remove user from slot",
-          "content": "{\n \"user_id\": null\n}",
+          "content": "{\n \"classroom_member_id\": null\n}",
           "type": "json"
         }
       ]

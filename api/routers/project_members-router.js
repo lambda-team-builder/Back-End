@@ -11,7 +11,7 @@ const ClassroomMember = require("../../data/models/classroomMembersModel.js");
  *
  *  @apiHeader {String} Authorization Admin of groups auth token.
  *
- *  @apiParam {String} user_id The user_id or null to remove a user
+ *  @apiParam {String} classroom_member_id The classroom_member_id or null to remove a member
  *
  *  @apiParamExample {json} Request-Example: Add user to slot
  * {
