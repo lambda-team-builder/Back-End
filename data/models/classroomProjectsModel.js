@@ -55,6 +55,7 @@ function getClassroomProjectRoles(classroom_project_id) {
       "project_members.id",
       "project_members.classroom_member_id",
       "users.id as user_id",
+      "classroom_members.id as classroom_member_id ",
       "users.name as user_name",
       "roles.id as role_id",
       "roles.name as role_name"
