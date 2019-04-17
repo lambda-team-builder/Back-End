@@ -1,6 +1,58 @@
 [
   {
     "type": "get",
+    "url": "api/classroom_admins/",
+    "title": "Get a list of user's classrooms that user admin's",
+    "version": "0.1.0",
+    "name": "getClassroomAdmins",
+    "group": "ClassroomAdmins",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "projects",
+            "description": "<p>A list of the classroom's projects</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\n[\n   {\n       \"classroom_admins_id\": 1,\n       \"classroom_id\": 1,\n       \"classroom_name\": \"build week 1\"\n   },\n   {\n       \"classroom_admins_id\": 2,\n       \"classroom_id\": 2,\n       \"classroom_name\": \"build week 2\"\n   },\n   {\n       \"classroom_admins_id\": 3,\n       \"classroom_id\": 3,\n       \"classroom_name\": \"build week 3\"\n   }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 INTERNAL SERVER ERROR\n{\n  \"message\": \"server Error\",\n  \"error\": {error object: \"\"}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom_admins-router.js",
+    "groupTitle": "ClassroomAdmins"
+  },
+  {
+    "type": "get",
     "url": "api/classrooms/:id",
     "title": "Get classroom by ID",
     "version": "0.2.0",
