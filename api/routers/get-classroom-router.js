@@ -3,7 +3,8 @@ const router = require("express").Router();
 //models
 const Classrooms = require("../../data/models/classroomsModel.js");
 const ClassroomProjects = require("../../data/models/classroomProjectsModel");
-
+const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
+const ClassroomMembers = require("../../data/models/classroomMembersModel");
 /**
  *  @api {get} api/classrooms/ Get list of all classrooms
  *  @apiVersion 0.1.0
@@ -169,6 +170,55 @@ router.get("/:id/projects/:classroom_project_id", (req, res) => {
       res.status(404).json({ message: "Classroom's project not found", error });
     });
 });
+/**
+ *  @api {get} api/classrooms/:id/members
+ *  @apiVersion 0.1.0
+ *  @apiName getClassroomMembers
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiSuccess {Array} classroom_members A list of classroom member objects
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 200 OK
+ *    [
+ *        {
+ *            "classroom_member_id": 9,
+ *            "user_id": 10,
+ *            "user_name": "kim"
+ *        },
+ *        {
+ *            "classroom_member_id": 10,
+ *            "user_id": 11,
+ *            "user_name": "Samual"
+ *        },
+ *        {
+ *            "classroom_member_id": 11,
+ *            "user_id": 12,
+ *            "user_name": "The Rockey"
+ *        },
+ *        {
+ *            "classroom_member_id": 12,
+ *            "user_id": 2,
+ *            "user_name": "Tim"
+ *        },
+ *        {
+ *            "classroom_member_id": 13,
+ *            "user_id": 3,
+ *            "user_name": "Jim"
+ *        }
+ *    ]
+ */
+router.get("/:id/members", restrictClassroomAdmin, (req, res) => {
+  ClassroomMembers.getMembersByClassroomId(req.params.id)
+    .then(members => {
+      res.status(200).json(members);
+    })
+    .catch(error => {
+      res.status(500).json({ message: "Server error", error });
+    });
+});
 
 //classrooms/:id
 // after athenticate route
@@ -178,8 +228,6 @@ function restrictClassroomAdmin(req, res, next) {
   ClassroomAdmin.getAdminsByClassroomId(classroom_id)
     .then(user_ids => {
       if (user_ids.includes(user_id)) {
-        next();
-      } else if (user_id) {
         next();
       } else {
         res.status(401).json({ message: "Not a admin for this classroom" });

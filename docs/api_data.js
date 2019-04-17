@@ -119,6 +119,49 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "api/classrooms/:id/members",
+    "title": "",
+    "version": "0.1.0",
+    "name": "getClassroomMembers",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "classroom_members",
+            "description": "<p>A list of classroom member objects</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[\n    {\n        \"classroom_member_id\": 9,\n        \"user_id\": 10,\n        \"user_name\": \"kim\"\n    },\n    {\n        \"classroom_member_id\": 10,\n        \"user_id\": 11,\n        \"user_name\": \"Samual\"\n    },\n    {\n        \"classroom_member_id\": 11,\n        \"user_id\": 12,\n        \"user_name\": \"The Rockey\"\n    },\n    {\n        \"classroom_member_id\": 12,\n        \"user_id\": 2,\n        \"user_name\": \"Tim\"\n    },\n    {\n        \"classroom_member_id\": 13,\n        \"user_id\": 3,\n        \"user_name\": \"Jim\"\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/get-classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "get",
     "url": "api/classrooms/:id/projects/:classroom_project_id",
     "title": "get classroom project",
     "version": "0.1.0",
@@ -979,6 +1022,58 @@ define({ "api": [
         {
           "title": "Success-Response:",
           "content": "HTTP/1.1 200 OK\n[\n  {\n    \"id\": \"1\",\n    \"name\":\"first project\",\n    \"description\": \"This is a long and boring project.\"\n  },\n   {\n    \"id\": \"2\",\n    \"name\":\"second project\",\n    \"description\": \"This is a sort and fun project.\"\n  }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Unauthorized",
+          "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"No valid credentials provided\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/project-router.js",
+    "groupTitle": "Projects"
+  },
+  {
+    "type": "get",
+    "url": "api/projects/mine",
+    "title": "Get users projects",
+    "version": "0.1.0",
+    "name": "getUsersProjects",
+    "group": "Projects",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "projects",
+            "description": "<p>A array of projects</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[\n    {\n        \"project_name\": \"NBA Stats\",\n        \"classroom_project_id\": 2,\n        \"classroom_id\": 1,\n        \"classroom_name\": \"build week 1\",\n        \"role_name\": \"Front end\"\n    },\n    {\n        \"project_name\": \"Photo Gallery\",\n        \"classroom_project_id\": 5,\n        \"classroom_id\": 1,\n        \"classroom_name\": \"build week 1\",\n        \"role_name\": \"Back end\"\n    },\n    {\n        \"project_name\": \"Game Room\",\n        \"classroom_project_id\": 8,\n        \"classroom_id\": 1,\n        \"classroom_name\": \"build week 1\",\n        \"role_name\": \"Back end\"\n    },\n    {\n        \"project_name\": \"Living Big\",\n        \"classroom_project_id\": 9,\n        \"classroom_id\": 1,\n        \"classroom_name\": \"build week 1\",\n        \"role_name\": \"Back end\"\n    },\n    {\n        \"project_name\": \"Team builder\",\n        \"classroom_project_id\": 12,\n        \"classroom_id\": 2,\n        \"classroom_name\": \"build week 2\",\n        \"role_name\": \"UI\"\n    },\n    {\n        \"project_name\": \"Team builder\",\n        \"classroom_project_id\": 10,\n        \"classroom_id\": 2,\n        \"classroom_name\": \"build week 2\",\n        \"role_name\": \"UI\"\n    }\n]",
           "type": "json"
         }
       ]
