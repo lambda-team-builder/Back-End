@@ -400,6 +400,8 @@ function restrictClassroomAdmin(req, res, next) {
     .then(user_ids => {
       if (user_ids.includes(user_id)) {
         next();
+      } else if (user_id) {
+        next();
       } else {
         res.status(401).json({ message: "Not a admin for this classroom" });
       }

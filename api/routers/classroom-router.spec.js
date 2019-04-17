@@ -34,9 +34,11 @@ describe("classroom-router.js", () => {
     done();
   });
 
-  beforeEach(async () => {
+  beforeEach(async (done) => {
     // resets classrooms
-    await Classrooms.reset();
+    await db("classroom_admins").truncate();
+    await db("classrooms").truncate();
+    done();
   });
 
   afterAll(async () => {
@@ -198,6 +200,11 @@ describe("classroom-router.js", () => {
     });
 
     it("should return 400 if name is not provided", async () => {
+      await request(server)
+        .post("/api/classrooms/")
+        .set("Authorization", token)
+        .send({ name: "Build Week 20", user_id });
+
       return await request(server)
         .put("/api/classrooms/1")
         .set("Authorization", token)
@@ -206,6 +213,11 @@ describe("classroom-router.js", () => {
     });
 
     it("should return an error message if name is not provided", async () => {
+      await request(server)
+        .post("/api/classrooms/")
+        .set("Authorization", token)
+        .send({ name: "Build Week 20", user_id });
+
       return await request(server)
         .put("/api/classrooms/1")
         .set("Authorization", token)
