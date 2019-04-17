@@ -423,6 +423,11 @@ router.put("/:id", restrictClassroomAdmin, async (req, res) => {
  *    {
  *      "message": "Classroom not found"
  *    }
+ *  @apiErrorExample Error-Response: Already member
+ *    HTTP/1.1 400 BAD REQUEST
+ *    {
+ *      "message": "Aleady member of classroom"
+ *    }
  */
 
 router.put("/:id/join", async (req, res) => {
@@ -444,7 +449,7 @@ router.put("/:id/join", async (req, res) => {
         }
       })
       .catch(error => {
-        res.status(500).json({ message: "Server error", error });
+        res.status(400).json({ message: "Aleady member of classroom" });
       });
   } else {
     // not valid login

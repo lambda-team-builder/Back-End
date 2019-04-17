@@ -2,6 +2,10 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable("classroom_members", table => {
     table.increments();
     table
+      .string("user_idWithClassroom_id")
+      .notNullable()
+      .unique();
+    table
       .integer("user_id")
       .notNullable()
       .references("id")

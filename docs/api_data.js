@@ -656,6 +656,11 @@ define({ "api": [
           "title": "Error-Response: If no classroom was found",
           "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom not found\"\n}",
           "type": "json"
+        },
+        {
+          "title": "Error-Response: Already member",
+          "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"message\": \"Aleady member of classroom\"\n}",
+          "type": "json"
         }
       ]
     },
