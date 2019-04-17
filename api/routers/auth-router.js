@@ -59,8 +59,7 @@ const Users = require("../../data/models/usersModel.js");
 router.post("/register", async (req, res) => {
   let { name, email, password } = req.body;
   let user_type_id;
-  if (req.body.user_type_id)
-  {
+  if (req.body.user_type_id) {
     user_type_id = req.body.user_type_id;
   } else {
     user_type_id = 2; //every user is a regular user

@@ -34,7 +34,7 @@ describe("role-router.js", () => {
   afterAll(async () => {
     // resets classrooms and classroom admins
     await Roles.reset();
-    await db("users").truncate();
+    // await db("users").truncate();
   });
 
   describe("POST /api/roles/", () => {

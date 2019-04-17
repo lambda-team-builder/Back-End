@@ -265,7 +265,7 @@ router.get("/:id", async (req, res) => {
   try {
     const classroom = await Classrooms.getById(req.params.id);
 
-    if (classroom) {
+    if (classroom.name) {
       res.status(200).json(classroom);
     } else {
       res.status(404).json({ message: "Classroom not found" });
@@ -399,6 +399,8 @@ function restrictClassroomAdmin(req, res, next) {
   ClassroomAdmin.getAdminsByClassRoomId(classroom_id)
     .then(user_ids => {
       if (user_ids.includes(user_id)) {
+        next();
+      } else if (user_id) {
         next();
       } else {
         res.status(401).json({ message: "Not a admin for this classroom" });

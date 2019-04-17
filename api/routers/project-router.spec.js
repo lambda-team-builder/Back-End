@@ -31,10 +31,15 @@ describe("project-router.js", () => {
     // resets classrooms and classroom admins
     await Projects.reset();
   });
-  afterAll(async () => {
+
+  afterEach(async () => {
     // resets classrooms and classroom admins
     await Projects.reset();
-    await db("users").truncate();
+    // await db("users").truncate();
+  });
+
+  afterAll(async () => {
+    db.destroy();
   });
 
   describe("POST /api/projects/", () => {

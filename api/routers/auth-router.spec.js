@@ -4,14 +4,16 @@ const server = require("../server.js");
 const db = require("../../data/dbConfig");
 
 describe("auth-router.js", () => {
-  beforeEach(async () => {
-    await db("users").truncate();
+  afterEach(async (done) => {
+    // await db("users").truncate();
+    await db("users").where("email", "ryan.hamblin@lambdaschool.com").del();
+    done();
   });
 
   afterAll(async () => {
-    await db("users").truncate();
     db.destroy();
   });
+
   const testUser = {
     name: "Ryan Hamblin",
     email: "ryan.hamblin@lambdaschool.com",
@@ -20,13 +22,12 @@ describe("auth-router.js", () => {
   };
 
   const userType = {
-    id: 2,
-    name: "student"
+    id: 1,
+    name: "admin"
   };
 
   describe("POST /api/auth/register", () => {
     it("should return 201 status code on success", () => {
-
       return request(server)
         .post("/api/auth/register")
         .send(testUser)
@@ -38,7 +39,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
       const user = JSON.parse(res.text);
-      expect(user.id).toBe(1);
+      expect(user.id).toBeTruthy();
       expect(user.name).toBe(testUser.name);
       expect(user.email).toBe(testUser.email);
       expect(user.user_type).toEqual(userType);
@@ -78,7 +79,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
       const user = JSON.parse(res.text);
-      expect(user.id).toBe(1);
+      expect(user.id).toBeTruthy();
       expect(user.name).toBe(testUser.name);
       expect(user.email).toBe(testUser.email);
       expect(user.user_type).toEqual(userType);
@@ -145,7 +146,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
 
-      return request(server)
+      return await request(server)
         .put("/api/auth/login")
         .send({ email: testUser.email, password: testUser.password })
         .expect(200);
@@ -156,7 +157,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
 
-      return request(server)
+      return await request(server)
         .put("/api/auth/login")
         .send({ email: testUser.email, password: testUser.password })
         .expect("Content-Type", /json/);
@@ -167,7 +168,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
 
-      return request(server)
+      return await request(server)
         .put("/api/auth/login")
         .send({ email: testUser.email, password: testUser.password })
         .then(response => {
@@ -230,7 +231,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
 
-      return request(server)
+      return await request(server)
         .put("/api/auth/login")
         .send({ email: testUser.email, password: "321" })
         .expect(401);
@@ -241,7 +242,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
 
-      return request(server)
+      return await request(server)
         .put("/api/auth/login")
         .send({ email: testUser.email, password: "321" })
         .expect("Content-Type", /json/);
@@ -252,7 +253,7 @@ describe("auth-router.js", () => {
         .post("/api/auth/register")
         .send(testUser);
 
-      return request(server)
+      return await request(server)
         .put("/api/auth/login")
         .send({ email: testUser.email, password: "321" })
         .then(response => {
