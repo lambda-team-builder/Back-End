@@ -396,7 +396,7 @@ router.put("/:id", restrictClassroomAdmin, async (req, res) => {
 function restrictClassroomAdmin(req, res, next) {
   const user_id = req.user.id;
   const classroom_id = req.params.id * 1;
-  ClassroomAdmin.getAdminsByClassRoomId(classroom_id)
+  ClassroomAdmin.getAdminsByClassroomId(classroom_id)
     .then(user_ids => {
       if (user_ids.includes(user_id)) {
         next();
