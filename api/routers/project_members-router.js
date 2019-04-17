@@ -15,11 +15,11 @@ const ClassroomMember = require("../../data/models/classroomMembersModel.js");
  *
  *  @apiParamExample {json} Request-Example: Add user to slot
  * {
- *  "user_id": 2
+ *  "classroom_member_id": 2
  * }
  *  @apiParamExample {json} Request-Example: remove user from slot
  * {
- *  "user_id": null
+ *  "classroom_member_id": null
  * }
  *
  *  @apiSuccess {Number} id The id of the project member
@@ -61,7 +61,7 @@ const ClassroomMember = require("../../data/models/classroomMembersModel.js");
  */
 // for admin of group to add a user
 router.put("/:id", async (req, res) => {
-  const user_id = req.body.user_id;
+  const classroom_member_id = req.body.classroom_member_id;
   const project_member_id = req.params.id * 1;
   // NEED TO MAKE SURE THE USER IS A ADMIN OF THIS CLASSROOM
   let classroomAdminUserIds;
@@ -78,13 +78,16 @@ router.put("/:id", async (req, res) => {
       message: "This user is not a group admin for this group"
     });
     // allow for admins to remove a user from a spot
-  } else if (user_id || user_id === null) {
-    ProjectMember.updateClassroomMemberId(project_member_id, user_id)
+  } else if (classroom_member_id || classroom_member_id === null) {
+    ProjectMember.updateClassroomMemberId(
+      project_member_id,
+      classroom_member_id
+    )
       .then(projectMember => {
         if (projectMember === null) {
-          res
-            .status(404)
-            .json({ message: "That project member slot does not exist" });
+          res.status(404).json({
+            message: "That project member slot does not exist"
+          });
         } else {
           res.status(200).json(projectMember);
         }
@@ -194,7 +197,7 @@ router.put("/:id/join", async (req, res) => {
  *    {
  *      "id": 1,
  *      "role_id": 1,
- *      "user_id": null,
+ *      "classroom_member_id": null,
  *      "classroom_project_id": 1
  *    }
  *  @apiErrorExample Error-Response: spot filled

@@ -926,7 +926,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response: add user",
-          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1,\n  \"role_id\": 1,\n  \"user_id\": null,\n  \"classroom_project_id\": 1\n}",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1,\n  \"role_id\": 1,\n  \"classroom_member_id\": null,\n  \"classroom_project_id\": 1\n}",
           "type": "json"
         }
       ]
