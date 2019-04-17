@@ -137,3 +137,126 @@ Classroom_admins as crs
 id int PK
 user_id int FK >- Users.id
 classroom_id int FK >- Classrooms.id
+
+--------------------------------------V4---------------------------
+Users as u
+---
+id int PK
+name string
+email string
+password string 
+user_type_id int
+
+
+User_types as ut
+---
+id int PK FK >- Users.user_type_id
+name string
+
+
+Roles as r
+---
+id int PK
+name string
+
+Projects as p
+---
+id int PK
+name string
+desc string
+
+
+
+Project_members as pm
+---
+id int PK
+role_id int FK >- Roles.id
+Classroom_project_id int FK >- Classroom_projects.id
+user_id int FK >- Users.id
+
+Classrooms as cr
+---
+id int PK
+name string
+password string
+
+Classroom_projects
+---
+id int PK
+project_id int FK >- Projects.id
+classroom_id int FK >- Classrooms.id
+
+Classroom_admins as crs
+---
+id int PK
+user_id int FK >- Users.id
+classroom_id int FK >- Classrooms.id
+
+Classroom_members as cm
+---
+id int PK
+user_id int FK >- Users.id
+classroom_id int FK >- Classrooms.id
+
+-----------------------------------V5-----------------------------------------
+
+Users as u
+---
+id int PK
+name string
+email string
+password string 
+user_type_id int
+
+
+User_types as ut
+---
+id int PK FK >- Users.user_type_id
+name string
+
+
+Roles as r
+---
+id int PK
+name string
+
+Projects as p
+---
+id int PK
+name string
+desc string
+
+
+
+Project_members as pm
+---
+id int PK
+role_id int FK >- Roles.id
+Classroom_project_id int FK >- Classroom_projects.id
+classroom_member_id int FK >- Classroom_members.id
+
+
+Classrooms as cr
+---
+id int PK
+name string
+password string
+
+Classroom_projects
+---
+id int PK
+project_id int FK >- Projects.id
+classroom_id int FK >- Classrooms.id
+
+Classroom_admins as crs
+---
+id int PK
+user_id int FK >- Users.id
+classroom_id int FK >- Classrooms.id
+
+Classroom_members as cm
+---
+id int PK
+user_id int FK >- Users.id
+classroom_id int FK >- Classrooms.id
+user_idWithClassroom_id unqiue_string

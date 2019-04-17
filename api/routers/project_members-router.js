@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 const ProjectMember = require("../../data/models/projectMembersModel");
 
+const ClassroomMember = require("../../data/models/classroomMembersModel.js");
 /**
  *  @api {put} api/project_members/:id  Add user to a member slot for group admin
  *  @apiVersion 0.1.0
@@ -14,11 +15,11 @@ const ProjectMember = require("../../data/models/projectMembersModel");
  *
  *  @apiParamExample {json} Request-Example: Add user to slot
  * {
- *  "user_id": 2
+ *  "classroom_member_id": 2
  * }
  *  @apiParamExample {json} Request-Example: remove user from slot
  * {
- *  "user_id": null
+ *  "classroom_member_id": null
  * }
  *
  *  @apiSuccess {Number} id The id of the project member
@@ -60,7 +61,7 @@ const ProjectMember = require("../../data/models/projectMembersModel");
  */
 // for admin of group to add a user
 router.put("/:id", async (req, res) => {
-  const user_id = req.body.user_id;
+  const classroom_member_id = req.body.classroom_member_id;
   const project_member_id = req.params.id * 1;
   // NEED TO MAKE SURE THE USER IS A ADMIN OF THIS CLASSROOM
   let classroomAdminUserIds;
@@ -77,13 +78,16 @@ router.put("/:id", async (req, res) => {
       message: "This user is not a group admin for this group"
     });
     // allow for admins to remove a user from a spot
-  } else if (user_id || user_id === null) {
-    ProjectMember.updateUserId(project_member_id, user_id)
+  } else if (classroom_member_id || classroom_member_id === null) {
+    ProjectMember.updateClassroomMemberId(
+      project_member_id,
+      classroom_member_id
+    )
       .then(projectMember => {
         if (projectMember === null) {
-          res
-            .status(404)
-            .json({ message: "That project member slot does not exist" });
+          res.status(404).json({
+            message: "That project member slot does not exist"
+          });
         } else {
           res.status(200).json(projectMember);
         }
@@ -114,35 +118,65 @@ router.put("/:id", async (req, res) => {
  *  @apiSuccessExample Success-Response: add user
  *    HTTP/1.1 201 CREATED
  *    {
- *      "id": 1,
- *      "role_id": 1,
- *      "user_id": 1,
- *      "classroom_project_id": 1
+ *        "id": 29,
+ *        "role_id": 5,
+ *        "classroom_member_id": 20,
+ *        "classroom_project_id": 5
  *    }
  *  @apiErrorExample Error-Response: spot filled
  *    HTTP/1.1 403 FORBIDDEN
  *    {
  *      "message": "Spot is already filled"
  *    }
+ *  @apiErrorExample Error-Response: not is classroom
+ *    HTTP/1.1 400 BAD REQUEST
+ *    {
+ *      "message": "User not in that classroom"
+ *    }
  */
 // user joins a member_slot
 router.put("/:id/join", async (req, res) => {
+  // get list of this users classrooms
+  const user_id = req.user.id;
+  // check if user belongs to this classroom
+  let classroomsOfUser;
+  let classroomOfProjectMember;
   try {
-    const project_member_id = req.params.id * 1;
-    // can only join if the slot is open
-    const projectMember = await ProjectMember.getById(project_member_id);
-    if (projectMember.user_id === null) {
-      // it is open
-      const newProjectMember = await ProjectMember.updateUserId(
-        project_member_id,
-        req.user.user_id
-      );
-      res.status(200).json(newProjectMember);
-    } else {
-      res.status(403).json({ message: "Spot is already filled" });
-    }
+    classroomsOfUser = await ClassroomMember.getAllClassroomsByUserId(user_id);
+    classroomOfProjectMember = await ProjectMember.getClassroomIdByProjectMemberId(
+      req.params.id * 1
+    );
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server Error", error });
+  }
+
+  const classroom_member = classroomsOfUser.find(
+    classroom => classroom.classroom_id === classroomOfProjectMember
+  );
+  if (!classroom_member) {
+    res.status(400).json({ message: "User not in that classroom" });
+  } else {
+    try {
+      const project_member_id = req.params.id * 1;
+      // can only join if the slot is open
+      const projectMember = await ProjectMember.getById(project_member_id);
+      if (projectMember.classroom_member_id === null) {
+        // it is open
+        const newProjectMember = await ProjectMember.updateClassroomMemberId(
+          project_member_id,
+          classroom_member.classroom_member_id
+        );
+        res.status(200).json(newProjectMember);
+      } else {
+        res.status(403).json({
+          message: "Spot is already filled"
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: "Server error"
+      });
+    }
   }
 });
 /**
@@ -163,7 +197,7 @@ router.put("/:id/join", async (req, res) => {
  *    {
  *      "id": 1,
  *      "role_id": 1,
- *      "user_id": null,
+ *      "classroom_member_id": null,
  *      "classroom_project_id": 1
  *    }
  *  @apiErrorExample Error-Response: spot filled
@@ -175,10 +209,12 @@ router.put("/:id/join", async (req, res) => {
 router.put("/:id/leave", async (req, res) => {
   try {
     const project_member_id = req.params.id * 1;
-    // can only leave if this user is alread a member
-    const projectMember = await ProjectMember.getById(project_member_id);
+    // can only leave if this user is already a member
+    const projectMember = await ProjectMember.getUserIdByProjectMember(
+      project_member_id
+    );
     if (projectMember.user_id === req.user.id) {
-      const newProjectMember = await ProjectMember.updateUserId(
+      const newProjectMember = await ProjectMember.updateClassroomMemberId(
         project_member_id,
         null
       );

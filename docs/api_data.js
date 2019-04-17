@@ -55,7 +55,7 @@ define({ "api": [
     "type": "get",
     "url": "api/classrooms/:id",
     "title": "Get classroom by ID",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "name": "getClassroom",
     "group": "Classrooms",
     "header": {
@@ -100,7 +100,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n\n  {\n      \"id\": 1,\n      \"name\": \"Classroom one\",\n      \"projects\": [\n          {\n              \"id\": 1,\n              \"name\": \" a project\",\n              \"description\": \"This is a long and boring project.\",\n              \"roles\": [\n                  {\n                      \"id\": 1,\n                      \"user_id\": 1,\n                      \"user_name\": \"admin\",\n                      \"role_name\": \"Lead\"\n                  },\n                  {\n                      \"id\": 2,\n                      \"user_id\": null,\n                      \"user_name\": null,\n                      \"role_name\": \"Backend\"\n                  },\n                  {\n                      \"id\": 3,\n                      \"user_id\": 2,\n                      \"user_name\": \"connor\",\n                      \"role_name\": \"Backend\"\n                  },\n                  {\n                      \"id\": 4,\n                      \"user_id\": null,\n                      \"user_name\": null,\n                      \"role_name\": \"Lead\"\n                  }\n              ]\n          }\n      ]\n  }",
+          "content": "HTTP/1.1 200 OK\n\n  {\n      \"id\": 1,\n      \"name\": \"Classroom one\",\n      \"projects\": [\n          {\n              \"id\": 1,\n              \"name\": \" a project\",\n              \"description\": \"This is a long and boring project.\",\n              \"roles\": [\n                 {\n                     \"id\": 1,\n                     \"classroom_member_id\": 1,\n                     \"user_id\": 2,\n                     \"user_name\": \"Tim\",\n                     \"role_id\": 1,\n                     \"role_name\": \"Front end\"\n                 },\n                 {\n                     \"id\": 6,\n                     \"classroom_member_id\": 6,\n                     \"user_id\": 7,\n                     \"user_name\": \"Jon\",\n                     \"role_id\": 1,\n                     \"role_name\": \"Front end\"\n                 },\n                 {\n                     \"id\": 11,\n                     \"classroom_member_id\": 3,\n                     \"user_id\": 4,\n                     \"user_name\": \"Connor\",\n                     \"role_id\": 2,\n                     \"role_name\": \"Back end\"\n                 }\n              ]\n          }\n      ]\n  }",
           "type": "json"
         }
       ]
@@ -114,11 +114,11 @@ define({ "api": [
         }
       ]
     },
-    "filename": "api/routers/classroom-router.js",
+    "filename": "api/routers/get-classroom-router.js",
     "groupTitle": "Classrooms"
   },
   {
-    "type": "put",
+    "type": "get",
     "url": "api/classrooms/:id/projects/:classroom_project_id",
     "title": "get classroom project",
     "version": "0.1.0",
@@ -173,7 +173,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n    \"id\": 1,\n    \"name\": \" a project\",\n    \"description\": \"This is a long and boring project.\",\n    \"project_members\": [\n        {\n            \"id\": 1,\n            \"user_id\": 1,\n            \"user_name\": \"admin\",\n            \"role_name\": \"Lead\"\n        },\n        {\n            \"id\": 2,\n            \"user_id\": null,\n            \"user_name\": null,\n            \"role_name\": \"Backend\"\n        },\n        {\n            \"id\": 3,\n            \"user_id\": 2,\n            \"user_name\": \"connor\",\n            \"role_name\": \"Backend\"\n        },\n        {\n            \"id\": 4,\n            \"user_id\": null,\n            \"user_name\": null,\n            \"role_name\": \"Lead\"\n        }\n    ]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"id\": 1,\n    \"name\": \" a project\",\n    \"description\": \"This is a long and boring project.\",\n    \"project_members\": [\n                 {\n                     \"id\": 1,\n                     \"classroom_member_id\": 1,\n                     \"user_id\": 2,\n                     \"user_name\": \"Tim\",\n                     \"role_id\": 1,\n                     \"role_name\": \"Front end\"\n                 },\n                 {\n                     \"id\": 6,\n                     \"classroom_member_id\": 6,\n                     \"user_id\": 7,\n                     \"user_name\": \"Jon\",\n                     \"role_id\": 1,\n                     \"role_name\": \"Front end\"\n                 },\n                 {\n                     \"id\": 11,\n                     \"classroom_member_id\": 3,\n                     \"user_id\": 4,\n                     \"user_name\": \"Connor\",\n                     \"role_id\": 2,\n                     \"role_name\": \"Back end\"\n                 }\n    ]\n}",
           "type": "json"
         }
       ]
@@ -187,7 +187,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "api/routers/classroom-router.js",
+    "filename": "api/routers/get-classroom-router.js",
     "groupTitle": "Classrooms"
   },
   {
@@ -230,7 +230,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "api/routers/classroom-router.js",
+    "filename": "api/routers/get-classroom-router.js",
     "groupTitle": "Classrooms"
   },
   {
@@ -267,13 +267,25 @@ define({ "api": [
             "optional": false,
             "field": "name",
             "description": "<p>Name of classroom</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>Optional password</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Request-Example:",
-          "content": "{\n \"name\":\"first class room\",\n}",
+          "title": "Request-Example: No password",
+          "content": "{\n \"name\":\"first class room\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Example: With password",
+          "content": "{\n \"name\":\"first class room\",\n \"password\":\"1234\"\n}",
           "type": "json"
         }
       ]
@@ -593,6 +605,82 @@ define({ "api": [
   },
   {
     "type": "put",
+    "url": "api/classrooms/:id/join",
+    "title": "Join classroom",
+    "version": "0.1.0",
+    "name": "putClassroomJoin",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>If classroom has password it is required to join</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"password\": \"1234\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Example: No password",
+          "content": "{\n \"password\": null\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 NO CONTENT",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: If missing name",
+          "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"Bad credentials\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: If no classroom was found",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom not found\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: Already member",
+          "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"message\": \"Aleady member of classroom\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "put",
     "url": "api/project_members/:id",
     "title": "Add user to a member slot for group admin",
     "version": "0.1.0",
@@ -760,7 +848,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response: add user",
-          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1,\n  \"role_id\": 1,\n  \"user_id\": 1,\n  \"classroom_project_id\": 1\n}",
+          "content": "HTTP/1.1 201 CREATED\n{\n    \"id\": 29,\n    \"role_id\": 5,\n    \"classroom_member_id\": 20,\n    \"classroom_project_id\": 5\n}",
           "type": "json"
         }
       ]
@@ -770,6 +858,11 @@ define({ "api": [
         {
           "title": "Error-Response: spot filled",
           "content": "HTTP/1.1 403 FORBIDDEN\n{\n  \"message\": \"Spot is already filled\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: not is classroom",
+          "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"message\": \"User not in that classroom\"\n}",
           "type": "json"
         }
       ]
@@ -833,7 +926,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response: add user",
-          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1,\n  \"role_id\": 1,\n  \"user_id\": null,\n  \"classroom_project_id\": 1\n}",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1,\n  \"role_id\": 1,\n  \"classroom_member_id\": null,\n  \"classroom_project_id\": 1\n}",
           "type": "json"
         }
       ]

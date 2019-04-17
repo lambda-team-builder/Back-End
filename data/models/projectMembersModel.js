@@ -5,8 +5,10 @@ module.exports = {
   getByClassroomProjectId,
   reset,
   getClassroomAdminsByProjectMemberId,
-  updateUserId,
-  getById
+  updateClassroomMemberId,
+  getById,
+  getClassroomIdByProjectMemberId,
+  getUserIdByProjectMember
 };
 
 async function create(role_id, classroom_project_id) {
@@ -22,13 +24,23 @@ async function create(role_id, classroom_project_id) {
 }
 async function getById(id) {
   return await db("project_members")
-    .where({ id: project_member_id })
+    .where({ id })
     .first();
 }
-async function updateUserId(project_member_id, user_id) {
+
+async function getUserIdByProjectMember(id) {
+  return await db("project_members")
+    .join("classroom_members", {
+      "project_members.classroom_member_id": "classroom_members.id"
+    })
+    .where({ "project_members.id": id })
+    .first();
+}
+
+async function updateClassroomMemberId(project_member_id, classroom_member_id) {
   const updateNum = await db("project_members")
     .where({ id: project_member_id })
-    .update({ user_id });
+    .update({ classroom_member_id });
   if (updateNum) {
     return await db("project_members")
       .where({ id: project_member_id })
@@ -57,6 +69,17 @@ async function getClassroomAdminsByProjectMemberId(project_member_id) {
   return admins.map(admin => {
     return admin.user_id;
   });
+}
+
+async function getClassroomIdByProjectMemberId(id) {
+  const obj = await db("classroom_projects")
+    .select("classroom_projects.classroom_id")
+    .join("project_members", {
+      "project_members.classroom_project_id": "classroom_projects.id"
+    })
+    .where({ "project_members.id": id })
+    .first();
+  return obj.classroom_id;
 }
 
 async function reset() {

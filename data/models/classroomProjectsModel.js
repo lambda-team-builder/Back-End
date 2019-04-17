@@ -1,6 +1,11 @@
 const db = require("../dbConfig");
 
-module.exports = { create, getById, getClassroomProjectRoles };
+module.exports = {
+  create,
+  getById,
+  getClassroomProjectRoles,
+  getOnlyClassroomProjectById
+};
 
 async function create(project_id, classroom_id) {
   const [id] = await db("classroom_projects")
@@ -26,28 +31,42 @@ async function getById(id) {
   return { ...project, project_members };
 }
 
+async function getOnlyClassroomProjectById(id) {
+  return await db("classroom_projects")
+    .where({ id })
+    .first();
+}
+
 function getClassroomProjectRoles(classroom_project_id) {
-  // SELECT pm.id, pm.user_id, u.name as user_name, r.id as role_id ,r.name as role_name
-  // FROM project_members AS pm
-  // JOIN roles as r
-  // ON r.id = pm.role_id
-  // LEFT JOIN users as u
-  // ON u.id = pm.user_id
-  // WHERE pm.classroom_project_id = 1
+  // SELECT project_members.id, project_members.classroom_member_id,
+  // users.id as user_id, users.name as user_name, roles.id as role_id ,
+  // roles.name as role_name
+  // FROM project_members
+  // JOIN roles
+  // ON roles.id = project_members.role_id
+  // LEFT JOIN classroom_members
+  // ON classroom_members.id = project_members.classroom_member_id
+  // LEFT JOIN users
+  // ON users.id = classroom_members.user_id
+  // WHERE project_members.classroom_project_id = 3
   return db
     .from("project_members")
     .select(
       "project_members.id",
-      "project_members.user_id",
+      "project_members.classroom_member_id",
+      "users.id as user_id",
       "users.name as user_name",
-      "project_members.id",
+      "roles.id as role_id",
       "roles.name as role_name"
     )
     .join("roles", {
       "project_members.role_id": "roles.id"
     })
+    .leftJoin("classroom_members", {
+      "project_members.classroom_member_id": "classroom_members.id"
+    })
     .leftJoin("users", {
-      "project_members.user_id": "users.id"
+      "classroom_members.user_id": "users.id"
     })
     .where({
       "project_members.classroom_project_id": classroom_project_id
