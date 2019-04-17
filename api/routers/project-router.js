@@ -3,6 +3,7 @@ const router = require("express").Router();
 const restrictAdmin = require("../authorization/authenticate").restrictAdmin;
 
 const Projects = require("../../data/models/projectsModel.js");
+const ProjectMembers = require("../../data/models/projectMembersModel.js");
 /**
  *  @api {post} api/projects/ Create a project
  *  @apiVersion 0.1.0
@@ -102,6 +103,78 @@ router.get("/", (req, res) => {
     })
     .catch(error => {
       res.status(500).json({ message: "Server error", error });
+    });
+});
+/**
+ *  @api {get} api/projects/mine Get users projects
+ *  @apiVersion 0.1.0
+ *  @apiName getUsersProjects
+ *  @apiGroup Projects
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *
+ *  @apiSuccess {Array} projects A array of projects
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 200 OK
+ *    [
+ *        {
+ *            "project_name": "NBA Stats",
+ *            "classroom_project_id": 2,
+ *            "classroom_id": 1,
+ *            "classroom_name": "build week 1",
+ *            "role_name": "Front end"
+ *        },
+ *        {
+ *            "project_name": "Photo Gallery",
+ *            "classroom_project_id": 5,
+ *            "classroom_id": 1,
+ *            "classroom_name": "build week 1",
+ *            "role_name": "Back end"
+ *        },
+ *        {
+ *            "project_name": "Game Room",
+ *            "classroom_project_id": 8,
+ *            "classroom_id": 1,
+ *            "classroom_name": "build week 1",
+ *            "role_name": "Back end"
+ *        },
+ *        {
+ *            "project_name": "Living Big",
+ *            "classroom_project_id": 9,
+ *            "classroom_id": 1,
+ *            "classroom_name": "build week 1",
+ *            "role_name": "Back end"
+ *        },
+ *        {
+ *            "project_name": "Team builder",
+ *            "classroom_project_id": 12,
+ *            "classroom_id": 2,
+ *            "classroom_name": "build week 2",
+ *            "role_name": "UI"
+ *        },
+ *        {
+ *            "project_name": "Team builder",
+ *            "classroom_project_id": 10,
+ *            "classroom_id": 2,
+ *            "classroom_name": "build week 2",
+ *            "role_name": "UI"
+ *        }
+ *    ]
+ *  @apiErrorExample Error-Response: Unauthorized
+ *    HTTP/1.1 403 FORBIDDEN
+ *    {
+ *      "message": "No valid credentials provided"
+ *    }
+ */
+router.get("/mine", (req, res) => {
+  ProjectMembers.getProjectsByUserId(req.user.id)
+    .then(projects => {
+      res.status(200).json(projects);
+    })
+    .catch(error => {
+      res.status(500).json({ message: "Server Error", error });
     });
 });
 
