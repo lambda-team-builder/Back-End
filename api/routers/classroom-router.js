@@ -184,6 +184,48 @@ router.post(
 );
 
 /**
+ *  @api {delete} api/classrooms/:id/classroom_projects/:classroom_project_id/project_members/:project_member_id Delete a member slot
+ *  @apiVersion 0.1.0
+ *  @apiName deleteClassroomProjectMember
+ *  @apiPermission  classroomAdmin
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 204 NO CONTENT
+ *
+ *  @apiErrorExample Error-Response: Not all fields
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "Project slot could not be found"
+ *    }
+ */
+
+router.delete(
+  "/:id/classroom_projects/:classroom_project_id/project_members/:project_member_id",
+  restrictClassroomAdmin,
+  async (req, res) => {
+    const project_member_id = req.params.project_member_id;
+    ProjectMember.destroy(project_member_id)
+      .then(numDestroyed => {
+        if (numDestroyed === 0) {
+          res.status(404).json({ message: "Project slot could not be found" });
+        } else {
+          res.sendStatus(204);
+        }
+      })
+      .catch(error => {
+        res.status(500).json({
+          message: "Server error",
+          error
+        });
+      });
+  }
+);
+
+/**
  *  @api {put} api/classrooms/:id Edit classroom name
  *  @apiVersion 0.1.0
  *  @apiName putClassroom

@@ -102,6 +102,7 @@ router.put("/:id", async (req, res) => {
     res.status(401).json("All fields required");
   }
 });
+
 /**
  *  @api {put} api/project_members/:id/join  User fills a member slot
  *  @apiVersion 0.1.0
