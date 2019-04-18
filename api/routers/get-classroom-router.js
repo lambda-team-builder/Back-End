@@ -58,6 +58,7 @@ router.get("/", async (req, res) => {
  *      {
  *          "id": 1,
  *          "name": "Classroom one",
+ *          "is_admin": true,
  *          "projects": [
  *              {
  *                  "id": 1,
