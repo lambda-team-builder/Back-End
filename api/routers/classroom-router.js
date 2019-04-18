@@ -364,9 +364,9 @@ router.put("/:id/join", async (req, res) => {
  */
 
 router.put("/:id/leave", async (req, res) => {
-  ClassroomMember.join(id, req.user.id)
-    .then(numJoined => {
-      if (numJoined) {
+  ClassroomMember.leave(id, req.user.id)
+    .then(numDel => {
+      if (numDel) {
         res.sendStatus(204);
       } else {
         res.status(404).json({ message: "Classroom not found" });
@@ -377,17 +377,23 @@ router.put("/:id/leave", async (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
-  ClassroomMember.leave(user.user_id, req.params.id)
-    .then(numDel => {
-      if (numDel) {
+router.put("/:id/password", restrictClassroomAdmin, (req, res) => {
+  let password = req.body.password;
+  if (password) {
+    password = bcrypt.hashSync(password, 14);
+  }
+  Classrooms.update(req.params.id * 1, {
+    password: password ? password : null
+  })
+    .then(numUpdated => {
+      if (numUpdated) {
         res.sendStatus(204);
       } else {
-        res.status(404).json({ message: "User was not in that classroom" });
+        res.status(404).json({ message: "Classroom cannot be found" });
       }
     })
     .catch(error => {
-      res.status(500).json({ message: "Server error", error });
+      res.status(500).json({ message: "Server Error" });
     });
 });
 
