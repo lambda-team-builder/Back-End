@@ -60,7 +60,8 @@ const ClassroomMember = require("../../data/models/classroomMembersModel.js");
  *    message: "User does not have permission to perform this action."
  *  }
  */
-router.post("/", restrictAdmin, (req, res) => {
+// restrictAdmin add if only want admins to
+router.post("/", (req, res) => {
   let { name, password } = req.body;
   if (password) {
     password = bcrypt.hashSync(password, 14);
