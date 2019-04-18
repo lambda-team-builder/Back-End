@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const restrictAdmin = require("../authorization/authenticate").restrictAdmin;
 const restrictClassroomAdmin = require("../authorization/authenticate")
   .restrictClassroomAdmin;
+
+const isMemberOrAdmin = require("../isMemberOrAdmin");
 //models
 const Classrooms = require("../../data/models/classroomsModel.js");
 const ClassroomProjects = require("../../data/models/classroomProjectsModel");

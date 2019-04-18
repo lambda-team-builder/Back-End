@@ -3,6 +3,8 @@ const router = require("express").Router();
 const restrictClassroomAdmin = require("../authorization/authenticate")
   .restrictClassroomAdmin;
 
+const isMemberOrAdmin = require("../isMemberOrAdmin");
+
 //models
 const Classrooms = require("../../data/models/classroomsModel.js");
 const ClassroomProjects = require("../../data/models/classroomProjectsModel");
@@ -58,6 +60,7 @@ router.get("/", async (req, res) => {
  *      {
  *          "id": 1,
  *          "name": "Classroom one",
+ *          "is_admin": true,
  *          "projects": [
  *              {
  *                  "id": 1,
@@ -101,16 +104,25 @@ router.get("/", async (req, res) => {
  *    }
  */
 router.get("/:id", async (req, res) => {
-  try {
-    const classroom = await Classrooms.getById(req.params.id);
+  const id = req.params.id * 1;
+  const isMember = await isMemberOrAdmin(req.user.id, id);
+  if (!isMember) {
+    res.status(400).json({ message: "Not your classroom" });
+  } else {
+    try {
+      const admins = await ClassroomAdmin.getAdminsByClassroomId(id);
+      const is_admin = admins.includes(req.user.id);
 
-    if (classroom.name) {
-      res.status(200).json(classroom);
-    } else {
-      res.status(404).json({ message: "Classroom not found" });
+      const classroom = await Classrooms.getById(id);
+
+      if (classroom.name) {
+        res.status(200).json({ is_admin, ...classroom });
+      } else {
+        res.status(404).json({ message: "Classroom not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Server error", error });
     }
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error });
   }
 });
 
@@ -166,14 +178,22 @@ router.get("/:id", async (req, res) => {
  *      "message": "Classroom not found"
  *    }
  */
-router.get("/:id/projects/:classroom_project_id", (req, res) => {
-  ClassroomProjects.getById(req.params.classroom_project_id * 1)
-    .then(project => {
-      res.status(200).json(project);
-    })
-    .catch(error => {
-      res.status(404).json({ message: "Classroom's project not found", error });
-    });
+router.get("/:id/projects/:classroom_project_id", async (req, res) => {
+  const id = req.params.id * 1;
+  const isMember = await isMemberOrAdmin(req.user.id, id);
+  if (!isMember) {
+    res.status(400).json({ message: "Not your classroom" });
+  } else {
+    ClassroomProjects.getById(req.params.classroom_project_id * 1)
+      .then(project => {
+        res.status(200).json(project);
+      })
+      .catch(error => {
+        res
+          .status(404)
+          .json({ message: "Classroom's project not found", error });
+      });
+  }
 });
 /**
  *  @api {get} api/classrooms/:id/members get clasroom members
@@ -215,7 +235,7 @@ router.get("/:id/projects/:classroom_project_id", (req, res) => {
  *        }
  *    ]
  */
-router.get("/:id/members", restrictClassroomAdmin, (req, res) => {
+router.get("/:id/members", restrictClassroomAdmin, async (req, res) => {
   ClassroomMembers.getMembersByClassroomId(req.params.id)
     .then(members => {
       res.status(200).json(members);

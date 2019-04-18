@@ -52,8 +52,8 @@ define({ "api": [
     "groupTitle": "ClassroomAdmins"
   },
   {
-    "type": "get",
-    "url": "api/classroom_admins/classroom?:id",
+    "type": "post",
+    "url": "api/classroom_admins/classroom/:id",
     "title": "Makes a user a classroom admin",
     "version": "0.1.0",
     "name": "postClassroomAdmins",
@@ -216,7 +216,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n\n  {\n      \"id\": 1,\n      \"name\": \"Classroom one\",\n      \"projects\": [\n          {\n              \"id\": 1,\n              \"name\": \" a project\",\n              \"description\": \"This is a long and boring project.\",\n              \"roles\": [\n                 {\n                     \"id\": 1,\n                     \"classroom_member_id\": 1,\n                     \"user_id\": 2,\n                     \"user_name\": \"Tim\",\n                     \"role_id\": 1,\n                     \"role_name\": \"Front end\"\n                 },\n                 {\n                     \"id\": 6,\n                     \"classroom_member_id\": 6,\n                     \"user_id\": 7,\n                     \"user_name\": \"Jon\",\n                     \"role_id\": 1,\n                     \"role_name\": \"Front end\"\n                 },\n                 {\n                     \"id\": 11,\n                     \"classroom_member_id\": 3,\n                     \"user_id\": 4,\n                     \"user_name\": \"Connor\",\n                     \"role_id\": 2,\n                     \"role_name\": \"Back end\"\n                 }\n              ]\n          }\n      ]\n  }",
+          "content": "HTTP/1.1 200 OK\n\n  {\n      \"id\": 1,\n      \"name\": \"Classroom one\",\n      \"is_admin\": true,\n      \"projects\": [\n          {\n              \"id\": 1,\n              \"name\": \" a project\",\n              \"description\": \"This is a long and boring project.\",\n              \"roles\": [\n                 {\n                     \"id\": 1,\n                     \"classroom_member_id\": 1,\n                     \"user_id\": 2,\n                     \"user_name\": \"Tim\",\n                     \"role_id\": 1,\n                     \"role_name\": \"Front end\"\n                 },\n                 {\n                     \"id\": 6,\n                     \"classroom_member_id\": 6,\n                     \"user_id\": 7,\n                     \"user_name\": \"Jon\",\n                     \"role_id\": 1,\n                     \"role_name\": \"Front end\"\n                 },\n                 {\n                     \"id\": 11,\n                     \"classroom_member_id\": 3,\n                     \"user_id\": 4,\n                     \"user_name\": \"Connor\",\n                     \"role_id\": 2,\n                     \"role_name\": \"Back end\"\n                 }\n              ]\n          }\n      ]\n  }",
           "type": "json"
         }
       ]
