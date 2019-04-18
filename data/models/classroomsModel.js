@@ -23,7 +23,16 @@ async function create(name, user_id, password) {
 }
 
 async function getAll() {
-  return await db("classrooms");
+  return await db.raw(`
+  SELECT id, name, count(password) AS isPassword
+  FROM classrooms
+  GROUP BY id 
+  HAVING password
+  UNION
+  SELECT id, name, count(password) AS isPassword
+  FROM classrooms
+  GROUP BY id 
+  HAVING password IS NULL`);
 }
 
 async function getById(id) {
