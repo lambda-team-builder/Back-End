@@ -1865,7 +1865,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 CREATED\n{\n  \"name\": \"connor\",\n  \"email\": \"connor@hotmail.com\",\n  \"user_type\": \"student\",\n  \"token\": \"GHFHJUI#Y$SAHDJKHA\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"id\": 1\n  \"name\": \"connor\",\n  \"email\": \"connor@hotmail.com\",\n  \"user_type\": \"{\n    \"id\": 2,\n     \"name\": \"student\"\n   },\",\n  \"token\" : \"hdf78623rhfkjsdhkf\"\n}",
           "type": "json"
         }
       ]
@@ -1922,7 +1922,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"token\": \"GHFHJUI#Y$SAHDJKHA\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"id\": 1\n  \"name\": \"connor\",\n  \"email\": \"connor@hotmail.com\",\n  \"user_type\": \"{\n    \"id\": 2,\n     \"name\": \"student\"\n   },\",\n  \"token\" : \"hdf78623rhfkjsdhkf\"\n}",
           "type": "json"
         }
       ]
@@ -2023,7 +2023,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 CREATED\n{\n  \"name\": \"connor\",\n  \"email\": \"connor@hotmail.com\",\n  \"user_type\": \"{\n    \"id\": 2,\n     \"name\": \"student\"\n   },\",\n  \"token\" : \"hdf78623rhfkjsdhkf\"\n}",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1\n  \"name\": \"connor\",\n  \"email\": \"connor@hotmail.com\",\n  \"user_type\": \"{\n    \"id\": 2,\n     \"name\": \"student\"\n   },\",\n  \"token\" : \"hdf78623rhfkjsdhkf\"\n}",
           "type": "json"
         }
       ]
