@@ -737,6 +737,77 @@ define({ "api": [
   },
   {
     "type": "put",
+    "url": "api/classrooms/:id/password",
+    "title": "Update classroom password",
+    "version": "0.1.0",
+    "name": "putClassroomJoin",
+    "permission": [
+      {
+        "name": "classroom admin"
+      }
+    ],
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>New password</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"password\": \"1234\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Example: No password",
+          "content": "{\n \"password\": null\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 NO CONTENT",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: If no classroom was found",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom cannot be found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/get-classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "put",
     "url": "api/classrooms/:id/join",
     "title": "Join classroom",
     "version": "0.1.0",
@@ -792,7 +863,7 @@ define({ "api": [
     "error": {
       "examples": [
         {
-          "title": "Error-Response: If missing name",
+          "title": "Error-Response: Bad password",
           "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"Bad credentials\"\n}",
           "type": "json"
         },
@@ -804,6 +875,77 @@ define({ "api": [
         {
           "title": "Error-Response: Already member",
           "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"message\": \"Aleady member of classroom\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "put",
+    "url": "api/classrooms/:id/password",
+    "title": "Update classroom password",
+    "version": "0.1.0",
+    "name": "putClassroomJoin",
+    "permission": [
+      {
+        "name": "classroom admin"
+      }
+    ],
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>New password</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"password\": \"1234\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Example: No password",
+          "content": "{\n \"password\": null\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 NO CONTENT",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: If no classroom was found",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom cannot be found\"\n}",
           "type": "json"
         }
       ]

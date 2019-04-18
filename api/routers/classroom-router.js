@@ -296,7 +296,7 @@ router.put("/:id", restrictClassroomAdmin, async (req, res) => {
  *
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 204 NO CONTENT
- *  @apiErrorExample Error-Response: If missing name
+ *  @apiErrorExample Error-Response: Bad password
  *    HTTP/1.1 401 BAD REQUEST
  *    {
  *      "message": "Bad credentials"
@@ -376,7 +376,33 @@ router.put("/:id/leave", async (req, res) => {
       res.status(500).json({ message: "Server Error", error });
     });
 });
-
+/**
+ *  @api {put} api/classrooms/:id/password Update classroom password
+ *  @apiVersion 0.1.0
+ *  @apiName putClassroomJoin
+ *  @apiPermission classroom admin
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiParam {String} password New password
+ *  @apiParamExample {json} Request-Example:
+ * {
+ *  "password": "1234"
+ * }
+ *  @apiParamExample {json} Request-Example: No password
+ * {
+ *  "password": null
+ * }
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 204 NO CONTENT
+ *  @apiErrorExample Error-Response: If no classroom was found
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "Classroom cannot be found"
+ *    }
+ */
 router.put("/:id/password", restrictClassroomAdmin, (req, res) => {
   let password = req.body.password;
   if (password) {
