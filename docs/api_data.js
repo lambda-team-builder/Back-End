@@ -323,6 +323,49 @@ define({ "api": [
     "groupTitle": "Classrooms"
   },
   {
+    "type": "get",
+    "url": "api/classroom_members/mine",
+    "title": "get user's clasrooms",
+    "version": "0.1.0",
+    "name": "getUsersClassrooms",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "classrooms",
+            "description": "<p>A list of user's classrooms</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[\n  {\n    classroom_member_id: 3,\n    classroom_id: 1,\n    classroom_name: \"build week 1\"\n  },\n  {\n    classroom_member_id: 14,\n    classroom_id: 2,\n    classroom_name: \"build week 2\"\n  }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom_member-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
     "type": "post",
     "url": "api/classrooms/",
     "title": "Create a classroom",

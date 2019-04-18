@@ -151,10 +151,12 @@ router.put("/:id/join", async (req, res) => {
     res.status(500).json({ message: "Server Error", error });
   }
 
-  const classroom_member = classroomsOfUser.find(
-    classroom => classroom.classroom_id === classroomOfProjectMember
-  );
-  if (!classroom_member) {
+  const classroom_member = classroomsOfUser.find(classroom => {
+    return classroom.classroom_id === classroomOfProjectMember;
+  });
+  if (classroomOfProjectMember === null) {
+    res.status(404).json({ message: "That member slot does not exist" });
+  } else if (!classroom_member) {
     res.status(400).json({ message: "User not in that classroom" });
   } else {
     try {
@@ -174,8 +176,10 @@ router.put("/:id/join", async (req, res) => {
         });
       }
     } catch (error) {
+      const t = 1;
       res.status(500).json({
-        message: "Server error"
+        message: "Server error",
+        error
       });
     }
   }

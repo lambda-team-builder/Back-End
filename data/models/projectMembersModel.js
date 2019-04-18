@@ -81,7 +81,7 @@ async function getClassroomIdByProjectMemberId(id) {
     })
     .where({ "project_members.id": id })
     .first();
-  return obj.classroom_id;
+  return obj ? obj.classroom_id : null;
 }
 
 async function getProjectsByUserId(user_id) {

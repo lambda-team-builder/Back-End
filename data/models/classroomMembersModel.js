@@ -1,6 +1,11 @@
 const db = require("../dbConfig");
 
-module.exports = { join, getAllClassroomsByUserId, getMembersByClassroomId };
+module.exports = {
+  join,
+  getAllClassroomsByUserId,
+  getMembersByClassroomId,
+  leave
+};
 
 async function join(classroom_id, user_id) {
   return await db("classroom_members")
@@ -42,4 +47,10 @@ async function getMembersByClassroomId(classroom_id) {
       "classroom_members.user_id": "users.id"
     })
     .where({ "classroom_members.classroom_id": classroom_id });
+}
+
+async function leave(user_id, classroom_id) {
+  return await db("classroom_members")
+    .where({ user_id, classroom_id })
+    .del();
 }

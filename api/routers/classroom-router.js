@@ -340,6 +340,32 @@ router.put("/:id/join", async (req, res) => {
   }
 });
 
-router.delete("/:id", (req, res) => {});
+router.put("/:id/leave", async (req, res) => {
+  ClassroomMember.join(id, req.user.id)
+    .then(numJoined => {
+      if (numJoined) {
+        res.sendStatus(204);
+      } else {
+        res.status(404).json({ message: "Classroom not found" });
+      }
+    })
+    .catch(error => {
+      res.status(400).json({ message: "Aleady member of classroom" });
+    });
+});
+
+router.delete("/:id", (req, res) => {
+  ClassroomMember.leave(user.user_id, req.params.id)
+    .then(numDel => {
+      if (numDel) {
+        res.sendStatus(204);
+      } else {
+        res.status(404).json({ message: "User was not in that classroom" });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ message: "Server error", error });
+    });
+});
 
 module.exports = router;
