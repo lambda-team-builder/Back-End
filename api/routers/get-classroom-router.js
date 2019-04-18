@@ -105,7 +105,7 @@ router.get("/", async (req, res) => {
  */
 router.get("/:id", async (req, res) => {
   const id = req.params.id * 1;
-  const isMember = await isMemberOrAdmin(req.user.id, id);
+  const isMember = false; //await isMemberOrAdmin(req.user.id, id);
   if (!isMember) {
     res.status(400).json({ message: "Not your classroom" });
   } else {
