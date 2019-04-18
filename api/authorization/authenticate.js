@@ -3,7 +3,14 @@ const jwtSecret = process.env.JWT_SECRET || "mellon";
 
 const db = require("../../data/dbConfig.js");
 
-module.exports = { restrict, generateToken, restrictAdmin };
+const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
+
+module.exports = {
+  restrict,
+  generateToken,
+  restrictAdmin,
+  restrictClassroomAdmin
+};
 
 function restrict(req, res, next) {
   const token = req.header("Authorization");
@@ -69,6 +76,25 @@ async function restrictAdmin(req, res, next) {
   } else {
     res.status(403).json({ message: "No valid credentials provided", error });
   }
+}
+
+// after athenticate route and only on /api/classrooms/:id
+function restrictClassroomAdmin(req, res, next) {
+  const user_id = req.user.id;
+  const classroom_id = req.params.id * 1;
+  ClassroomAdmin.getAdminsByClassroomId(classroom_id)
+    .then(user_ids => {
+      if (user_ids.length === 0) {
+        res.status(404).json({ message: "Classroom does not exist" });
+      } else if (user_ids.includes(user_id)) {
+        next();
+      } else {
+        res.status(401).json({ message: "Not a admin for this classroom" });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ message: "Server Error", error });
+    });
 }
 
 function generateToken(user) {

@@ -2,11 +2,12 @@ const router = require("express").Router();
 //auth
 const bcrypt = require("bcryptjs");
 const restrictAdmin = require("../authorization/authenticate").restrictAdmin;
+const restrictClassroomAdmin = require("../authorization/authenticate")
+  .restrictClassroomAdmin;
 //models
 const Classrooms = require("../../data/models/classroomsModel.js");
 const ClassroomProjects = require("../../data/models/classroomProjectsModel");
 const ProjectMember = require("../../data/models/projectMembersModel");
-const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
 const ClassroomMember = require("../../data/models/classroomMembersModel.js");
 /**
  *  @api {post} api/classrooms/ Create a classroom
@@ -300,24 +301,6 @@ router.put("/:id/join", async (req, res) => {
     res.status(401).json({ message: "Bad credentials" });
   }
 });
-
-//classrooms/:id
-// after athenticate route
-function restrictClassroomAdmin(req, res, next) {
-  const user_id = req.user.id;
-  const classroom_id = req.params.id * 1;
-  ClassroomAdmin.getAdminsByClassroomId(classroom_id)
-    .then(user_ids => {
-      if (user_ids.includes(user_id)) {
-        next();
-      } else {
-        res.status(401).json({ message: "Not a admin for this classroom" });
-      }
-    })
-    .catch(error => {
-      res.status(500).json({ message: "Server Error", error });
-    });
-}
 
 router.delete("/:id", (req, res) => {});
 

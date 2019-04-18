@@ -1,5 +1,8 @@
 const router = require("express").Router();
 
+const restrictClassroomAdmin = require("../authorization/authenticate")
+  .restrictClassroomAdmin;
+
 //models
 const Classrooms = require("../../data/models/classroomsModel.js");
 const ClassroomProjects = require("../../data/models/classroomProjectsModel");
@@ -219,23 +222,5 @@ router.get("/:id/members", restrictClassroomAdmin, (req, res) => {
       res.status(500).json({ message: "Server error", error });
     });
 });
-
-//classrooms/:id
-// after athenticate route
-function restrictClassroomAdmin(req, res, next) {
-  const user_id = req.user.id;
-  const classroom_id = req.params.id * 1;
-  ClassroomAdmin.getAdminsByClassroomId(classroom_id)
-    .then(user_ids => {
-      if (user_ids.includes(user_id)) {
-        next();
-      } else {
-        res.status(401).json({ message: "Not a admin for this classroom" });
-      }
-    })
-    .catch(error => {
-      res.status(500).json({ message: "Server Error", error });
-    });
-}
 
 module.exports = router;
