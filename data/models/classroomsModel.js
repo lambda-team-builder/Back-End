@@ -20,17 +20,33 @@ async function create(name, user_id, password) {
 }
 
 async function getAll() {
-  return await db.raw(`
-  SELECT id, name, count(password) AS isPassword
-  FROM classrooms
-  GROUP BY id 
-  HAVING password
-  UNION
-  SELECT id, name, count(password) AS isPassword
-  FROM classrooms
-  GROUP BY id 
-  HAVING password IS NULL`);
+  const noPassPromise = db("classrooms")
+    .select("id", "name")
+    .count("password as is_password")
+    .groupBy("id")
+    .havingNotNull("password");
+
+  const hasPassPromise = db("classrooms")
+    .select("id", "name")
+    .count("password as is_password")
+    .groupBy("id")
+    .havingNull("password");
+
+  const [noPass, hasPass] = await Promise.all([noPassPromise, hasPassPromise]);
+
+  return [...noPass, ...hasPass];
 }
+
+// cannot do this in knex because unions are handled before group by :(
+// SELECT id, name, count(password) AS isPassword
+// FROM classrooms
+// GROUP BY id
+// HAVING password
+// UNION
+// SELECT id, name, count(password) AS isPassword
+// FROM classrooms
+// GROUP BY id
+// HAVING password IS NULL
 
 async function getById(id) {
   const classroomPromise = db("classrooms")

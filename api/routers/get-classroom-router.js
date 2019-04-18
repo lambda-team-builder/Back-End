@@ -36,7 +36,6 @@ const ClassroomMembers = require("../../data/models/classroomMembersModel");
 router.get("/", async (req, res) => {
   try {
     const classroomList = await Classrooms.getAll();
-
     res.status(200).json(classroomList);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
@@ -106,25 +105,25 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const id = req.params.id * 1;
   res.status(204);
-  // const isMember = true; //await isMemberOrAdmin(req.user.id, id);
-  // if (!isMember) {
-  //   res.status(400).json({ message: "Not your classroom" });
-  // } else {
-  //   try {
-  //     const admins = await ClassroomAdmin.getAdminsByClassroomId(id);
-  //     const is_admin = admins.includes(req.user.id);
+  const isMember = await isMemberOrAdmin(req.user.id, id);
+  if (!isMember) {
+    res.status(400).json({ message: "Not your classroom" });
+  } else {
+    try {
+      const admins = await ClassroomAdmin.getAdminsByClassroomId(id);
+      const is_admin = admins.includes(req.user.id);
 
-  //     const classroom = await Classrooms.getById(id);
+      const classroom = await Classrooms.getById(id);
 
-  //     if (classroom.name) {
-  //       res.status(200).json({ is_admin, ...classroom });
-  //     } else {
-  //       res.status(404).json({ message: "Classroom not found" });
-  //     }
-  //   } catch (error) {
-  //     res.status(500).json({ message: "Server error", error });
-  //   }
-  // }
+      if (classroom.name) {
+        res.status(200).json({ is_admin, ...classroom });
+      } else {
+        res.status(404).json({ message: "Classroom not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Server error", error });
+    }
+  }
 });
 
 /**
