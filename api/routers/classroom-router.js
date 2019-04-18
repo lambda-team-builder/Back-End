@@ -125,7 +125,7 @@ router.post("/:id/projects", restrictClassroomAdmin, (req, res) => {
   }
 });
 /**
- *  @api {post} api/classrooms/:id/classroom_projects/:classroom_project_id/project_member Create a member slot for a classroom project.
+ *  @api {post} api/classrooms/:id/classroom_projects/:classroom_project_id/project_members Create a member slot for a classroom project.
  *  @apiVersion 0.1.0
  *  @apiName postClassroomProjectMember
  *  @apiPermission  classroomAdmin
@@ -309,8 +309,6 @@ function restrictClassroomAdmin(req, res, next) {
   ClassroomAdmin.getAdminsByClassroomId(classroom_id)
     .then(user_ids => {
       if (user_ids.includes(user_id)) {
-        next();
-      } else if (user_id) {
         next();
       } else {
         res.status(401).json({ message: "Not a admin for this classroom" });
