@@ -813,6 +813,52 @@ define({ "api": [
   },
   {
     "type": "put",
+    "url": "api/classrooms/:id/leave",
+    "title": "Leave classroom",
+    "version": "0.1.0",
+    "name": "putClassroomLeave",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 NO CONTENT",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: If no classroom was found",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom not found\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: Already member",
+          "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"message\": \"Aleady member of classroom\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "put",
     "url": "api/project_members/:id",
     "title": "Add user to a member slot for group admin",
     "version": "0.1.0",

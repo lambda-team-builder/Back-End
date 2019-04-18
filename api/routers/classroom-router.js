@@ -340,6 +340,29 @@ router.put("/:id/join", async (req, res) => {
   }
 });
 
+/**
+ *  @api {put} api/classrooms/:id/leave Leave classroom
+ *  @apiVersion 0.1.0
+ *  @apiName putClassroomLeave
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 204 NO CONTENT
+ *  @apiErrorExample Error-Response: If no classroom was found
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "Classroom not found"
+ *    }
+ *  @apiErrorExample Error-Response: Already member
+ *    HTTP/1.1 400 BAD REQUEST
+ *    {
+ *      "message": "Aleady member of classroom"
+ *    }
+ */
+
 router.put("/:id/leave", async (req, res) => {
   ClassroomMember.join(id, req.user.id)
     .then(numJoined => {
@@ -350,7 +373,7 @@ router.put("/:id/leave", async (req, res) => {
       }
     })
     .catch(error => {
-      res.status(400).json({ message: "Aleady member of classroom" });
+      res.status(500).json({ message: "Server Error", error });
     });
 });
 
