@@ -167,7 +167,7 @@ describe("classroom-router.js", () => {
         .get("/api/classrooms/10")
         .set("Authorization", token)
         .expect({
-          message: "Classroom not found"
+          message: "Classroom does not exist"
         });
     });
   });
@@ -196,7 +196,7 @@ describe("classroom-router.js", () => {
         .put("/api/classrooms/1")
         .set("Authorization", token)
         .send({ name: "Build Week 19" })
-        .expect({ id: 1, name: "Build Week 19", projects: [] });
+        .expect({ id: 1, name: "Build Week 19", password: null, projects: [] });
     });
 
     it("should return 400 if name is not provided", async () => {
@@ -241,7 +241,7 @@ describe("classroom-router.js", () => {
         .set("Authorization", token)
         .send({ name: "Build Week 19" })
         .expect({
-          message: "Classroom not found"
+          message: "Classroom does not exist"
         });
     });
   });
