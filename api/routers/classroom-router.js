@@ -367,7 +367,7 @@ router.put("/:id/join", async (req, res) => {
  */
 
 router.put("/:id/leave", async (req, res) => {
-  ClassroomMember.leave(id, req.user.id)
+  ClassroomMember.leave(req.params.id * 1, req.user.id)
     .then(numDel => {
       if (numDel) {
         res.sendStatus(204);
