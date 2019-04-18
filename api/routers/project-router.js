@@ -66,6 +66,75 @@ router.post("/", restrictAdmin, (req, res) => {
 });
 
 /**
+ *  @api {put} api/projects/ Update a project
+ *  @apiVersion 0.1.0
+ *  @apiName putProject
+ *  @apiPermission  Admin
+ *  @apiGroup Projects
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiParam {String} name Name of project
+ *  @apiParam {String} description The description of the project
+ *
+ *  @apiParamExample {json} Request-Example: Update both
+ *  {
+ *   "name":"this project",
+ *   "description": "This is a long and boring project."
+ *  }
+ *  @apiParamExample {json} Request-Example: Update name
+ *  {
+ *   "name":"this project"
+ *  }
+ *  @apiParamExample {json} Request-Example: Update description
+ *  {
+ *   "description": "This is a long and boring project."
+ *  }
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 204 No Content
+ *
+ *  @apiErrorExample Error-Response: Not all fields
+ *    HTTP/1.1 401 BAD REQUEST
+ *    {
+ *      "message": "At Least one field is required"
+ *    }
+ *  @apiErrorExample Error-Response: Name in use
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "Project does not exist"
+ *    }
+ */
+
+router.put("/:id", restrictAdmin, (req, res) => {
+  const { name, description } = req.body;
+  const id = req.params.id * 1;
+  if (name || description) {
+    updateObj = {};
+    if (name) {
+      updateObj.name = name;
+    }
+    if (description) {
+      updateObj.description = description;
+    }
+    Projects.update(updateObj, id)
+      .then(numUpdate => {
+        if (numUpdate === 0) {
+          res.status(404).json({ message: "Project does not exist" });
+        } else {
+          res.sendStatus(204);
+        }
+      })
+      .catch(error => {
+        res.status(500).json({ message: "Server Error", error });
+      });
+  } else {
+    res.status(401).json({
+      message: "At Least one field is required"
+    });
+  }
+});
+/**
  *  @api {get} api/projects/ Get all projects
  *  @apiVersion 0.1.0
  *  @apiName getProjects

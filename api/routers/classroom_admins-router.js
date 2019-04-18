@@ -2,6 +2,8 @@ const router = require("express").Router();
 
 const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
 
+const restrictClassroomAdmin = require("../authorization/authenticate")
+  .restrictClassroomAdmin;
 /**
  *  @api {get} api/classroom_admins/ Get a list of user's classrooms that user admin's
  *  @apiVersion 0.1.0
@@ -51,6 +53,74 @@ router.get("/", (req, res) => {
     .catch(error => {
       res.status(500).json({ message: "server Error", error });
     });
+});
+
+/**
+ *  @api {get} api/classroom_admins/classroom?:id Makes a user a classroom admin
+ *  @apiVersion 0.1.0
+ *  @apiName postClassroomAdmins
+ *  @apiGroup ClassroomAdmins
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiParam {Number} user_id The user to become a classroom admin
+ *
+ *  @apiParmamExample {json} Request Example:
+ *  {
+ *    "user_id":5
+ *  }
+ *
+ *  @apiSuccess {Array} classrooms A list of classrooms.
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 200 OK
+ *
+ *   [
+ *       1,
+ *       2,
+ *       4,
+ *       10,
+ *       11,
+ *       13
+ *   ]
+ *
+ *
+ *  @apiErrorExample Error-Response:
+ *    HTTP/1.1 400 BAD REQUEST
+ *    {
+ *      "message": "User already a classroom admin or user does not existr"
+ *    }
+ *  @apiErrorExample Error-Response:
+ *  HTTP/1.1 422 UNPROCESSABLE ENTITY
+ *  {
+ *     message: "user_id required"
+ *  }
+ */
+
+router.post("/classroom/:id", restrictClassroomAdmin, (req, res) => {
+  const user_id = req.body.user_id;
+  if (user_id) {
+    ClassroomAdmin.newAdmin(user_id, req.params.id * 1)
+      .then(id => {
+        ClassroomAdmin.getAdminsByClassroomId(req.params.id * 1)
+          .then(admins => {
+            res.status(200).json(admins);
+          })
+          .catch(error => {
+            res.status(500).json({ message: "Server Error" });
+          });
+      })
+      .catch(error => {
+        res
+          .status(400)
+          .json({
+            message: "User already a classroom admin or user does not exist",
+            error
+          });
+      });
+  } else {
+    res.status(401).json({ message: "user_id required" });
+  }
 });
 
 module.exports = router;

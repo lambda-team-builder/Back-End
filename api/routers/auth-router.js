@@ -37,6 +37,7 @@ const Users = require("../../data/models/usersModel.js");
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 201 CREATED
  *    {
+ *      "id": 1
  *      "name": "connor",
  *      "email": "connor@hotmail.com",
  *      "user_type": "{
@@ -117,12 +118,16 @@ router.post("/register", async (req, res) => {
  *  @apiSuccess {String} token The auth token
  *
  *  @apiSuccessExample Success-Response:
- *    HTTP/1.1 201 CREATED
+ *    HTTP/1.1 200 OK
  *    {
+ *      "id": 1
  *      "name": "connor",
  *      "email": "connor@hotmail.com",
- *      "user_type": "student",
- *      "token": "GHFHJUI#Y$SAHDJKHA"
+ *      "user_type": "{
+ *        "id": 2,
+ *         "name": "student"
+ *       },",
+ *      "token" : "hdf78623rhfkjsdhkf"
  *    }
  *  @apiErrorExample Error-Response: Bad credentials
  *    HTTP/1.1 401 UNAUTHORIZED
@@ -182,7 +187,14 @@ router.put("/login", async (req, res) => {
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 200 OK
  *    {
- *      "token": "GHFHJUI#Y$SAHDJKHA"
+ *      "id": 1
+ *      "name": "connor",
+ *      "email": "connor@hotmail.com",
+ *      "user_type": "{
+ *        "id": 2,
+ *         "name": "student"
+ *       },",
+ *      "token" : "hdf78623rhfkjsdhkf"
  *    }
  *  @apiErrorExample Error-Response: Bad credentials
  *    HTTP/1.1 403 RESTRICTED
@@ -193,8 +205,15 @@ router.put("/login", async (req, res) => {
 
 router.get("/refresh", restrict, async (req, res) => {
   const token = generateToken(req.user);
+  const user_type = await Users.getUserTypeById(req.user.user_type_id);
   if (token) {
-    res.status(200).json({ token });
+    res.status(200).json({
+      name: req.user.name,
+      email: req.user.email,
+      id: req.user.id,
+      token,
+      user_type
+    });
   } else {
     res.status(500).json("Show Connor this error", error);
   }

@@ -53,6 +53,122 @@
   },
   {
     "type": "get",
+    "url": "api/classroom_admins/classroom?:id",
+    "title": "Makes a user a classroom admin",
+    "version": "0.1.0",
+    "name": "postClassroomAdmins",
+    "group": "ClassroomAdmins",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The user to become a classroom admin</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "classrooms",
+            "description": "<p>A list of classrooms.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n\n[\n    1,\n    2,\n    4,\n    10,\n    11,\n    13\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"message\": \"User already a classroom admin or user does not existr\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 422 UNPROCESSABLE ENTITY\n{\n   message: \"user_id required\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom_admins-router.js",
+    "groupTitle": "ClassroomAdmins"
+  },
+  {
+    "type": "delete",
+    "url": "api/classrooms/:id/classroom_projects/:classroom_project_id/project_members/:project_member_id",
+    "title": "Delete a member slot",
+    "version": "0.1.0",
+    "name": "deleteClassroomProjectMember",
+    "permission": [
+      {
+        "name": "classroomAdmin"
+      }
+    ],
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 NO CONTENT",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Not all fields",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Project slot could not be found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "get",
     "url": "api/classrooms/:id",
     "title": "Get classroom by ID",
     "version": "0.3.0",
@@ -268,12 +384,55 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n   [{\n      id: 1,\n     name: \"Build Week 2\"\n   },\n   {\n      id: 2,\n     name: \"Build Week 2\"\n   }]",
+          "content": "HTTP/1.1 200 OK\n   [{\n      id: 1,\n      name: \"Build Week 2\",\n      password: 1\n   },\n   {\n      id: 2,\n      name: \"Build Week 2\"\n      password: 0\n   }]",
           "type": "json"
         }
       ]
     },
     "filename": "api/routers/get-classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "get",
+    "url": "api/classroom_members/mine",
+    "title": "get user's clasrooms",
+    "version": "0.1.0",
+    "name": "getUsersClassrooms",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "classrooms",
+            "description": "<p>A list of user's classrooms</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[\n  {\n    classroom_member_id: 3,\n    classroom_id: 1,\n    classroom_name: \"build week 1\"\n  },\n  {\n    classroom_member_id: 14,\n    classroom_id: 2,\n    classroom_name: \"build week 2\"\n  }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom_member-router.js",
     "groupTitle": "Classrooms"
   },
   {
@@ -703,10 +862,127 @@
     "error": {
       "examples": [
         {
-          "title": "Error-Response: If missing name",
+          "title": "Error-Response: Bad password",
           "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"Bad credentials\"\n}",
           "type": "json"
         },
+        {
+          "title": "Error-Response: If no classroom was found",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom not found\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: Already member",
+          "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"message\": \"Aleady member of classroom\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "put",
+    "url": "api/classrooms/:id/password",
+    "title": "Update classroom password",
+    "version": "0.1.0",
+    "name": "putClassroomJoin",
+    "permission": [
+      {
+        "name": "classroom admin"
+      }
+    ],
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>New password</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"password\": \"1234\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Example: No password",
+          "content": "{\n \"password\": null\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 NO CONTENT",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: If no classroom was found",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom cannot be found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "put",
+    "url": "api/classrooms/:id/leave",
+    "title": "Leave classroom",
+    "version": "0.1.0",
+    "name": "putClassroomLeave",
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 NO CONTENT",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
         {
           "title": "Error-Response: If no classroom was found",
           "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom not found\"\n}",
@@ -1194,6 +1470,94 @@
     "groupTitle": "Projects"
   },
   {
+    "type": "put",
+    "url": "api/projects/",
+    "title": "Update a project",
+    "version": "0.1.0",
+    "name": "putProject",
+    "permission": [
+      {
+        "name": "Admin"
+      }
+    ],
+    "group": "Projects",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of project</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The description of the project</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example: Update both",
+          "content": "{\n \"name\":\"this project\",\n \"description\": \"This is a long and boring project.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Example: Update name",
+          "content": "{\n \"name\":\"this project\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Example: Update description",
+          "content": "{\n \"description\": \"This is a long and boring project.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 No Content",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Not all fields",
+          "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"At Least one field is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: Name in use",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Project does not exist\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/project-router.js",
+    "groupTitle": "Projects"
+  },
+  {
     "type": "get",
     "url": "api/classrooms/",
     "title": "Get list of all roles",
@@ -1501,7 +1865,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 CREATED\n{\n  \"name\": \"connor\",\n  \"email\": \"connor@hotmail.com\",\n  \"user_type\": \"student\",\n  \"token\": \"GHFHJUI#Y$SAHDJKHA\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"id\": 1\n  \"name\": \"connor\",\n  \"email\": \"connor@hotmail.com\",\n  \"user_type\": \"{\n    \"id\": 2,\n     \"name\": \"student\"\n   },\",\n  \"token\" : \"hdf78623rhfkjsdhkf\"\n}",
           "type": "json"
         }
       ]
@@ -1558,7 +1922,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"token\": \"GHFHJUI#Y$SAHDJKHA\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"id\": 1\n  \"name\": \"connor\",\n  \"email\": \"connor@hotmail.com\",\n  \"user_type\": \"{\n    \"id\": 2,\n     \"name\": \"student\"\n   },\",\n  \"token\" : \"hdf78623rhfkjsdhkf\"\n}",
           "type": "json"
         }
       ]
@@ -1659,7 +2023,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 CREATED\n{\n  \"name\": \"connor\",\n  \"email\": \"connor@hotmail.com\",\n  \"user_type\": \"{\n    \"id\": 2,\n     \"name\": \"student\"\n   },\",\n  \"token\" : \"hdf78623rhfkjsdhkf\"\n}",
+          "content": "HTTP/1.1 201 CREATED\n{\n  \"id\": 1\n  \"name\": \"connor\",\n  \"email\": \"connor@hotmail.com\",\n  \"user_type\": \"{\n    \"id\": 2,\n     \"name\": \"student\"\n   },\",\n  \"token\" : \"hdf78623rhfkjsdhkf\"\n}",
           "type": "json"
         }
       ]

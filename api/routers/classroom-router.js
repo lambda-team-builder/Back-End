@@ -2,11 +2,12 @@ const router = require("express").Router();
 //auth
 const bcrypt = require("bcryptjs");
 const restrictAdmin = require("../authorization/authenticate").restrictAdmin;
+const restrictClassroomAdmin = require("../authorization/authenticate")
+  .restrictClassroomAdmin;
 //models
 const Classrooms = require("../../data/models/classroomsModel.js");
 const ClassroomProjects = require("../../data/models/classroomProjectsModel");
 const ProjectMember = require("../../data/models/projectMembersModel");
-const ClassroomAdmin = require("../../data/models/classroomAdminsModel");
 const ClassroomMember = require("../../data/models/classroomMembersModel.js");
 /**
  *  @api {post} api/classrooms/ Create a classroom
@@ -179,6 +180,48 @@ router.post(
 );
 
 /**
+ *  @api {delete} api/classrooms/:id/classroom_projects/:classroom_project_id/project_members/:project_member_id Delete a member slot
+ *  @apiVersion 0.1.0
+ *  @apiName deleteClassroomProjectMember
+ *  @apiPermission  classroomAdmin
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 204 NO CONTENT
+ *
+ *  @apiErrorExample Error-Response: Not all fields
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "Project slot could not be found"
+ *    }
+ */
+
+router.delete(
+  "/:id/classroom_projects/:classroom_project_id/project_members/:project_member_id",
+  restrictClassroomAdmin,
+  async (req, res) => {
+    const project_member_id = req.params.project_member_id;
+    ProjectMember.destroy(project_member_id)
+      .then(numDestroyed => {
+        if (numDestroyed === 0) {
+          res.status(404).json({ message: "Project slot could not be found" });
+        } else {
+          res.sendStatus(204);
+        }
+      })
+      .catch(error => {
+        res.status(500).json({
+          message: "Server error",
+          error
+        });
+      });
+  }
+);
+
+/**
  *  @api {put} api/classrooms/:id Edit classroom name
  *  @apiVersion 0.1.0
  *  @apiName putClassroom
@@ -253,7 +296,7 @@ router.put("/:id", restrictClassroomAdmin, async (req, res) => {
  *
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 204 NO CONTENT
- *  @apiErrorExample Error-Response: If missing name
+ *  @apiErrorExample Error-Response: Bad password
  *    HTTP/1.1 401 BAD REQUEST
  *    {
  *      "message": "Bad credentials"
@@ -297,24 +340,87 @@ router.put("/:id/join", async (req, res) => {
   }
 });
 
-//classrooms/:id
-// after athenticate route
-function restrictClassroomAdmin(req, res, next) {
-  const user_id = req.user.id;
-  const classroom_id = req.params.id * 1;
-  ClassroomAdmin.getAdminsByClassroomId(classroom_id)
-    .then(user_ids => {
-      if (user_ids.includes(user_id)) {
-        next();
+/**
+ *  @api {put} api/classrooms/:id/leave Leave classroom
+ *  @apiVersion 0.1.0
+ *  @apiName putClassroomLeave
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 204 NO CONTENT
+ *  @apiErrorExample Error-Response: If no classroom was found
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "Classroom not found"
+ *    }
+ *  @apiErrorExample Error-Response: Already member
+ *    HTTP/1.1 400 BAD REQUEST
+ *    {
+ *      "message": "Aleady member of classroom"
+ *    }
+ */
+
+router.put("/:id/leave", async (req, res) => {
+  ClassroomMember.leave(id, req.user.id)
+    .then(numDel => {
+      if (numDel) {
+        res.sendStatus(204);
       } else {
-        res.status(401).json({ message: "Not a admin for this classroom" });
+        res.status(404).json({ message: "Classroom not found" });
       }
     })
     .catch(error => {
       res.status(500).json({ message: "Server Error", error });
     });
-}
-
-router.delete("/:id", (req, res) => {});
+});
+/**
+ *  @api {put} api/classrooms/:id/password Update classroom password
+ *  @apiVersion 0.1.0
+ *  @apiName putClassroomJoin
+ *  @apiPermission classroom admin
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *  @apiParam {String} password New password
+ *  @apiParamExample {json} Request-Example:
+ * {
+ *  "password": "1234"
+ * }
+ *  @apiParamExample {json} Request-Example: No password
+ * {
+ *  "password": null
+ * }
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 204 NO CONTENT
+ *  @apiErrorExample Error-Response: If no classroom was found
+ *    HTTP/1.1 404 NOT FOUND
+ *    {
+ *      "message": "Classroom cannot be found"
+ *    }
+ */
+router.put("/:id/password", restrictClassroomAdmin, (req, res) => {
+  let password = req.body.password;
+  if (password) {
+    password = bcrypt.hashSync(password, 14);
+  }
+  Classrooms.update(req.params.id * 1, {
+    password: password ? password : null
+  })
+    .then(numUpdated => {
+      if (numUpdated) {
+        res.sendStatus(204);
+      } else {
+        res.status(404).json({ message: "Classroom cannot be found" });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ message: "Server Error" });
+    });
+});
 
 module.exports = router;

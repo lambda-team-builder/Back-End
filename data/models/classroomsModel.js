@@ -1,5 +1,7 @@
 const db = require("../dbConfig");
 
+const ClassroomAdmins = require("./classroomAdminsModel");
+
 const getClassroomProjectRoles = require("./classroomProjectsModel")
   .getClassroomProjectRoles;
 
@@ -12,18 +14,22 @@ async function create(name, user_id, password) {
     .insert(newClassroom)
     .returning("id");
 
-  await db("classroom_admins")
-    .insert({
-      classroom_id,
-      user_id
-    })
-    .returning("id");
+  await ClassroomAdmins.newAdmin(user_id, classroom_id);
 
   return { id: classroom_id, name, classroom_admin_user_ids: [user_id] };
 }
 
 async function getAll() {
-  return await db("classrooms");
+  return await db.raw(`
+  SELECT id, name, count(password) AS isPassword
+  FROM classrooms
+  GROUP BY id 
+  HAVING password
+  UNION
+  SELECT id, name, count(password) AS isPassword
+  FROM classrooms
+  GROUP BY id 
+  HAVING password IS NULL`);
 }
 
 async function getById(id) {
