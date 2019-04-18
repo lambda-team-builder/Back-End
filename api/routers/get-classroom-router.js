@@ -171,7 +171,7 @@ router.get("/:id/projects/:classroom_project_id", (req, res) => {
     });
 });
 /**
- *  @api {get} api/classrooms/:id/members
+ *  @api {get} api/classrooms/:id/members get clasroom members
  *  @apiVersion 0.1.0
  *  @apiName getClassroomMembers
  *  @apiGroup Classrooms

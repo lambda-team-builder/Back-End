@@ -120,7 +120,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "api/classrooms/:id/members",
-    "title": "",
+    "title": "get clasroom members",
     "version": "0.1.0",
     "name": "getClassroomMembers",
     "group": "Classrooms",
