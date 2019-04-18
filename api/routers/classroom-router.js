@@ -62,7 +62,7 @@ router.post("/", restrictAdmin, (req, res) => {
   if (password) {
     password = bcrypt.hashSync(password, 14);
   }
-  const user_id = req.user.id;
+  const user_id = req.body.user.id;
   if (name) {
     Classrooms.create(name, user_id, password)
       .then(classroom => {

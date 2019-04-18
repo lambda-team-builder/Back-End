@@ -1,6 +1,6 @@
 exports.up = function(knex, Promise) {
   return knex.schema.table("classrooms", table => {
-    table.string("password");
+    table.string("password", 255);
   });
 };
 

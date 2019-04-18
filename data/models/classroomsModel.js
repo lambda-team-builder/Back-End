@@ -7,11 +7,12 @@ module.exports = { create, getAll, getById, update, reset, get };
 
 async function create(name, user_id, password) {
   const newClassroom = password ? { name, password } : { name };
+
   const classroom_id = await db("classrooms")
     .insert(newClassroom)
     .first()
     .returning("id");
-
+    
   await db("classroom_admins")
     .insert({
       classroom_id,
