@@ -2,9 +2,7 @@ const ClassroomAdmins = require("../data/models/classroomAdminsModel.js");
 const ClassroomMemebrs = require("../data/models/classroomMembersModel");
 
 module.exports = async function(user_id, classroom_id) {
-  const adminsPromise = ClassroomAdmins.getclassroomAdminsByUserId(
-    classroom_id
-  );
+  const adminsPromise = ClassroomAdmins.getAdminsByClassroomId(classroom_id);
   const membersPromise = ClassroomMemebrs.getMembersByClassroomId(classroom_id);
 
   const [admins, members] = await Promise.all([adminsPromise, membersPromise]);
