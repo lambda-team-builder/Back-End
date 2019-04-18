@@ -101,11 +101,15 @@ router.get("/", async (req, res) => {
  *    }
  */
 router.get("/:id", async (req, res) => {
+  const id = req.params.id * 1;
   try {
-    const classroom = await Classrooms.getById(req.params.id);
+    const admins = await ClassroomAdmin.getAdminsByClassroomId(id);
+    const is_admin = admins.includes(req.user.id);
+
+    const classroom = await Classrooms.getById(id);
 
     if (classroom.name) {
-      res.status(200).json(classroom);
+      res.status(200).json({ is_admin, ...classroom });
     } else {
       res.status(404).json({ message: "Classroom not found" });
     }

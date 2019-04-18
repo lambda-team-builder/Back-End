@@ -56,7 +56,7 @@ router.get("/", (req, res) => {
 });
 
 /**
- *  @api {get} api/classroom_admins/classroom?:id Makes a user a classroom admin
+ *  @api {post} api/classroom_admins/classroom/:id Makes a user a classroom admin
  *  @apiVersion 0.1.0
  *  @apiName postClassroomAdmins
  *  @apiGroup ClassroomAdmins
@@ -111,12 +111,10 @@ router.post("/classroom/:id", restrictClassroomAdmin, (req, res) => {
           });
       })
       .catch(error => {
-        res
-          .status(400)
-          .json({
-            message: "User already a classroom admin or user does not exist",
-            error
-          });
+        res.status(400).json({
+          message: "User already a classroom admin or user does not exist",
+          error
+        });
       });
   } else {
     res.status(401).json({ message: "user_id required" });
