@@ -226,31 +226,3 @@ router.get("/:id/members", restrictClassroomAdmin, (req, res) => {
 });
 
 module.exports = router;
-
-/**
- *  @api {put} api/classrooms/:id/password Update classroom password
- *  @apiVersion 0.1.0
- *  @apiName putClassroomJoin
- *  @apiPermission classroom admin
- *  @apiGroup Classrooms
- *
- *  @apiHeader {String} Authorization Users auth token.
- *
- *  @apiParam {String} password New password
- *  @apiParamExample {json} Request-Example:
- * {
- *  "password": "1234"
- * }
- *  @apiParamExample {json} Request-Example: No password
- * {
- *  "password": null
- * }
- *
- *  @apiSuccessExample Success-Response:
- *    HTTP/1.1 204 NO CONTENT
- *  @apiErrorExample Error-Response: If no classroom was found
- *    HTTP/1.1 404 NOT FOUND
- *    {
- *      "message": "Classroom cannot be found"
- *    }
- */

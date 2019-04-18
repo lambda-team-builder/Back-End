@@ -52,6 +52,76 @@
     "groupTitle": "ClassroomAdmins"
   },
   {
+    "type": "get",
+    "url": "api/classroom_admins/classroom?:id",
+    "title": "Makes a user a classroom admin",
+    "version": "0.1.0",
+    "name": "postClassroomAdmins",
+    "group": "ClassroomAdmins",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>The user to become a classroom admin</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "classrooms",
+            "description": "<p>A list of classrooms.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n\n[\n    1,\n    2,\n    4,\n    10,\n    11,\n    13\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"message\": \"User already a classroom admin or user does not existr\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 422 UNPROCESSABLE ENTITY\n{\n   message: \"user_id required\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom_admins-router.js",
+    "groupTitle": "ClassroomAdmins"
+  },
+  {
     "type": "delete",
     "url": "api/classrooms/:id/classroom_projects/:classroom_project_id/project_members/:project_member_id",
     "title": "Delete a member slot",
@@ -733,77 +803,6 @@
       ]
     },
     "filename": "api/routers/classroom-router.js",
-    "groupTitle": "Classrooms"
-  },
-  {
-    "type": "put",
-    "url": "api/classrooms/:id/password",
-    "title": "Update classroom password",
-    "version": "0.1.0",
-    "name": "putClassroomJoin",
-    "permission": [
-      {
-        "name": "classroom admin"
-      }
-    ],
-    "group": "Classrooms",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Users auth token.</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>New password</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n \"password\": \"1234\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Request-Example: No password",
-          "content": "{\n \"password\": null\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 204 NO CONTENT",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response: If no classroom was found",
-          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom cannot be found\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "api/routers/get-classroom-router.js",
     "groupTitle": "Classrooms"
   },
   {

@@ -15,6 +15,10 @@ exports.up = function(knex, Promise) {
       .inTable("classrooms")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
+    table
+      .string("user_id_classroom_id")
+      .notNullable()
+      .unique();
   });
 };
 

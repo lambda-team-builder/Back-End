@@ -1,6 +1,20 @@
 const db = require("../dbConfig");
 
-module.exports = { getAdminsByClassroomId, getclassroomAdminsByUserId };
+module.exports = {
+  getAdminsByClassroomId,
+  getclassroomAdminsByUserId,
+  newAdmin
+};
+
+async function newAdmin(user_id, classroom_id) {
+  return db("classroom_admins")
+    .insert({
+      user_id,
+      classroom_id,
+      user_id_classroom_id: `${user_id}${classroom_id}`
+    })
+    .returning("id");
+}
 
 async function getAdminsByClassroomId(classroom_id) {
   const adminIdsInObj = await db("classroom_admins")
