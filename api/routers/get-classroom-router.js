@@ -22,11 +22,13 @@ const ClassroomMembers = require("../../data/models/classroomMembersModel");
  *    HTTP/1.1 200 OK
  *       [{
  *          id: 1,
- *         name: "Build Week 2"
+ *          name: "Build Week 2",
+ *          password: 1
  *       },
  *       {
  *          id: 2,
- *         name: "Build Week 2"
+ *          name: "Build Week 2"
+ *          password: 0
  *       }]
  */
 router.get("/", async (req, res) => {
