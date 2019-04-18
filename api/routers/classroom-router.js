@@ -70,11 +70,7 @@ router.post("/", restrictAdmin, (req, res) => {
         res.status(201).json(classroom);
       })
       .catch(error => {
-        if (error.errno === 19) {
-          res.status(403).json({ message: "Classroom name is taken" });
-        } else {
-          res.status(500).json({ message: "Server error", error });
-        }
+        res.status(403).json({ message: "Classroom name is taken", error });
       });
   } else {
     res.status(401).json({
