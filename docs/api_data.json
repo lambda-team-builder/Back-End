@@ -1194,6 +1194,94 @@
     "groupTitle": "Projects"
   },
   {
+    "type": "put",
+    "url": "api/projects/",
+    "title": "Update a project",
+    "version": "0.1.0",
+    "name": "putProject",
+    "permission": [
+      {
+        "name": "Admin"
+      }
+    ],
+    "group": "Projects",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of project</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The description of the project</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example: Update both",
+          "content": "{\n \"name\":\"this project\",\n \"description\": \"This is a long and boring project.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Example: Update name",
+          "content": "{\n \"name\":\"this project\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Example: Update description",
+          "content": "{\n \"description\": \"This is a long and boring project.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 No Content",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Not all fields",
+          "content": "HTTP/1.1 401 BAD REQUEST\n{\n  \"message\": \"At Least one field is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response: Name in use",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Project does not exist\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/project-router.js",
+    "groupTitle": "Projects"
+  },
+  {
     "type": "get",
     "url": "api/classrooms/",
     "title": "Get list of all roles",
