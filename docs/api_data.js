@@ -468,7 +468,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "api/classrooms/:id/classroom_projects/:classroom_project_id/project_member",
+    "url": "api/classrooms/:id/classroom_projects/:classroom_project_id/project_members",
     "title": "Create a member slot for a classroom project.",
     "version": "0.1.0",
     "name": "postClassroomProjectMember",
