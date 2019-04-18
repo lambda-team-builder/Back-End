@@ -52,6 +52,52 @@
     "groupTitle": "ClassroomAdmins"
   },
   {
+    "type": "delete",
+    "url": "api/classrooms/:id/classroom_projects/:classroom_project_id/project_members/:project_member_id",
+    "title": "Delete a member slot",
+    "version": "0.1.0",
+    "name": "deleteClassroomProjectMember",
+    "permission": [
+      {
+        "name": "classroomAdmin"
+      }
+    ],
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 NO CONTENT",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Not all fields",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Project slot could not be found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
     "type": "get",
     "url": "api/classrooms/:id",
     "title": "Get classroom by ID",
