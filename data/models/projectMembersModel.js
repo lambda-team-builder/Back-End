@@ -58,16 +58,29 @@ async function getByClassroomProjectId(classroom_project_id) {
 }
 
 async function getClassroomAdminsByProjectMemberId(project_member_id) {
-  const admins = await db.raw(`
-  SELECT ca.user_id 
-    FROM project_members as pm
-    JOIN classroom_projects as cp
-    ON cp.id = pm.classroom_project_id
-    JOIN classrooms as c
-    ON c.id = cp.classroom_id
-    JOIN classroom_admins as ca
-    ON ca.classroom_id = c.id
-    WHERE pm.id = ${project_member_id}`);
+  const admins = await db("project_members")
+    .select("classroom_admins.user_id")
+    .join("classroom_projects", {
+      "project_members.classroom_project_id": "classroom_projects.id"
+    })
+    .join("classrooms", {
+      "classroom_projects.classroom_id": "classrooms.id"
+    })
+    .join("classroom_admins", {
+      "classrooms.id": "classroom_admins.classroom_id"
+    })
+    .where({ "project_members.id": project_member_id });
+
+  // db.raw(`
+  // SELECT
+  //   FROM project_members as pm
+  //   JOIN classroom_projects as cp
+  //   ON cp.id = pm.classroom_project_id
+  //   JOIN classrooms as c
+  //   ON c.id = cp.classroom_id
+  //   JOIN classroom_admins as ca
+  //   ON ca.classroom_id = c.id
+  //   WHERE pm.id = ${project_member_id}`);
   return admins.map(admin => {
     return admin.user_id;
   });

@@ -5,3 +5,4 @@ data/dev.sqlite3
 data/testing.sqlite3
 coverage
 jest-coverage
+package-lock.json
