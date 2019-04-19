@@ -372,7 +372,7 @@ router.put("/:id/leave", async (req, res) => {
       if (numDel) {
         res.sendStatus(204);
       } else {
-        res.status(404).json({ message: "Classroom not found" });
+        res.status(404).json({ message: "Classroom not found", error: numDel });
       }
     })
     .catch(error => {
