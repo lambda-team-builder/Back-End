@@ -83,7 +83,7 @@ describe("classroom-router.js", () => {
         .expect({
           id: 1,
           name: "group",
-          classroom_admin_user_ids: [1]
+          classroom_admin_user_ids: [14]
         });
     });
   });
@@ -113,7 +113,8 @@ describe("classroom-router.js", () => {
         .expect([
           {
             id: 1,
-            name: "Build Week 20"
+            name: "Build Week 20",
+            isPassword: 0
           }
         ]);
     });
@@ -149,25 +150,27 @@ describe("classroom-router.js", () => {
         .get("/api/classrooms/1")
         .set("Authorization", token)
         .expect({
+          is_admin: true,
           id: 1,
           name: "Build Week 20",
+          password: null,
           projects: []
         });
     });
 
-    it("should return 404 if no classroom with given ID exists", async () => {
+    it("should return 400 if youre not the admin of the classroom", async () => {
       return await request(server)
         .get("/api/classrooms/10")
         .set("Authorization", token)
-        .expect(404);
+        .expect(400);
     });
 
-    it("should return an error message if no classroom with given ID exists", async () => {
+    it("should return an error 'Not your classroom' if youre not admin of the given classroom", async () => {
       return await request(server)
         .get("/api/classrooms/10")
         .set("Authorization", token)
         .expect({
-          message: "Classroom does not exist"
+          message: "Not your classroom"
         });
     });
   });

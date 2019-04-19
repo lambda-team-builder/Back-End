@@ -56,6 +56,7 @@ describe("role-router.js", () => {
         .post("/api/roles/")
         .set("Authorization", token)
         .send({ name: "frontend" });
+        
       return request(server)
         .post("/api/roles/")
         .set("Authorization", token)
