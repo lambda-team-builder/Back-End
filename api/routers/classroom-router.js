@@ -367,12 +367,14 @@ router.put("/:id/join", async (req, res) => {
  */
 
 router.put("/:id/leave", async (req, res) => {
-  ClassroomMember.leave(req.params.id * 1, req.user.id)
+  ClassroomMember.leave(req.user.id, req.params.id * 1)
     .then(numDel => {
       if (numDel) {
         res.sendStatus(204);
       } else {
-        res.status(404).json({ message: "Classroom not found", error: numDel });
+        res
+          .status(404)
+          .json({ message: "User not in classroom", error: numDel });
       }
     })
     .catch(error => {
