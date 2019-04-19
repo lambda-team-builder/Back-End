@@ -96,6 +96,13 @@ router.get("/", async (req, res) => {
  *      }
  *
  *
+ *  @apiErrorExample Error-Response: Not in
+ *    HTTP/1.1 401 FORBIDDEN
+ *    {
+ *      "message": "Not your classroom",
+ *      "is_password":true
+ *    }
+ *
  *  @apiErrorExample Error-Response:
  *    HTTP/1.1 404 FORBIDDEN
  *    {
@@ -107,7 +114,8 @@ router.get("/:id", async (req, res) => {
   res.status(204);
   const isMember = await isMemberOrAdmin(req.user.id, id);
   if (!isMember) {
-    res.status(400).json({ message: "Not your classroom" });
+    const is_password = await Classrooms.hasPassword(id);
+    res.status(401).json({ message: "Not your classroom", is_password });
   } else {
     try {
       const admins = await ClassroomAdmin.getAdminsByClassroomId(id);

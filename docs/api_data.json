@@ -224,6 +224,11 @@
     "error": {
       "examples": [
         {
+          "title": "Error-Response: Not in",
+          "content": "HTTP/1.1 401 FORBIDDEN\n{\n  \"message\": \"Not your classroom\",\n  \"is_password\":true\n}",
+          "type": "json"
+        },
+        {
           "title": "Error-Response:",
           "content": "HTTP/1.1 404 FORBIDDEN\n{\n  \"message\": \"Classroom not found\"\n}",
           "type": "json"

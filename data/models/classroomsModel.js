@@ -5,7 +5,7 @@ const ClassroomAdmins = require("./classroomAdminsModel");
 const getClassroomProjectRoles = require("./classroomProjectsModel")
   .getClassroomProjectRoles;
 
-module.exports = { create, getAll, getById, update, reset, get };
+module.exports = { create, getAll, getById, update, reset, get, hasPassword };
 
 async function create(name, user_id, password) {
   const newClassroom = password ? { name, password } : { name };
@@ -83,6 +83,14 @@ async function update(id, changes) {
   return await db("classrooms")
     .where({ id })
     .update(changes);
+}
+
+async function hasPassword(id) {
+  const classroom = await db("classrooms")
+    .where({ id })
+    .first();
+
+  return classroom.password ? true : false;
 }
 
 async function reset() {

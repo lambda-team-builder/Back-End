@@ -44,6 +44,7 @@ const ProjectMembers = require("../../data/models/projectMembersModel.js");
  *      "message": "Project already exists"
  *    }
  */
+//restrictAdmin,
 router.post("/", (req, res) => {
   const { name, description } = req.body;
   if (name && description) {
