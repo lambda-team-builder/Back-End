@@ -29,7 +29,7 @@ server.use("/api/auth", authRouter);
 server.use("/api/classrooms", restrict, classroomRouter);
 server.use("/api/classrooms", restrict, getClassroomRouter);
 server.use("/api/projects", restrict, projectRouter);
-server.use("/api/roles", restrictAdmin, roleRouter);
+server.use("/api/roles", restrict, roleRouter); //restrictAdmin
 server.use("/api/project_members", restrict, projectMemberRouter);
 server.use("/api/classroom_admins", restrict, classroomAdminsRouter);
 server.use("/api/classroom_members", restrict, classroomMemberRouter);
