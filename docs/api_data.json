@@ -225,7 +225,7 @@
       "examples": [
         {
           "title": "Error-Response: Not in",
-          "content": "HTTP/1.1 401 FORBIDDEN\n{\n  \"message\": \"Not your classroom\",\n  \"is_password\":true\n}",
+          "content": "HTTP/1.1 400 FORBIDDEN\n{\n  \"message\": \"Not your classroom\",\n  \"is_password\":true\n}",
           "type": "json"
         },
         {
