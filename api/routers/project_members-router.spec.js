@@ -11,7 +11,7 @@ const admin = {
 };
 
 describe("classroom-router.js", () => {
-  beforeAll(async (done) => {
+  beforeAll(async done => {
     // Register
     const registerRes = await request(server)
       .post("/api/auth/register")
@@ -32,32 +32,30 @@ describe("classroom-router.js", () => {
     const createClassroom = await request(server)
       .post("/api/classrooms/")
       .set("Authorization", token)
-      .send({ name: "Build  Week 99", user_id })
+      .send({ name: "Build  Week 99", user_id });
 
     const createProject = await request(server)
       .post("/api/classrooms/")
       .set("Authorization", token)
-      .send({ name: "Build  Week 99", user_id })  
+      .send({ name: "Build  Week 99", user_id });
 
     let classroom_id = JSON.parse(createClassroom.text).id;
     let project_id = JSON.parse(createProject.text).id;
 
-    done();
-  });
-
-  beforeEach(async (done) => {
-    // resets classrooms
-    await db("classroom_admins").truncate();
-    await db("classrooms").truncate();
-    done();
-  });
-
-  afterAll(async () => {
-    db.destroy();
-  });
-
-  describe("POST /api/classrooms/", () => {
-    describe('Name of the group', () => {
-      
+    beforeEach(async done => {
+      // resets classrooms
+      await db("classroom_admins").truncate();
+      await db("classrooms").truncate();
+      done();
     });
-  })
+
+    afterAll(async () => {
+      db.destroy();
+    });
+
+    describe("POST /api/classrooms/", () => {
+      describe("Name of the group", () => {});
+    });
+    done();
+  });
+});
