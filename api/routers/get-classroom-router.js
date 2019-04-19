@@ -36,7 +36,6 @@ const ClassroomMembers = require("../../data/models/classroomMembersModel");
 router.get("/", async (req, res) => {
   try {
     const classroomList = await Classrooms.getAll();
-
     res.status(200).json(classroomList);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
@@ -105,6 +104,7 @@ router.get("/", async (req, res) => {
  */
 router.get("/:id", async (req, res) => {
   const id = req.params.id * 1;
+  res.status(204);
   const isMember = await isMemberOrAdmin(req.user.id, id);
   if (!isMember) {
     res.status(400).json({ message: "Not your classroom" });

@@ -60,7 +60,8 @@ const ClassroomMember = require("../../data/models/classroomMembersModel.js");
  *    message: "User does not have permission to perform this action."
  *  }
  */
-router.post("/", restrictAdmin, (req, res) => {
+// restrictAdmin add if only want admins to
+router.post("/", (req, res) => {
   let { name, password } = req.body;
   if (password) {
     password = bcrypt.hashSync(password, 14);
@@ -366,7 +367,7 @@ router.put("/:id/join", async (req, res) => {
  */
 
 router.put("/:id/leave", async (req, res) => {
-  ClassroomMember.leave(id, req.user.id)
+  ClassroomMember.leave(req.params.id * 1, req.user.id)
     .then(numDel => {
       if (numDel) {
         res.sendStatus(204);
