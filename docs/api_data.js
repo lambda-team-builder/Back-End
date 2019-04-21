@@ -122,6 +122,52 @@ define({ "api": [
     "groupTitle": "ClassroomAdmins"
   },
   {
+    "type": "post",
+    "url": "api/classrooms/:id/projects/:classroom_project_id",
+    "title": "Delete a project from a classroom",
+    "version": "0.1.0",
+    "name": "deleteClassroomProject",
+    "permission": [
+      {
+        "name": "classroomAdmin"
+      }
+    ],
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 NO CONTENT",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: Not all fields",
+          "content": "HTTP/1.1 404 BAD REQUEST\n{\n  \"message\": \"Could not find classroom project\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
     "type": "delete",
     "url": "api/classrooms/:id/classroom_projects/:classroom_project_id/project_members/:project_member_id",
     "title": "Delete a member slot",
@@ -812,6 +858,77 @@ define({ "api": [
   },
   {
     "type": "put",
+    "url": "api/classrooms/:id/password",
+    "title": "Update classroom password",
+    "version": "0.1.0",
+    "name": "putClassroomJoin",
+    "permission": [
+      {
+        "name": "classroom admin"
+      }
+    ],
+    "group": "Classrooms",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Users auth token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>New password</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"password\": \"1234\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Example: No password",
+          "content": "{\n \"password\": null\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 204 NO CONTENT",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response: If no classroom was found",
+          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom cannot be found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/routers/classroom-router.js",
+    "groupTitle": "Classrooms"
+  },
+  {
+    "type": "put",
     "url": "api/classrooms/:id/join",
     "title": "Join classroom",
     "version": "0.1.0",
@@ -879,77 +996,6 @@ define({ "api": [
         {
           "title": "Error-Response: Already member",
           "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"message\": \"Aleady member of classroom\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "api/routers/classroom-router.js",
-    "groupTitle": "Classrooms"
-  },
-  {
-    "type": "put",
-    "url": "api/classrooms/:id/password",
-    "title": "Update classroom password",
-    "version": "0.1.0",
-    "name": "putClassroomJoin",
-    "permission": [
-      {
-        "name": "classroom admin"
-      }
-    ],
-    "group": "Classrooms",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Users auth token.</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>New password</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n \"password\": \"1234\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Request-Example: No password",
-          "content": "{\n \"password\": null\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 204 NO CONTENT",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response: If no classroom was found",
-          "content": "HTTP/1.1 404 NOT FOUND\n{\n  \"message\": \"Classroom cannot be found\"\n}",
           "type": "json"
         }
       ]
