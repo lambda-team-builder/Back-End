@@ -20,7 +20,12 @@ async function getProjectsByClassroomId(classroom_id) {}
 async function getById(id) {
   // classroom_project_id
   const projectPromise = db("classroom_projects")
-    .select("classroom_projects.id", "projects.name", "projects.description")
+    .select(
+      "classroom_projects.id",
+      "projects.name",
+      "projects.description",
+      "classroom_projects.classroom_id"
+    )
     .join("projects", { "classroom_projects.project_id": "projects.id" })
     .where({ "classroom_projects.id": id })
     .first();

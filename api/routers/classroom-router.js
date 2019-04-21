@@ -146,20 +146,33 @@ router.post("/:id/projects", restrictClassroomAdmin, (req, res) => {
 router.delete(
   "/:id/projects/:classroom_project_id",
   restrictClassroomAdmin,
-  (req, res) => {
-    const classroom_project_id = req.params.classroom_project_id;
-    ClassroomProjects.destroy(classroom_project_id)
-      .then(numDel => {
-        if (numDel === 0) {
-          res.status(404).json({ message: "Could not find classroom project" });
-        } else {
-          res.sendStatus(204);
-        }
-      })
-      .catch(error => {
-        // add sq errors
-        res.status(500).json("Server error", error);
-      });
+  async (req, res) => {
+    const classroom_project_id = req.params.classroom_project_id * 1;
+    const classroom_id = req.params.id * 1;
+    // check if project is in this classroom
+
+    const classroomProject = await ClassroomProjects.getById(
+      classroom_project_id
+    );
+
+    if (classroomProject && classroomProject.classroom_id === classroom_id) {
+      ClassroomProjects.destroy(classroom_project_id)
+        .then(numDel => {
+          if (numDel === 0) {
+            res
+              .status(404)
+              .json({ message: "Could not find classroom project" });
+          } else {
+            res.sendStatus(204);
+          }
+        })
+        .catch(error => {
+          // add sq errors
+          res.status(500).json("Server error", error);
+        });
+    } else {
+      res.status(401).json({ message: "Not authorized" });
+    }
   }
 );
 
