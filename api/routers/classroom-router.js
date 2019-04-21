@@ -124,6 +124,45 @@ router.post("/:id/projects", restrictClassroomAdmin, (req, res) => {
     res.status(401).json("All fields required");
   }
 });
+
+/**
+ *  @api {post} api/classrooms/:id/projects/:classroom_project_id Delete a project from a classroom
+ *  @apiVersion 0.1.0
+ *  @apiName deleteClassroomProject
+ *  @apiPermission  classroomAdmin
+ *  @apiGroup Classrooms
+ *
+ *  @apiHeader {String} Authorization Users auth token.
+ *
+ *
+ *  @apiSuccessExample Success-Response:
+ *    HTTP/1.1 204 NO CONTENT
+ *  @apiErrorExample Error-Response: Not all fields
+ *    HTTP/1.1 404 BAD REQUEST
+ *    {
+ *      "message": "Could not find classroom project"
+ *    }
+ */
+router.delete(
+  "/:id/projects/:classroom_project_id",
+  restrictClassroomAdmin,
+  (req, res) => {
+    const classroom_project_id = req.params.classroom_project_id;
+    ClassroomProjects.destroy(classroom_project_id)
+      .then(numDel => {
+        if (numDel === 0) {
+          res.status(404).json({ message: "Could not find classroom project" });
+        } else {
+          res.sendStatus(204);
+        }
+      })
+      .catch(error => {
+        // add sq errors
+        res.status(500).json("Server error", error);
+      });
+  }
+);
+
 /**
  *  @api {post} api/classrooms/:id/classroom_projects/:classroom_project_id/project_members Create a member slot for a classroom project.
  *  @apiVersion 0.1.0
@@ -260,7 +299,10 @@ router.delete(
 router.put("/:id", restrictClassroomAdmin, async (req, res) => {
   try {
     if (req.body.name) {
-      const classroomUpdated = await Classrooms.update(req.params.id, req.body);
+      const classroomUpdated = await Classrooms.update(
+        req.params.id * 1,
+        req.body
+      );
 
       if (classroomUpdated) {
         const classroom = await Classrooms.getById(req.params.id);

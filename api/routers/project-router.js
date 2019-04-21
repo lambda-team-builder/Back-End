@@ -135,6 +135,7 @@ router.put("/:id", restrictAdmin, (req, res) => {
     });
   }
 });
+
 /**
  *  @api {get} api/projects/ Get all projects
  *  @apiVersion 0.1.0

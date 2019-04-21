@@ -4,7 +4,8 @@ module.exports = {
   create,
   getById,
   getClassroomProjectRoles,
-  getOnlyClassroomProjectById
+  getOnlyClassroomProjectById,
+  destroy
 };
 
 async function create(project_id, classroom_id) {
@@ -35,6 +36,12 @@ async function getOnlyClassroomProjectById(id) {
   return await db("classroom_projects")
     .where({ id })
     .first();
+}
+
+async function destroy(id) {
+  return await db("classroom_projects")
+    .where({ id })
+    .del();
 }
 
 function getClassroomProjectRoles(classroom_project_id) {
