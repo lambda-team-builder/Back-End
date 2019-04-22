@@ -99,7 +99,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 200 OK\n\n[\n    1,\n    2,\n    4,\n    10,\n    11,\n    13\n]",
+          "content": "HTTP/1.1 200 OK\n\n       [\n            {\n                \"user_name\": \"admin\",\n                \"user_id\": 1,\n                \"classroom_admin_id\": 1\n            },\n            {\n                \"user_name\": \"Tim\",\n                \"user_id\": 2,\n                \"classroom_admin_id\": 4\n            },\n            {\n                \"user_name\": \"Connor\",\n                \"user_id\": 4,\n                \"classroom_admin_id\": 6\n            }\n        ]",
           "type": "json"
         }
       ]

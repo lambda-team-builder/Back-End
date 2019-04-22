@@ -75,14 +75,23 @@ router.get("/", (req, res) => {
  *  @apiSuccessExample Success-Response:
  *    HTTP/1.1 200 OK
  *
- *   [
- *       1,
- *       2,
- *       4,
- *       10,
- *       11,
- *       13
- *   ]
+ *           [
+ *                {
+ *                    "user_name": "admin",
+ *                    "user_id": 1,
+ *                    "classroom_admin_id": 1
+ *                },
+ *                {
+ *                    "user_name": "Tim",
+ *                    "user_id": 2,
+ *                    "classroom_admin_id": 4
+ *                },
+ *                {
+ *                    "user_name": "Connor",
+ *                    "user_id": 4,
+ *                    "classroom_admin_id": 6
+ *                }
+ *            ]
  *
  *
  *  @apiErrorExample Error-Response:
@@ -102,7 +111,7 @@ router.post("/classroom/:id", restrictClassroomAdmin, (req, res) => {
   if (user_id) {
     ClassroomAdmin.newAdmin(user_id, req.params.id * 1)
       .then(id => {
-        ClassroomAdmin.getAdminsByClassroomId(req.params.id * 1)
+        ClassroomAdmin.getAdminsWithNamesByClassroomId(req.params.id * 1)
           .then(admins => {
             res.status(200).json(admins);
           })
