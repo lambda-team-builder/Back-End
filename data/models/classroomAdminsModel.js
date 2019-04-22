@@ -3,7 +3,8 @@ const db = require("../dbConfig");
 module.exports = {
   getAdminsByClassroomId,
   getclassroomAdminsByUserId,
-  newAdmin
+  newAdmin,
+  getAdminsWithNamesByClassroomId
 };
 
 async function newAdmin(user_id, classroom_id) {
@@ -14,6 +15,17 @@ async function newAdmin(user_id, classroom_id) {
       user_id_classroom_id: `${user_id}${classroom_id}`
     })
     .returning("id");
+}
+
+async function getAdminsWithNamesByClassroomId(classroom_id) {
+  return await db("classroom_admins")
+    .select(
+      "users.name as user_name",
+      "users.id as user_id",
+      "classroom_admins.id as classroom_admin_id"
+    )
+    .join("users", { "classroom_admins.user_id": "users.id" })
+    .where({ "classroom_admins.classroom_id": classroom_id });
 }
 
 async function getAdminsByClassroomId(classroom_id) {

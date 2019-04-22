@@ -51,6 +51,8 @@ router.get("/", async (req, res) => {
  *
  *  @apiSuccess {Number} id the id of the classroom
  *  @apiSuccess {String} name The name of the classroom
+ *  @apiSuccess {Boolean} is_admin Is the user a classroom admin
+ *  @apiSuccess {Array} admins A list of current classroom admins
  *  @apiSuccess {Array} projects A list of the classroom's projects
  *
  *  @apiSuccessExample Success-Response:
@@ -60,6 +62,23 @@ router.get("/", async (req, res) => {
  *          "id": 1,
  *          "name": "Classroom one",
  *          "is_admin": true,
+ *          "admins": [
+ *                {
+ *                    "user_name": "admin",
+ *                    "user_id": 1,
+ *                    "classroom_admin_id": 1
+ *                },
+ *                {
+ *                    "user_name": "Tim",
+ *                    "user_id": 2,
+ *                    "classroom_admin_id": 4
+ *                },
+ *                {
+ *                    "user_name": "Connor",
+ *                    "user_id": 4,
+ *                    "classroom_admin_id": 6
+ *                }
+ *            ],
  *          "projects": [
  *              {
  *                  "id": 1,
@@ -119,13 +138,20 @@ router.get("/:id", async (req, res) => {
     res.status(400).json({ message: "Not your classroom", is_password });
   } else {
     try {
-      const admins = await ClassroomAdmin.getAdminsByClassroomId(id);
-      const is_admin = admins.includes(req.user.id);
+      const adminIdsPromise = ClassroomAdmin.getAdminsByClassroomId(id);
+      const adminsPromise = ClassroomAdmin.getAdminsWithNamesByClassroomId(id);
+      const classroomPromise = Classrooms.getById(id);
 
-      const classroom = await Classrooms.getById(id);
+      const [adminIds, admins, classroom] = await Promise.all([
+        adminIdsPromise,
+        adminsPromise,
+        classroomPromise
+      ]);
+      const is_admin = adminIds.includes(req.user.id);
       if (classroom.name) {
         res.status(200).json({
           is_admin,
+          admins,
           name: classroom.name,
           id: classroom.id,
           projects: classroom.projects
